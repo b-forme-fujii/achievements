@@ -15,6 +15,9 @@ Route::get('/', function () {
     return view('welcome');
 });
 
+//インデックスページ
+Route::get('/achievement', 'UsersController@index');
+
 Route::get('hello', 'HelloController@index');
 Auth::routes();
 
