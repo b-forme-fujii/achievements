@@ -16,7 +16,7 @@ class User extends Model
         ->orderBy('users.full_name','asc')
         ->paginate(10);
 
-        $school_2 = User::with('user')
+        $school_2 = User::with('User')
         ->where('users.school_id', 2)
         ->orderBy('users.full_name','asc')
         ->paginate(10);
@@ -37,6 +37,11 @@ class User extends Model
     public static $messages = [
         'id.required' => 'ユーザーを選択してください'
     ];
+
+    public function user()
+    {
+        return $this->hasMany('App\Achievement');
+    }
 
     /**achievementsテーブルとusersテーブルをリレーション*/
     public function Achievement()

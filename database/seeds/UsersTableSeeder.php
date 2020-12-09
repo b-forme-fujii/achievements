@@ -100,5 +100,14 @@ class UsersTableSeeder extends Seeder
             'age' => 48,
         ];
         DB::table('users')->insert($param);
+
+        $param = [
+            'school_id' => 2,
+            'first_name' => '伊藤',
+            'last_name' => '一郎',
+            'full_name' => 'イトウイチロウ',
+            'age' => 35,
+        ];
+        DB::table('users')->insert($param);
     }
 }
