@@ -16,20 +16,15 @@
                   </div>
                 </div>
             <div class="card-body">
-                <form method="GET" action="#">
+                <form method="GET" action="/achievement">
                     @csrf
                     <div class="form-group row">
                         <label for="school-1" class="col-md-4 col-form-label text-md-center">本校の方はこちら</label>
-                        @error('school-1')
-                                <span class="invalid-feedback" role="alert">
-                                    <strong>{{ $message }}</strong>
-                                </span>
-                            @enderror
+                        
                         <div class="col-md-6">
-                            <select class="form-control">
-                                <option value="">--名前を選択してください--</option>
+                            <select class="form-control" name="id">
                                 @foreach ($school_1 as $item1)
-                                <option value="{{$item1->id}}">{{$item1->first_name}}　{{$item1->last_name}}</option>
+                                <option value={{$item1->id}}>{{$item1->first_name}}　{{$item1->last_name}}</option>
                                 @endforeach
                               </select>                                
                             <input type="submit" value="出欠ページへ" class="button">
@@ -38,23 +33,17 @@
                 </form>
 
 
-                <form method="GET" action="#">
+                <form method="GET" action="/achievement">
                     @csrf
                     <div class="form-group row">
-                        <label for="school-1" class="col-md-4 col-form-label text-md-center">２校の方はこちら</label>
-                        @error('school-1')
-                                <span class="invalid-feedback" role="alert">
-                                    <strong>{{ $message }}</strong>
-                                </span>
-                            @enderror
+                        <label for="school-2" class="col-md-4 col-form-label text-md-center">２校の方はこちら</label>
                         <div class="col-md-6">
-                            <select class="form-control">
+                            <select class="form-control" name="id">
                                 @foreach ($school_2 as $item2)
-                                <option value="">--名前を選択してください--</option>
-                                <option value="{{$item2->id}}">{{$item2->first_name}}　{{$item2->last_name}}</option>
+                                <option value={{$item2->id}}>{{$item2->first_name}}　{{$item2->last_name}}</option>
                                 @endforeach
                               </select>
-                            <input type="submit" value="出欠ページへ" class="button">
+                            <input id="id" type="submit" value="出欠ページへ" class="button">
                         </div>
                     </div>
                 </form>
@@ -63,5 +52,3 @@
     </div>
 </div>
 @endsection
-</body>
-</html>

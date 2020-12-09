@@ -18,9 +18,8 @@ class CreateAchievementsTable extends Migration
                 $table->increments('id');
                 $table->integer('user_id')->unsigned()->unique();
                 $table->date('insert_date');
-                $table->string('presence_absence')->nullable();
-                $table->date('start_time');
-                $table->date('end_time')->nullable();
+                $table->time('start_time')->nullable();
+                $table->time('end_time')->nullable();
                 $table->string('visit_support')->nullable();
                 $table->tinyInteger('food')->default(0);
                 $table->tinyInteger('outside_support')->default(0);
