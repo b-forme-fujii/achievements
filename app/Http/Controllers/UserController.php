@@ -17,21 +17,11 @@ class UserController extends Controller
      */
     public function index(Request $request)
     {
-        $school_1 = User::with('user')
-        ->where('users.school_id', 1)
-        ->orderBy('users.full_name','asc')
-        ->paginate(10);
+        /**Userモデルのオブジェクト作成 */
+        $user = new User();
 
-        $school_2 = User::with('user')
-        ->where('users.school_id', 2)
-        ->orderBy('users.full_name','asc')
-        ->paginate(10);
-        
-        $data = [
-            'school_1' => $school_1,
-            'school_2' => $school_2,
-        ];
-        
+        /**ユーザー情報の取得 */
+        $data = $user->getData();
         return view('achievement.index', $data);
     }
 
