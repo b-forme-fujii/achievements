@@ -17,14 +17,12 @@ class UserController extends Controller
      */
     public function index(Request $request)
     {
-        $school_1 = User::with('User')
-        ->where('users.school_id', 1)
-        ->orderBy('users.full_name','asc')
+        $school_1 = User::where('school_id', 1)
+        ->orderBy('full_name','asc')
         ->paginate(10);
 
-        $school_2 = User::with('User')
-        ->where('users.school_id', 2)
-        ->orderBy('users.full_name','asc')
+        $school_2 = User::where('school_id', 2)
+        ->orderBy('full_name','asc')
         ->paginate(10);
 
         $data = [
