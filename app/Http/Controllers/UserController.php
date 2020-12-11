@@ -29,12 +29,6 @@ class UserController extends Controller
             'school_1' => $school_1,
             'school_2' => $school_2,
         ];
-
-        // /**Userモデルのオブジェクト作成 */
-        // $user = new User();
-
-        // /**ユーザー情報の取得 */
-        // $data = $user->getData();
         return view('achievement.index', $data);
     }
 
@@ -53,10 +47,10 @@ class UserController extends Controller
             $today = new Datetime();
 
             //実績データの取得
-            $users = User::with('achievement')
-            
+            $users = User::with('achievement')  
             ->join('achievements','user_id', '=', 'users.id')
-            ->where($request->user_id)
+            ->where('users.id', $request->id)
+
             ->orderBy('insert_date', 'asc')
             ->select(
               'users.first_name',

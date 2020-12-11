@@ -20,11 +20,6 @@ class User extends Model
     //     'id.required' => 'ユーザーを選択してください'
     // ];
 
-    // public function user()
-    // {
-    //     return $this->hasMany('App\user', 'school_id');
-    // }
-
     /**achievementsテーブルとusersテーブルをリレーション*/
     public function achievement()
     {
