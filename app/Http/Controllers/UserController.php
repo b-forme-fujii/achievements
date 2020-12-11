@@ -17,11 +17,26 @@ class UserController extends Controller
      */
     public function index(Request $request)
     {
-        /**Userモデルのオブジェクト作成 */
-        $user = new User();
+        $school_1 = User::with('User')
+        ->where('users.school_id', 1)
+        ->orderBy('users.full_name','asc')
+        ->paginate(10);
 
-        /**ユーザー情報の取得 */
-        $data = $user->getData();
+        $school_2 = User::with('User')
+        ->where('users.school_id', 2)
+        ->orderBy('users.full_name','asc')
+        ->paginate(10);
+
+        $data = [
+            'school_1' => $school_1,
+            'school_2' => $school_2,
+        ];
+
+        // /**Userモデルのオブジェクト作成 */
+        // $user = new User();
+
+        // /**ユーザー情報の取得 */
+        // $data = $user->getData();
         return view('achievement.index', $data);
     }
 
@@ -33,8 +48,6 @@ class UserController extends Controller
      */
     public function selection(Request $request)
     {
-        //バリデーションの実行
-        $this->validate($request, User::$rules, User::$messages);
         
         //formから送られてきた利用者のidを取得
         if (isset($request->id)) {
@@ -69,14 +82,7 @@ class UserController extends Controller
             return view('achievement.recode', $data);
         }
         else {
-            /**Userモデルのオブジェクト作成 */
-            $user = new User();
-
-            /**ユーザー情報の取得 */
-            $data = $user->getData();
-
-            // $msg = 'もう一度選択しなおしてください。';
+            return redirect('/');
         }
-        return view('achievement.index', $data);
     }
 }

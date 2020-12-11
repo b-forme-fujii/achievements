@@ -13,8 +13,8 @@ class Achievement extends Model
      * achievementsテーブルとusersテーブルをリレーション
      * @return void
      */
-    // public function user()
-    // {
-    //     return $this->belongsTo('App\User');
-    // }
+    public function user()
+    {
+        return $this->belongsTo('App\User');
+    }
 }

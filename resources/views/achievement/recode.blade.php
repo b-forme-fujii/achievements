@@ -6,10 +6,21 @@
     <div class="col-3">
         <h1>実績記録</h1>
     </div>
-    <div class="alert alert-danger" role="alert">
-        A simple danger alert with <a href="#" class="alert-link">an example link</a>. Give it a click if you like.
-      </div>
+    <div class="col-12">
+        <div class="alert alert-danger" role="alert">
+            <div class="text-left">
+                本日の利用時間が登録されていません
+            </div>
+             
+            <div class="text-right">
+            <a href="#" class="btn btn-primary btn-sm active" role="button" aria-pressed="true">開始時間を登録する</a>
+          </div>
+        </div>
+    </div>
+    <div class="col-3">
     <h2>当月の利用実績</h2>
+    </div>
+    <div class="col-12">
     <table class="table table-boder">
         <tr>
             <th>日付</th>
@@ -53,8 +64,8 @@
                 <td></td>
             @endif
         </tr>
-        @endforeach
-    
+        @endforeach    
     </table>
+    </div>
 </div>
 @endsection
