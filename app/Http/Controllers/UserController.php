@@ -50,7 +50,6 @@ class UserController extends Controller
             $users = User::with('achievement')  
             ->join('achievements','user_id', '=', 'users.id')
             ->where('users.id', $request->id)
-
             ->orderBy('insert_date', 'asc')
             ->select(
               'users.first_name',
