@@ -42,11 +42,9 @@ class UserController extends Controller
     {
         //formから送られてきた利用者のidを取得
         if (isset($request->id)) {
-
             /**当月の月初と月末のオブジェクトを取得 */
             $dt_from = Carbon::now()->firstOfMonth();
             $dt_to = Carbon::now()->endOfMonth();
-
             /** 前月取得 */
             // $add_Month = Carbon::now()->firstOfMonth()->addMonth(-1);
             
