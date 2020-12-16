@@ -4,7 +4,7 @@ namespace App\Http\Controllers;
 
 use App\User;
 use Illuminate\Http\Request;
-use DateTime;
+use Carbon\Carbon;
 use Illuminate\Support\Facades\DB;
 
 
@@ -40,16 +40,21 @@ class UserController extends Controller
      */
     public function selection(Request $request)
     {
-        
         //formから送られてきた利用者のidを取得
         if (isset($request->id)) {
-            //idが取得できていたら今日の日付オブジェクトを取得
-            $today = new Datetime();
 
-            //実績データの取得
+            /**当月の月初と月末のオブジェクトを取得 */
+            $dt_from = Carbon::now()->firstOfMonth();
+            $dt_to = Carbon::now()->endOfMonth();
+
+            /** 前月取得 */
+            // $add_Month = Carbon::now()->firstOfMonth()->addMonth(-1);
+            
+            /**該当ユーザーの実績データの取得 */
             $users = User::with('achievement')  
             ->join('achievements','user_id', '=', 'users.id')
             ->where('users.id', $request->id)
+            ->whereBetween('insert_date', [$dt_from, $dt_to])
             ->orderBy('insert_date', 'asc')
             ->select(
               'users.first_name',
@@ -67,12 +72,10 @@ class UserController extends Controller
             ->paginate(10);
 
             $data = [
-                'today' => $today,
                 'users' => $users,
             ];
             return view('achievement.recode', $data);
-        }
-        else {
+        } else {
             return redirect('/');
         }
     }
