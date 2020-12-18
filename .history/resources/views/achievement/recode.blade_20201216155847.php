@@ -62,6 +62,36 @@
                 </div>
             </div>
 
+            <div class="card  mt-4 mx-3">
+                <h5 class="card-header">実績記録表</h5>
+                <div class="card-body">
+                    <table class="table table-bordered">
+  <thead>
+    <tr>
+      @foreach (['日', '月', '火', '水', '木', '金', '土'] as $dayOfWeek)
+      <th>{{ $dayOfWeek }}</th>
+      @endforeach
+    </tr>
+  </thead>
+  <tbody>
+    @foreach ($dates as $date)
+    @if ($date->dayOfWeek == 0)
+    <tr>
+    @endif
+      <td
+        
+      >
+        {{ $date->day }}
+      </td>
+    @if ($date->dayOfWeek == 6)
+    </tr>
+    @endif
+    @endforeach
+  </tbody>
+</table>
+                </div>
+            </div>
+
         </div>
     </div>
     <div class="col-1"></div>
