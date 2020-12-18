@@ -5,6 +5,8 @@ namespace App\Http\Controllers;
 use App\User;
 use Illuminate\Http\Request;
 use Carbon\Carbon;
+use App\Calendar\CalendarView;
+
 use Illuminate\Support\Facades\DB;
 
 
@@ -42,11 +44,21 @@ class UserController extends Controller
     {
         //formから送られてきた利用者のidを取得
         if (isset($request->id)) {
-            /**当月の月初と月末のオブジェクトを取得 */
+            /**当月の月初と月末のオブジェクトを作成 */
             $dt_from = Carbon::now()->firstOfMonth();
             $dt_to = Carbon::now()->endOfMonth();
-            /** 前月取得 */
-            // $add_Month = Carbon::now()->firstOfMonth()->addMonth(-1);
+            
+            $startday = Carbon::now()->firstOfMonth()->addMonth(0)->daysInMonth;
+            // dd($startday);
+
+            $day = new Carbon($dt_from);
+            $format = 'D';
+            $days[0] = $day->isoFormat($format);
+
+            for ($i = 1; $i < $startday; $i++) {
+                    $days[$i] = $day->copy()->addDay($i)->isoFormat($format);    
+            }
+            dd($days);
             
             /**該当ユーザーの実績データの取得 */
             $users = User::with('achievement')  
