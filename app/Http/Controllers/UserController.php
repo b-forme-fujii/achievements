@@ -68,6 +68,12 @@ class UserController extends Controller
                 $weeks[$n] = $day->copy()->addDay($n)->isoFormat($formatweek);
             }
             // dd($weeks);
+
+            // $weekdays = array(
+            //     'days' => $days,
+            //     'weeks' => $weeks,
+            //  );
+            //  dd($weekdays);
             
             /**該当ユーザーの実績データの取得 */
             $users = User::with('achievement')  
@@ -92,10 +98,11 @@ class UserController extends Controller
 
             if($users->isEmpty()) {
                 return redirect('/');
-                
+
             } else {
                 $data = [
                     'users' => $users,
+                    // 'weekdays' => $weekdays,
                     'days' => $days,
                     'weeks' => $weeks,
                 ];          
