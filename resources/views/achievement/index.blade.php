@@ -26,7 +26,8 @@
                                 @foreach ($school_1 as $item1)
                                 <option value={{$item1->id}}>{{$item1->first_name}}　{{$item1->last_name}}</option>
                                 @endforeach
-                              </select>                                
+                              </select>
+                              <input type="hidden" name="month" value=0>                                
                             <input type="submit" value="出欠ページへ" class="button">
                         </div>
                     </div>
@@ -43,6 +44,7 @@
                                 <option value={{$item2->id}}>{{$item2->first_name}}　{{$item2->last_name}}</option>
                                 @endforeach
                               </select>
+                              <input type="hidden" name="month" value=0>
                             <input id="id" type="submit" value="出欠ページへ" class="button">
                         </div>
                     </div>

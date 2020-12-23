@@ -47,7 +47,7 @@ class UserController extends Controller
             $dt_to = Carbon::now()->endOfMonth()->addMonth($request->month)->addDay(-1);
 
             //月の日数を取得
-            $startday = Carbon::now()->firstOfMonth()->addMonth(0)->daysInMonth;
+            $startday = Carbon::now()->firstOfMonth()->addMonth($request->month)->daysInMonth;
             // dd($startday);
 
             $day = new Carbon($dt_from);
@@ -92,6 +92,7 @@ class UserController extends Controller
 
             if($users->isEmpty()) {
                 return redirect('/');
+                
             } else {
                 $data = [
                     'users' => $users,
