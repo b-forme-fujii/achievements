@@ -5,7 +5,6 @@ namespace App\Http\Controllers;
 use App\User;
 use Illuminate\Http\Request;
 use Carbon\Carbon;
-use App\Calendar\CalendarView;
 
 use Illuminate\Support\Facades\DB;
 
@@ -43,22 +42,32 @@ class UserController extends Controller
     public function selection(Request $request)
     {
         //formから送られてきた利用者のidを取得
-        if (isset($request->id)) {
             /**当月の月初と月末のオブジェクトを作成 */
-            $dt_from = Carbon::now()->firstOfMonth();
-            $dt_to = Carbon::now()->endOfMonth();
-            
+            $dt_from = Carbon::now()->firstOfMonth()->addMonth($request->month);
+            $dt_to = Carbon::now()->endOfMonth()->addMonth($request->month)->addDay(-1);
+
+            //月の日数を取得
             $startday = Carbon::now()->firstOfMonth()->addMonth(0)->daysInMonth;
             // dd($startday);
 
             $day = new Carbon($dt_from);
-            $format = 'D';
-            $days[0] = $day->isoFormat($format);
+            $formatday = 'D';
+            $days[0] = $day->isoFormat($formatday);
 
             for ($i = 1; $i < $startday; $i++) {
-                    $days[$i] = $day->copy()->addDay($i)->isoFormat($format);    
+                    $days[$i] = $day->copy()->addDay($i)->isoFormat($formatday);    
             }
-            dd($days);
+            // dd($days);
+
+            // //曜日の取得
+            Carbon::setLocale('ja');
+            $week = new Carbon($dt_from);
+            $formatweek = 'ddd';
+            $weeks[0] = $week->isoFormat($formatweek);
+            for ($n = 1; $n < $startday; $n++) {
+                $weeks[$n] = $day->copy()->addDay($n)->isoFormat($formatweek);
+            }
+            // dd($weeks);
             
             /**該当ユーザーの実績データの取得 */
             $users = User::with('achievement')  
@@ -79,14 +88,17 @@ class UserController extends Controller
               'achievements.medical__support',
               'achievements.note'
             )
-            ->paginate(10);
+            ->paginate(30);
 
-            $data = [
-                'users' => $users,
-            ];
-            return view('achievement.recode', $data);
-        } else {
-            return redirect('/');
-        }
+            if($users->isEmpty()) {
+                return redirect('/');
+            } else {
+                $data = [
+                    'users' => $users,
+                    'days' => $days,
+                    'weeks' => $weeks,
+                ];          
+                return view('achievement.recode', $data);
+            }
     }
 }
