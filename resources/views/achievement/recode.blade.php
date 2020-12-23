@@ -49,7 +49,7 @@
                         </thead>
                         <tbody>
                             <tr align="center">
-                                <td>　</td>
+                                <td></td>
                                 <td></td>
                                 <td></td>
                                 <td></td>
@@ -59,6 +59,66 @@
                         </tbody>
                     </table>
 
+                    <div class="card  mt-4 mx-3">
+                        <h5 class="card-header">実績記録表</h5>
+                        <div class="card-body">
+                            <table class="table table-bordered">
+                                <thead>
+                                    <tr align="center">
+                                        <th>日付</th>
+                                        <th>曜日</th>
+                                        <th>サービス提供状況</th>
+                                        <th>開始時間</th>
+                                        <th>終了時間</th>
+                                        <th>食事提供加算</th>
+                                        <th>施設外支援</th>
+                                        <th>医療連携体制加算</th>
+                                        <th>備考</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    @foreach ($users as $user)
+                                <tr align="center">
+                                    <td scope="row"></td>
+                                    <td scope="row"></td>
+                                    @if ($user->insert_date == null)
+                                    <td scope="row">無</td>
+                                    @else
+                                    <td scope="row">有</td>
+                                    @endif
+        
+                                    <td scope="row">{{$user->start_time}}</td>
+                                    <td scope="row">{{$user->end_time}}</td>
+                                    @if ($user->food == 0)
+                                    <td scope="row">無</td>
+                                    @elseif ($user->food == 1)
+                                    <td scope="row">有</td>
+                                    @endif
+        
+                                    @if ($user->outside_support == 0)
+                                    <td scope="row">無</td>
+                                    @elseif ($user->outside_support == 2)
+                                    <td scope="row">有</td>
+                                    @endif
+        
+                                    @if ($user->medical__support == 0)
+                                    <td scope="row">無</td>
+                                    @elseif ($user->medical__support == 2)
+                                    <td scope="row">有</td>
+                                    @endif
+        
+                                    @if ($user->note)
+                                    <td scope="row">{{$user->note}}</td>
+                                    @else
+                                    <td scope="row">無</td>
+                                    @endif
+                                </tr>
+                                @endforeach
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                    
                 </div>
             </div>
 
