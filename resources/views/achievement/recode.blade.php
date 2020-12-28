@@ -78,11 +78,57 @@
                                 </thead>
                                 <tbody>
                                     @foreach (array_map(null, $days, $weeks) as [$day, $week])
-                                   <tr align="center">
-                                       <td>{{$day}}</td>
-                                       <td>{{$week}}</td>
-                                       @endforeach
-                                   </tr>
+                                    @foreach ($users as $user)
+                                    @if ($day != $user->insert_date)
+                                    <tr align="center">
+                                        <td>{{$day}}</td>
+                                        <td>{{$week}}</td>
+                                        <td></td>
+                                        <td></td>
+                                        <td></td>
+                                        <td></td>
+                                        <td></td>
+                                        <td></td>
+                                        <td></td>
+                                    </tr>
+                                    @endif
+                                     @if ($day == $user->insert_date)
+                                        <tr align="center">
+                                            <td>{{$day}}</td>
+                                            <td>{{$week}}</td>
+                                        <td scope="row">出</td>
+                                        <td>{{$user->start_time}}</td>
+                                        <td>{{$user->end_time}}</td>
+                                        @if ($user->food == 0)
+                                        <td>無</td>
+                                        @elseif ($user->food == 1)
+                                        <td scope=>有</td>
+                                        @endif
+                                        @if ($user->outside_support == 0)
+                                        <td scope="row">無</td>
+                                        @elseif ($user->outside_support == 2)
+                                        <td scope="row">有</td>
+                                        @endif
+            
+                                        @if ($user->medical__support == 0)
+                                        <td scope="row">無</td>
+                                        @elseif ($user->medical__support == 2)
+                                        <td scope="row">有</td>
+                                        @endif
+            
+                                        @if ($user->note)
+                                        <td scope="row">{{$user->note}}</td>
+                                        @else
+                                        <td scope="row"></td> 
+                                        @endif
+
+                                        
+                                    </tr>
+                                    @endif
+
+                                    @endforeach
+                                   
+                                   @endforeach
                                 </tbody>
                             </table>
                         </div>
@@ -108,7 +154,9 @@
                                 <tbody>
                                     @foreach ($users as $user)
                                 <tr align="center">
-                                    <td scope="row"></td>
+                                    <td scope="row">
+                                        {{ $user->insert_date}}
+                                    </td>
                                     <td scope="row"></td>
                                     @if ($user->insert_date == null)
                                     <td scope="row">欠</td>

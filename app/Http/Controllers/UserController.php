@@ -43,15 +43,15 @@ class UserController extends Controller
     {
         //formから送られてきた利用者のidを取得
             /**当月の月初と月末のオブジェクトを作成 */
-            $dt_from = Carbon::now()->firstOfMonth()->addMonth($request->month);
-            $dt_to = Carbon::now()->endOfMonth()->addMonth($request->month)->addDay(-1);
+            $firstOfMonth = Carbon::now()->firstOfMonth();
+            $endOfMonth = $firstOfMonth->copy()->endOfMonth();
 
             //月の日数を取得
             $startday = Carbon::now()->firstOfMonth()->addMonth($request->month)->daysInMonth;
             // dd($startday);
 
-            $day = new Carbon($dt_from);
-            $formatday = 'D';
+            $day = new Carbon($firstOfMonth);
+            $formatday = 'Y-M-D';
             $days[0] = $day->isoFormat($formatday);
 
             for ($i = 1; $i < $startday; $i++) {
@@ -59,54 +59,91 @@ class UserController extends Controller
             }
             // dd($days);
 
-            // //曜日の取得
-            Carbon::setLocale('ja');
-            $week = new Carbon($dt_from);
-            $formatweek = 'ddd';
-            $weeks[0] = $week->isoFormat($formatweek);
-            for ($n = 1; $n < $startday; $n++) {
-                $weeks[$n] = $day->copy()->addDay($n)->isoFormat($formatweek);
-            }
-            // dd($weeks);
+             // //曜日の取得
+                Carbon::setLocale('ja');
+                $week = new Carbon($firstOfMonth);
+                $formatweek = 'ddd';
+                $weeks[0] = $week->isoFormat($formatweek);
+                for ($n = 1; $n < $startday; $n++) {
+                    $weeks[$n] = $day->copy()->addDay($n)->isoFormat($formatweek);
+                }
+                // dd($weeks);
 
-            // $weekdays = array(
-            //     'days' => $days,
-            //     'weeks' => $weeks,
-            //  );
-            //  dd($weekdays);
-            
-            /**該当ユーザーの実績データの取得 */
-            $users = User::with('achievement')  
-            ->join('achievements','user_id', '=', 'users.id')
-            ->where('users.id', $request->id)
-            ->whereBetween('insert_date', [$dt_from, $dt_to])
-            ->orderBy('insert_date', 'asc')
-            ->select(
-              'users.first_name',
-              'users.last_name',
-              'achievements.id',
-              'achievements.user_id',
-              'achievements.insert_date',
-              'achievements.start_time',
-              'achievements.end_time',
-              'achievements.food',
-              'achievements.outside_support',
-              'achievements.medical__support',
-              'achievements.note'
-            )
-            ->paginate(30);
+                // $weekdays = array(
+                //     'days' => $days,
+                //     'weeks' => $weeks,
+                //  );
+                //  dd($weekdays);
 
-            if($users->isEmpty()) {
-                return redirect('/');
+                 /**該当ユーザーの実績データの取得 */
+                $users = User::with('achievement')  
+                ->join('achievements','user_id', '=', 'users.id')
+                ->where('users.id', $request->id)
+                ->whereBetween('insert_date', [$firstOfMonth, $endOfMonth])
+                ->orderBy('insert_date', 'asc')
+                ->select(
+                'users.first_name',
+                'users.last_name',
+                'achievements.id',
+                'achievements.user_id',
+                'achievements.insert_date',
+                'achievements.start_time',
+                'achievements.end_time',
+                'achievements.food',
+                'achievements.outside_support',
+                'achievements.medical__support',
+                'achievements.note'
+                )
+                ->get();
+                // dd($users);
 
-            } else {
-                $data = [
-                    'users' => $users,
-                    // 'weekdays' => $weekdays,
-                    'days' => $days,
-                    'weeks' => $weeks,
-                ];          
-                return view('achievement.recode', $data);
-            }
+                // $dates = array_combine($list, $users);
+                // dd($dates);
+
+                if($users->isEmpty()) {
+                    return redirect('/');
+
+                } else {
+                    
+                    $data = [
+                        'users' => $users,
+                        // 'weekdays' => $weekdays,
+                        'days' => $days,
+                        'weeks' => $weeks,
+                    ];          
+                    return view('achievement.recode', $data);
+                }
+        }
+
+    /**
+     * 過去の月の日数と曜日を取得
+     */
+    public function Pastmonth(Request $request)
+    {
+        $dt_from = Carbon::now()->firstOfMonth()->addMonth($request->month);
+        $dt_to = Carbon::now()->endOfMonth()->addMonth($request->month)->addDay(-1);
+
+        //月の日数を取得
+        $startday = Carbon::now()->firstOfMonth()->addMonth($request->month)->daysInMonth;
+        // dd($startday);
+
+        $day = new Carbon($dt_from);
+        $formatday = 'D';
+        $days[0] = $day->isoFormat($formatday);
+
+        for ($i = 1; $i < $startday; $i++) {
+                $days[$i] = $day->copy()->addDay($i)->isoFormat($formatday);    
+        }
+        // dd($days);
+
+        // //曜日の取得
+        Carbon::setLocale('ja');
+        $week = new Carbon($dt_from);
+        $formatweek = 'ddd';
+        $weeks[0] = $week->isoFormat($formatweek);
+        for ($n = 1; $n < $startday; $n++) {
+            $weeks[$n] = $day->copy()->addDay($n)->isoFormat($formatweek);
+        }
+        // dd($weeks);
     }
 }
