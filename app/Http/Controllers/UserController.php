@@ -51,13 +51,14 @@ class UserController extends Controller
             // dd($startday);
 
             $day = new Carbon($firstOfMonth);
-            $formatday = 'Y-M-D';
+            $formatday = 'Y-MM-DD';
             $days[0] = $day->isoFormat($formatday);
 
             for ($i = 1; $i < $startday; $i++) {
                     $days[$i] = $day->copy()->addDay($i)->isoFormat($formatday);    
             }
             // dd($days);
+            
 
              // //曜日の取得
                 Carbon::setLocale('ja');
@@ -95,6 +96,16 @@ class UserController extends Controller
                 'achievements.note'
                 )
                 ->get();
+
+                $data = [];
+                
+                
+                foreach($users as $user){
+                    if($days != $user->insert_date)
+                    $data[] = $user;    
+                    }
+                dd($data);
+
                 // dd($users);
 
                 // $dates = array_combine($list, $users);
