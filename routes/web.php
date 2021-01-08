@@ -21,7 +21,7 @@ Route::get('hello', 'HelloController@index');
 Route::get('/', 'UserController@index');
 
 /**実績登録ページ*/
-Route::get('/achievement', 'UserController@selection');
+Route::get('/achievement', 'AchievementController@selection');
 
 /**ログイン必須ページ*/
 Auth::routes();
