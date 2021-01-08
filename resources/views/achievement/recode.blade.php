@@ -58,6 +58,8 @@
                             </tr>
                         </tbody>
                     </table>
+                </div>
+            </div>
 
                     <div class="card  mt-4 mx-3">
                         <h5 class="card-header">実績記録表</h5>
@@ -77,11 +79,10 @@
                                     </tr>
                                 </thead>
                                 <tbody>
-                                    @foreach (array_map(null, $days, $weeks) as [$day, $week])
-                                    @foreach ($users as $user)
-                                    @if ($day != $user->insert_date)
+                                    @foreach (array_map(null, $days, $weeks, $datas, $dalys) as [$day, $week, $data, $daly])
                                     <tr align="center">
-                                        <td>{{$day}}</td>
+                                        @if ($day == $data)
+                                        <td>{{$daly}}</td>
                                         <td>{{$week}}</td>
                                         <td></td>
                                         <td></td>
@@ -90,118 +91,42 @@
                                         <td></td>
                                         <td></td>
                                         <td></td>
-                                    </tr>
-                                    @endif
-                                     @if ($day == $user->insert_date)
-                                        <tr align="center">
-                                            <td>{{$day}}</td>
-                                            <td>{{$week}}</td>
-                                        <td scope="row">出</td>
-                                        <td>{{$user->start_time}}</td>
-                                        <td>{{$user->end_time}}</td>
-                                        @if ($user->food == 0)
-                                        <td>無</td>
-                                        @elseif ($user->food == 1)
-                                        <td scope=>有</td>
-                                        @endif
-                                        @if ($user->outside_support == 0)
-                                        <td scope="row">無</td>
-                                        @elseif ($user->outside_support == 2)
-                                        <td scope="row">有</td>
-                                        @endif
-            
-                                        @if ($user->medical__support == 0)
-                                        <td scope="row">無</td>
-                                        @elseif ($user->medical__support == 2)
-                                        <td scope="row">有</td>
-                                        @endif
-            
-                                        @if ($user->note)
-                                        <td scope="row">{{$user->note}}</td>
                                         @else
-                                        <td scope="row"></td> 
+                                        <td>{{$daly}}</td>
+                                        <td>{{$week}}</td>
+                                        <td>有</td>
+                                        <td>{{$data->start_time}}</td>
+                                        <td>{{$user->end_time}}</td>
+                                        @if ($data->food == 0)
+                                        <td scope="row">無</td>
+                                        @elseif ($data->food == 1)
+                                        <td scope="row">有</td>
+                                        @endif
+                                        @if ($data->outside_support == 0)
+                                        <td scope="row">無</td>
+                                        @elseif ($data->outside_support == 2)
+                                        <td scope="row">有</td>
                                         @endif
 
-                                        
-                                    </tr>
-                                    @endif
+                                        @if ($data->medical__support == 0)
+                                        <td scope="row">無</td>
+                                        @elseif ($data->medical__support == 2)
+                                        <td scope="row">有</td>
+                                        @endif
 
-                                    @endforeach
-                                   
+                                        @if ($data->note)
+                                        <td scope="row">{{$data->note}}</td>
+                                        @else
+                                        <td scope="row">無</td>
+                                        @endif
+                                        @endif
+                                    </tr>
                                    @endforeach
                                 </tbody>
                             </table>
                         </div>
                     </div>
-
-
-                    <div class="card  mt-4 mx-3">
-                        <h5 class="card-header">実績記録表</h5>
-                        <div class="card-body">
-                            <table class="table table-bordered">
-                                <thead>
-                                    <tr align="center">
-                                        <th>日付</th>
-                                        <th>曜日</th>
-                                        <th>サービス提供状況</th>
-                                        <th>開始時間</th>
-                                        <th>終了時間</th>
-                                        <th>食事提供加算</th>
-                                        <th>施設外支援</th>
-                                        <th>医療連携体制加算</th>
-                                        <th>備考</th>
-                                    </tr>
-                                </thead>
-                                <tbody>
-                                    @foreach ($users as $user)
-                                    <tr align="center">
-                                        <td scope="row">
-                                            {{ $user->insert_date}}
-                                        </td>
-                                        <td scope="row"></td>
-                                        @if ($user->insert_date == null)
-                                        <td scope="row">欠</td>
-                                        @else
-                                        <td scope="row">出</td>
-                                        @endif
-
-                                        <td scope="row">{{$user->start_time}}</td>
-                                        <td scope="row">{{$user->end_time}}</td>
-                                        @if ($user->food == 0)
-                                        <td scope="row">無</td>
-                                        @elseif ($user->food == 1)
-                                        <td scope="row">有</td>
-                                        @endif
-
-                                        @if ($user->outside_support == 0)
-                                        <td scope="row">無</td>
-                                        @elseif ($user->outside_support == 2)
-                                        <td scope="row">有</td>
-                                        @endif
-
-                                        @if ($user->medical__support == 0)
-                                        <td scope="row">無</td>
-                                        @elseif ($user->medical__support == 2)
-                                        <td scope="row">有</td>
-                                        @endif
-
-                                        @if ($user->note)
-                                        <td scope="row">{{$user->note}}</td>
-                                        @else
-                                        <td scope="row">無</td>
-                                        @endif
-                                    </tr>
-                                    @endforeach
-                                </tbody>
-                            </table>
-                        </div>
-                    </div>
-
-                </div>
-            </div>
-
         </div>
     </div>
-    <div class="col-1"></div>
 </div>
 @endsection
