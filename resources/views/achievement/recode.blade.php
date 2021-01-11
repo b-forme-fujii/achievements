@@ -28,7 +28,11 @@
             <div class="alert alert-danger mt-4 mx-3" role="alert">
                 <div class="row">
                     <b class="mt-3 mr-auto">※今日の開始時間が登録されていません</b>
-                    <a class="btn btn-primary my-2 mr-5" href="#" role="button">出席</a>
+                    <form action="/insert_date" method="get">
+                        @csrf
+                        <input type="hidden" name="id" value={{$user->id}}>
+                        <input type="submit" class="btn btn-primary my-2 mr-5" value="出席">
+                    </form>
                 </div>
             </div>
             @else
@@ -49,8 +53,8 @@
                         <tbody>
                             <tr align="center">
                                 <td>{{$one_recode->start_time}}</td>
-                                @if ($one_recode->end_time == "00:00:00")                           
-                                <td></td>
+                                @if ($one_recode->end_time == null)                           
+                                <td>aaa</td>
                                 @else
                                 <td>{{$one_recode->end_time}}</td>
                                 @endif
@@ -98,10 +102,10 @@
                             </tr>
                         </thead>
                         <tbody>
-                            @foreach (array_map(null, $days, $weeks, $recodes, $dalys) as [$day, $week, $recode, $daly])
+                            @foreach (array_map(null, $days, $weeks, $recodes, $fdays) as [$day, $week, $recode, $fday])
                             <tr align="center">
                                 @if ($day == $recode)
-                                <td>{{$daly}}</td>
+                                <td>{{$fday}}</td>
                                 <td>{{$week}}</td>
                                 <td></td>
                                 <td></td>
@@ -111,7 +115,7 @@
                                 <td></td>
                                 <td></td>
                                 @else
-                                <td>{{$daly}}</td>
+                                <td>{{$fday}}</td>
                                 <td>{{$week}}</td>
                                 <td>有</td>
                                 <td>{{$recode->start_time}}</td>

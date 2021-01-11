@@ -16,39 +16,14 @@ class AchievementController extends Controller
      */
     public function selection(Request $request)
     {
-        //formから送られてきた利用者のidを取得
-        /**当月の月初と月末のオブジェクトを作成 */
-        $firstOfMonth = Carbon::now()->firstOfMonth();
-        $endOfMonth = $firstOfMonth->copy()->endOfMonth();
-
-        //送られてきた値から月の日数を取得
-        $startday = Carbon::now()->firstOfMonth()->addMonth($request->month)->daysInMonth;
-
-        //実績データの登録日と当月の日数とを比較する値の作成
-        $day = new Carbon($firstOfMonth);
-        $formatday = 'Y-MM-DD';
-        $days[0] = $day->isoFormat($formatday);
-
-        for ($i = 1; $i < $startday; $i++) {
-            $days[$i] = $day->copy()->addDay($i)->isoFormat($formatday);
-        }
-
-        //実績表に表示する日数の値の作成
-        $formatday = 'DD';
-        $dalys[0] = $day->isoFormat($formatday);
-
-        for ($i = 1; $i < $startday; $i++) {
-            $dalys[$i] = $day->copy()->addDay($i)->isoFormat($formatday);
-        }
-
-        //実績表に表示する曜日の値の作成
-        Carbon::setLocale('ja');
-        $week = new Carbon($firstOfMonth);
-        $formatweek = 'ddd';
-        $weeks[0] = $week->isoFormat($formatweek);
-        for ($n = 1; $n < $startday; $n++) {
-            $weeks[$n] = $day->copy()->addDay($n)->isoFormat($formatweek);
-        }
+        $days = new Achievement();
+        $days = $days->getDays(); 
+        
+        $weeks = new Achievement();
+        $weeks = $weeks->getweeks();
+        
+        $fdays = new Achievement();
+        $fdays = $fdays->getFDays();
 
         //該当ユーザーの名前を取得
         $user = new User();
@@ -57,42 +32,67 @@ class AchievementController extends Controller
         /**該当ユーザーの今日の実績データの取得 */
         $one_recode = new Achievement();
         $one_recode = $one_recode->getOneRecode($request);
+        $recodes = new Achievement();
+        $recodes = $recodes->getAchievements($request);
 
-        /**該当ユーザーの実績データを全て取得 */
-        $achievements = Achievement::with('User')
-            ->join('users', 'users.id', '=', 'achievements.user_id')
-            ->where('achievements.user_id', $request->id)
-            ->whereBetween('insert_date', [$firstOfMonth, $endOfMonth])
-            ->orderBy('insert_date', 'asc')
-            ->select(
-                'achievements.insert_date',
-                'achievements.start_time',
-                'achievements.end_time',
-                'achievements.food',
-                'achievements.outside_support',
-                'achievements.medical__support',
-                'achievements.note'
-            )
-            ->get();
-
-        //当月の連想配列を複製
-        $recodes = $days;
-        //実績データの登録日と比較して一致したらその配列を上書き
-        foreach ($achievements as $achievement) {
-            for ($n = 0; $n < $startday; $n++) {
-                if ($recodes[$n] == $achievement->insert_date) {
-                    $recodes[$n] = $achievement;
-                }
-            }
-        }
         // dd($datas);
         $data = [
             'user' => $user,
-            'one_recode' => $one_recode,
-            'recodes' => $recodes,
             'days' => $days,
             'weeks' => $weeks,
-            'dalys' => $dalys,
+            'fdays' => $fdays,
+            'one_recode' => $one_recode,
+            'recodes' => $recodes,
+        ];
+        return view('achievement.recode', $data);
+    }
+
+    /**
+     * 今日の開始時間と登録日を実績テーブルに作成
+     */
+    public function insert_date(Request $request)
+    {
+        //今日の登録日を取得
+        $insert_date = new Achievement();
+        $insert_date = $insert_date->getDate();
+
+        $start_time = new Achievement();
+        $start_time = $start_time->getStart_Time();
+
+        Achievement::create(
+            [
+                'user_id' => $request->id,
+                'insert_date' => $insert_date,
+                'start_time' => $start_time,
+            ],
+        );
+        $days = new Achievement();
+        $days = $days->getDays(); 
+        
+        $weeks = new Achievement();
+        $weeks = $weeks->getweeks();
+        
+        $fdays = new Achievement();
+        $fdays = $fdays->getFDays();
+
+        //該当ユーザーの名前を取得
+        $user = new User();
+        $user = $user->getUser($request);
+
+        /**該当ユーザーの今日の実績データの取得 */
+        $one_recode = new Achievement();
+        $one_recode = $one_recode->getOneRecode($request);
+        $recodes = new Achievement();
+        $recodes = $recodes->getAchievements($request);
+
+        // dd($datas);
+        $data = [
+            'user' => $user,
+            'days' => $days,
+            'weeks' => $weeks,
+            'fdays' => $fdays,
+            'one_recode' => $one_recode,
+            'recodes' => $recodes,
         ];
         return view('achievement.recode', $data);
     }
