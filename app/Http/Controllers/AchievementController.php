@@ -50,17 +50,21 @@ class AchievementController extends Controller
             $weeks[$n] = $day->copy()->addDay($n)->isoFormat($formatweek);
         }
 
-        /**該当ユーザーの実績データの取得 */
-        $users = User::with('achievement')
-            ->join('achievements', 'user_id', '=', 'users.id')
-            ->where('users.id', $request->id)
+        //該当ユーザーの名前を取得
+        $user = new User();
+        $user = $user->getUser($request);
+
+        /**該当ユーザーの今日の実績データの取得 */
+        $one_recode = new Achievement();
+        $one_recode = $one_recode->getOneRecode($request);
+
+        /**該当ユーザーの実績データを全て取得 */
+        $achievements = Achievement::with('User')
+            ->join('users', 'users.id', '=', 'achievements.user_id')
+            ->where('achievements.user_id', $request->id)
             ->whereBetween('insert_date', [$firstOfMonth, $endOfMonth])
             ->orderBy('insert_date', 'asc')
             ->select(
-                'users.first_name',
-                'users.last_name',
-                'achievements.id',
-                'achievements.user_id',
                 'achievements.insert_date',
                 'achievements.start_time',
                 'achievements.end_time',
@@ -71,35 +75,26 @@ class AchievementController extends Controller
             )
             ->get();
 
-
-        //実績データを当月分の連想配列を作成
-        $datas = [];
-        $i = 0;
-        foreach ($days as $day) {
-            $day[0];
-            $i++;
-            array_push($datas, $day);
-        }
-        //実績データを連想配列に格納
-        foreach ($users as $user) {
+        //当月の連想配列を複製
+        $recodes = $days;
+        //実績データの登録日と比較して一致したらその配列を上書き
+        foreach ($achievements as $achievement) {
             for ($n = 0; $n < $startday; $n++) {
-                if ($datas[$n] == $user->insert_date) {
-                    $datas[$n] = $user;
+                if ($recodes[$n] == $achievement->insert_date) {
+                    $recodes[$n] = $achievement;
                 }
             }
         }
-        if ($users->isEmpty()) {
-            return redirect('/');
-        } else {
-            $data = [
-                'users' => $users,
-                'datas' => $datas,
-                'days' => $days,
-                'weeks' => $weeks,
-                'dalys' => $dalys,
-            ];
-            return view('achievement.recode', $data);
-        }
+        // dd($datas);
+        $data = [
+            'user' => $user,
+            'one_recode' => $one_recode,
+            'recodes' => $recodes,
+            'days' => $days,
+            'weeks' => $weeks,
+            'dalys' => $dalys,
+        ];
+        return view('achievement.recode', $data);
     }
     /**
      * 過去の月の日数と曜日を取得
