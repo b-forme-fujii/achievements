@@ -16,23 +16,27 @@ class AchievementController extends Controller
      */
     public function selection(Request $request)
     {
+        //当月の日数を取得
         $days = new Achievement();
         $days = $days->getDays();
 
+        //当月の曜日を取得
         $weeks = new Achievement();
         $weeks = $weeks->getweeks();
 
+        //当月の日数($daysとは別のフォーマット形式)を取得
         $fdays = new Achievement();
         $fdays = $fdays->getFDays();
 
-        //該当ユーザーの名前を取得
+        //該当ユーザーの情報をを取得
         $user = new User();
         $user = $user->getUser($request);
 
-        /**該当ユーザーの今日の実績データの取得 */
+        //該当ユーザーの今日の実績データの取得 
         $one_recode = new Achievement();
         $one_recode = $one_recode->getOneRecord($request);
         
+        //該当ユーザーの当月の実績データの取得
         $recodes = new Achievement();
         $recodes = $recodes->getAchievements($request);
 
@@ -53,7 +57,7 @@ class AchievementController extends Controller
      */
     public function new_record(Request $request)
     {
-        /**該当ユーザーの今日の実績データを検索 */
+        //該当ユーザーの今日の実績データを検索 
         $one_record = new Achievement();
         $one_record = $one_record->getOneRecord($request);
 
@@ -73,25 +77,100 @@ class AchievementController extends Controller
      */
     public function end_time(Request $request){
 
-        /**該当ユーザーの今日の実績データを検索 */
+        //該当ユーザーの今日の実績データを検索
         $one_record = new Achievement();
         $one_record = $one_record->getOneRecord($request);
 
-        //当日のデータのend_timeカラムが存在した場合は戻る
+        //当日のデータのend_timeの値がnullでなかった場合は戻る
         if ($one_record->end_time != null) {
             return back();
         } else {
-            //存在した場合レコードに終了時刻を登録して戻る
+            //nullだった場合レコードに終了時刻を登録して戻る
             $end_time = new Achievement();
             $end_time = $end_time->End_Time($request);
             return back();
         }
     }
 
+    /**
+     * 食事提供加算の更新処理
+     */
+    public function food_up(Request $request)
+    {
+        //該当ユーザーの今日の実績データを検索 
+        $one_record = new Achievement();
+        $one_record = $one_record->getOneRecord($request);
+
+        //データが存在した場合食事提供加算のレコードを更新して戻る
+        if ($one_record != null) {
+            $food = new Achievement();
+            $food = $food->Food_Up($request);
+            return back();
+        } else {
+            //存在しなかった場合戻る
+            return back();
+        }
+    }
 
     /**
-     * 当日の終了時刻を該当レコードに作成
+     * 施設外支援の更新処理
      */
+    public function outside_up(Request $request)
+    {
+        //該当ユーザーの今日の実績データを検索 
+        $one_record = new Achievement();
+        $one_record = $one_record->getOneRecord($request);
+
+        //データが存在した場合食事提供加算のレコードを更新して戻る
+        if ($one_record != null) {
+            $outside = new Achievement();
+            $outside = $outside->Outside_Up($request);
+            return back();
+        } else {
+            //存在しなかった場合戻る
+            return back();
+        }
+    }
+
+    /**
+     * 医療連携体制加算の更新処理
+     */
+    public function medical_up(Request $request)
+    {
+        //該当ユーザーの今日の実績データを検索 
+        $one_record = new Achievement();
+        $one_record = $one_record->getOneRecord($request);
+
+        //データが存在した場合食事提供加算のレコードを更新して戻る
+        if ($one_record != null) {
+            $medical = new Achievement();
+            $medical = $medical->Medical_up($request);
+            return back();
+        } else {
+            //存在しなかった場合戻る
+            return back();
+        }
+    }
+
+    /**
+     * 備考の更新処理
+     */
+    public function note_up(Request $request)
+    {
+        //該当ユーザーの今日の実績データを検索 
+        $one_record = new Achievement();
+        $one_record = $one_record->getOneRecord($request);
+
+        //データが存在した場合食事提供加算のレコードを更新して戻る
+        if ($one_record != null) {
+            $note = new Achievement();
+            $note = $note->Note_Up($request);
+            return back();
+        } else {
+            //存在しなかった場合戻る
+            return back();
+        }
+    }
 
     /**
      * 過去の月の日数と曜日を取得

@@ -104,6 +104,9 @@ class Achievement extends Model
         return $one_record;
     }
 
+    /**
+     * ユーザーの当月の実績データを取得 
+     */
     public function getAchievements(Request $request)
     {
         /**当月の月初と月末のオブジェクトを作成 */
@@ -150,6 +153,7 @@ class Achievement extends Model
         return $records;
     }
 
+    //当日の実績レコードの作成
     public function New_Record(Request $request)
     {
         //今日の登録日を取得してフォーマット
@@ -171,21 +175,75 @@ class Achievement extends Model
         );
     }
 
+    //終了時刻を作成してレコードを更新
     public function End_Time(Request $request)
     {
         //今日の登録日を取得してフォーマット
         $insert_date = Carbon::now()->format("Y-m-d");
 
-        //現在時刻を取得して15分切り上げる
+        //現在時刻を取得して15分切り下げる
         $end_time = Carbon::now();
         $end_time->subMinutes($end_time->minute % 15);
         //時刻をフォーマット
         $end_time = $end_time->format("H:i");
 
-        $data = Achievement::where('user_id', $request->id)
+        //終了時刻を更新
+        Achievement::where('user_id', $request->id)
         ->where('insert_date',$insert_date)
         ->update(
             ['end_time' => $end_time,]
+        );
+    }
+
+    //食事提供加算を更新
+    public function Food_Up(Request $request)
+    {
+        //今日の登録日を取得してフォーマット
+        $insert_date = Carbon::now()->format("Y-m-d");
+
+        Achievement::where('user_id', $request->id)
+        ->where('insert_date',$insert_date)
+        ->update(
+            ['food' => $request->food,]
+        );
+    }
+
+    //施設外支援を更新
+    public function Outside_Up(Request $request)
+    {
+        //今日の登録日を取得してフォーマット
+        $insert_date = Carbon::now()->format("Y-m-d");
+
+        Achievement::where('user_id', $request->id)
+        ->where('insert_date',$insert_date)
+        ->update(
+            ['outside_support' => $request->outside,]
+        );
+    }
+
+    //医療連携体制加算を更新
+    public function Medical_Up(Request $request)
+    {
+        //今日の登録日を取得してフォーマット
+        $insert_date = Carbon::now()->format("Y-m-d");
+
+        Achievement::where('user_id', $request->id)
+        ->where('insert_date',$insert_date)
+        ->update(
+            ['medical__support' => $request->medical,]
+        );
+    }
+
+    //備考を更新
+    public function Note_Up(Request $request)
+    {
+        //今日の登録日を取得してフォーマット
+        $insert_date = Carbon::now()->format("Y-m-d");
+
+        Achievement::where('user_id', $request->id)
+        ->where('insert_date',$insert_date)
+        ->update(
+            ['note' => $request->note,]
         );
     }
 }
