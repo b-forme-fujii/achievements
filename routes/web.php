@@ -22,9 +22,11 @@ Route::get('/', 'UserController@index');
 /**実績登録ページ*/
 Route::get('/achievement', 'AchievementController@selection');
 
-/**今日の開始時間と登録日を実績テーブルに作成 */
-Route::get('/insert_date', 'AchievementController@insert_date');
+/**当日の開始時間と登録日を実績テーブルに作成 */
+Route::get('/new_record', 'AchievementController@new_record');
 
+/**当日の終了時刻を登録 */
+Route::get('/end_time', 'AchievementController@end_time');
 /**ログイン必須ページ*/
 Auth::routes();
 
