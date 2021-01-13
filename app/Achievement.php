@@ -84,11 +84,11 @@ class Achievement extends Model
     /**
      * ユーザーの当日の実績データを取得 
      */
-    public function getOneRecode(Request $request)
+    public function getOneRecord(Request $request)
     {
         $now = Carbon::now()->format("Y-m-d");
 
-        $one_recode = Achievement::where('user_id', $request->id)
+        $one_record = Achievement::where('user_id', $request->id)
             ->wheredate('insert_date', $now)
             ->select(
                 'achievements.user_id',
@@ -101,7 +101,7 @@ class Achievement extends Model
                 'achievements.note'
             )
             ->first();
-        return $one_recode;
+        return $one_record;
     }
 
     public function getAchievements(Request $request)
@@ -138,32 +138,54 @@ class Achievement extends Model
             )
             ->get();
         //当月の連想配列を複製
-        $recodes = $days;
+        $records = $days;
         //実績データの登録日と比較して一致したらその配列を上書き
         foreach ($achievements as $achievement) {
             for ($n = 0; $n < $startday; $n++) {
-                if ($recodes[$n] == $achievement->insert_date) {
-                    $recodes[$n] = $achievement;
+                if ($records[$n] == $achievement->insert_date) {
+                    $records[$n] = $achievement;
                 }
             }
         }
-
-        return $recodes;
+        return $records;
     }
 
-    //今日の登録日を取得
-    public function getDate()
+    public function New_Record(Request $request)
     {
-        $date = Carbon::now()->format("Y-m-d");
-        return $date;
+        //今日の登録日を取得してフォーマット
+        $insert_date = Carbon::now()->format("Y-m-d");
+
+        //現在時刻を取得して15分切り上げる
+        $start_time = Carbon::now();
+        $start_time->addMinutes(15 - $start_time->minute % 15);
+        //時刻をフォーマット
+        $start_time = $start_time->format("H:i");
+
+        //レコードを新規作成
+        Achievement::create(
+            [
+                'user_id' => $request->id,
+                'insert_date' => $insert_date,
+                'start_time' => $start_time,
+            ],
+        );
     }
 
-    //今日の登録時間を取得
-    public function getStart_Time()
+    public function End_Time(Request $request)
     {
-        $time = Carbon::now();
-        $time->addMinutes(15 - $time->minute % 15);
-        $time = $time->format("H:i");
-        return $time;
+        //今日の登録日を取得してフォーマット
+        $insert_date = Carbon::now()->format("Y-m-d");
+
+        //現在時刻を取得して15分切り上げる
+        $end_time = Carbon::now();
+        $end_time->subMinutes($end_time->minute % 15);
+        //時刻をフォーマット
+        $end_time = $end_time->format("H:i");
+
+        $data = Achievement::where('user_id', $request->id)
+        ->where('insert_date',$insert_date)
+        ->update(
+            ['end_time' => $end_time,]
+        );
     }
 }
