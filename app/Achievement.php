@@ -165,7 +165,11 @@ class Achievement extends Model
         //時刻をフォーマット
         $start_time = $start_time->format("H:i");
 
-        //レコードを新規作成
+        $fake_time = new Carbon('09:30:00');
+        $fake_time = $fake_time->format("H:i");
+
+        //$start_timeが９時３０分以前なら９時３０分で登録
+        if($start_time > $fake_time) {
         Achievement::create(
             [
                 'user_id' => $request->id,
@@ -173,6 +177,16 @@ class Achievement extends Model
                 'start_time' => $start_time,
             ],
         );
+        //それ以降は$start_timeの時間で登録
+        } elseif($start_time < $fake_time){
+            Achievement::create(
+                [
+                    'user_id' => $request->id,
+                    'insert_date' => $insert_date,
+                    'start_time' => $fake_time,
+                ],
+            );
+        }
     }
 
     //終了時刻を作成してレコードを更新
@@ -187,12 +201,24 @@ class Achievement extends Model
         //時刻をフォーマット
         $end_time = $end_time->format("H:i");
 
-        //終了時刻を更新
+        $fake_time = new Carbon('16:00:00');
+        $fake_time = $fake_time->format("H:i");
+        
+        //終了時刻が16時前なら$end_timeで終了時間を登録
+       if($end_time < $fake_time){
         Achievement::where('user_id', $request->id)
         ->where('insert_date',$insert_date)
         ->update(
             ['end_time' => $end_time,]
         );
+        //16時以降なら16時で登録
+       }elseif($end_time > $fake_time) {
+        Achievement::where('user_id', $request->id)
+        ->where('insert_date',$insert_date)
+        ->update(
+            ['end_time' => $fake_time,]
+        ); 
+       }
     }
 
     //食事提供加算を更新
