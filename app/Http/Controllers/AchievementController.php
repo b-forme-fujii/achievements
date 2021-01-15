@@ -16,17 +16,25 @@ class AchievementController extends Controller
      */
     public function selection(Request $request)
     {
+        //年度取得
+        $Year = new Achievement();
+        $Year = $Year->getYear($request);
+
+        //何月かを取得
+        $Month = new Achievement();
+        $Month = $Month->getMonth($request);
+ 
         //当月の日数を取得
         $days = new Achievement();
-        $days = $days->getDays();
-
-        //当月の曜日を取得
-        $weeks = new Achievement();
-        $weeks = $weeks->getweeks();
+        $days = $days->getDays($request);
 
         //当月の日数($daysとは別のフォーマット形式)を取得
         $fdays = new Achievement();
-        $fdays = $fdays->getFDays();
+        $fdays = $fdays->getFDays($request);
+
+        //当月の曜日を取得
+        $weeks = new Achievement();
+        $weeks = $weeks->getweeks($request);
 
         //該当ユーザーの情報をを取得
         $user = new User();
@@ -36,16 +44,18 @@ class AchievementController extends Controller
         $one_recode = new Achievement();
         $one_recode = $one_recode->getOneRecord($request);
         
-        //該当ユーザーの当月の実績データの取得
+        //該当ユーザーの月の実績データの取得
         $recodes = new Achievement();
         $recodes = $recodes->getAchievements($request);
 
         // dd($datas);
         $data = [
-            'user' => $user,
+            'Year' => $Year,
+            'Month' => $Month,
             'days' => $days,
-            'weeks' => $weeks,
             'fdays' => $fdays,
+            'weeks' => $weeks,
+            'user' => $user,
             'one_recode' => $one_recode,
             'recodes' => $recodes,
         ];
@@ -170,37 +180,5 @@ class AchievementController extends Controller
             //存在しなかった場合戻る
             return back();
         }
-    }
-
-    /**
-     * 過去の月の日数と曜日を取得
-     */
-    public function Pastmonth(Request $request)
-    {
-        $dt_from = Carbon::now()->firstOfMonth()->addMonth($request->month);
-        $dt_to = Carbon::now()->endOfMonth()->addMonth($request->month)->addDay(-1);
-
-        //月の日数を取得
-        $startday = Carbon::now()->firstOfMonth()->addMonth($request->month)->daysInMonth;
-        // dd($startday);
-
-        $day = new Carbon($dt_from);
-        $formatday = 'D';
-        $days[0] = $day->isoFormat($formatday);
-
-        for ($i = 1; $i < $startday; $i++) {
-            $days[$i] = $day->copy()->addDay($i)->isoFormat($formatday);
-        }
-        // dd($days);
-
-        // //曜日の取得
-        Carbon::setLocale('ja');
-        $week = new Carbon($dt_from);
-        $formatweek = 'ddd';
-        $weeks[0] = $week->isoFormat($formatweek);
-        for ($n = 1; $n < $startday; $n++) {
-            $weeks[$n] = $day->copy()->addDay($n)->isoFormat($formatweek);
-        }
-        // dd($weeks);
     }
 }

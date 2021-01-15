@@ -10,77 +10,112 @@ class Achievement extends Model
 {
     /**ガードするフィールド */
     protected $guarded = array('id');
-
+    
     protected $fillable = array('user_id', 'insert_date', 'start_time', 'end_time', 'food', 'outside_support', 'medical__support', 'note');
 
-    /**
-     * achievementsテーブルとusersテーブルをリレーション
-     * @return void
-     */
+    //usersテーブルとリレーション処理
     public function user()
     {
-        return $this->belongsTo('App\User');
+        return $this->belongsTo('App\User','id');
     }
-    //当月の日数を取得
-    public function getDays()
-    {
-        /**当月の月初と月末のオブジェクトを作成 */
-        $firstOfMonth = Carbon::now()->firstOfMonth();
 
-        //送られてきた値から月の日数を取得
-        $startday = Carbon::now()->firstOfMonth()->endOfMonth()->daysInMonth;
+    //今年の年度を取得
+    public function getYear(Request $request){
+        $Year = Carbon::now()->firstOfMonth()->addMonth($request->month);
+        $Year = $Year->format('Y');
+        return($Year);
+    }
+
+    //何月かを取得
+    public function getMonth(Request $request){
+        $Month = Carbon::now()->firstOfMonth()->addMonth($request->month);
+        $Month = $Month->format('m');
+        return($Month);
+    }
+
+    //月初を取得
+    public function getFirstofMonth(Request $request){
+        $firstOfMonth = Carbon::now()->firstOfMonth()->addMonth($request->month);
+        $firstOfMonth = $firstOfMonth->format('Y-m-d');
+        return $firstOfMonth;
+    }
+
+    // //月末を取得
+    // public function getEndofMonth(Request $request){
+    //     $endofMonth =Carbon::now()->endOfMonth()->addMonth($request->month);
+    //     $endofMonth = $endofMonth->format('Y-m-d'); 
+    //     return $endofMonth;
+    // }
+
+    //月の日数が何日かを取得
+    public function getDaysinMonth(Request $request){
+        $dMonth = Carbon::now()->firstOfMonth()->addMonth($request->month)->daysInMonth;
+        return $dMonth;
+    }
+
+    //当月の日数を取得
+    public function getDays(Request $request)
+    {
+        $firstOfMonth = new Achievement();
+        $firstOfMonth = $firstOfMonth->getFirstofMonth($request);
+
+        $dMonth = new Achievement();
+        $dMonth = $dMonth->getDaysinMonth($request);
 
         //実績データの登録日と当月の日数とを比較する値の作成
         $day = new Carbon($firstOfMonth);
         $formatday = 'Y-MM-DD';
         $days[0] = $day->isoFormat($formatday);
 
-        for ($i = 1; $i < $startday; $i++) {
+        for ($i = 1; $i < $dMonth; $i++) {
             $days[$i] = $day->copy()->addDay($i)->isoFormat($formatday);
         }
         return $days;
     }
 
-    //当月の日数を取得
-    public function getFDays()
+    /**
+     *当月の日数を取得
+     *getDaysとは別フォーマット  
+     */
+    public function getFDays(Request $request)
     {
-        /**当月の月初と月末のオブジェクトを作成 */
-        $firstOfMonth = Carbon::now()->firstOfMonth();
+        $firstOfMonth = new Achievement();
+        $firstOfMonth = $firstOfMonth->getFirstofMonth($request);
 
-        //送られてきた値から月の日数を取得
-        $startday = Carbon::now()->firstOfMonth()->endOfMonth()->daysInMonth;
+        $dMonth = new Achievement();
+        $dMonth = $dMonth->getDaysinMonth($request);
 
         //実績データの登録日と当月の日数とを比較する値の作成
         $day = new Carbon($firstOfMonth);
-        $formatday = 'DD';
-        $days[0] = $day->isoFormat($formatday);
+        $formatFday = 'DD';
+        $Fdays[0] = $day->isoFormat($formatFday);
 
-        for ($i = 1; $i < $startday; $i++) {
-            $days[$i] = $day->copy()->addDay($i)->isoFormat($formatday);
+        for ($i = 1; $i < $dMonth; $i++) {
+            $Fdays[$i] = $day->copy()->addDay($i)->isoFormat($formatFday);
         }
-        return $days;
+        return $Fdays;
     }
 
     //当月の曜日を取得
-    public function getweeks()
+    public function getweeks(Request $request)
     {
-        /**当月の月初と月末のオブジェクトを作成 */
-        $firstOfMonth = Carbon::now()->firstOfMonth();
+        $firstOfMonth = new Achievement();
+        $firstOfMonth = $firstOfMonth->getFirstofMonth($request);
 
-        //送られてきた値から月の日数を取得
-        $startday = Carbon::now()->firstOfMonth()->endOfMonth()->daysInMonth;
+        $dMonth = new Achievement();
+        $dMonth = $dMonth->getDaysinMonth($request);
 
         //実績表に表示する曜日の値の作成
         Carbon::setLocale('ja');
-        $day = new Carbon($firstOfMonth);
         $week = new Carbon($firstOfMonth);
         $formatweek = 'ddd';
         $weeks[0] = $week->isoFormat($formatweek);
-        for ($n = 1; $n < $startday; $n++) {
-            $weeks[$n] = $day->copy()->addDay($n)->isoFormat($formatweek);
+        for ($n = 1; $n < $dMonth; $n++) {
+            $weeks[$n] = $week->copy()->addDay($n)->isoFormat($formatweek);
         }
         return $weeks;
     }
+
     /**
      * ユーザーの当日の実績データを取得 
      */
@@ -109,26 +144,26 @@ class Achievement extends Model
      */
     public function getAchievements(Request $request)
     {
-        /**当月の月初と月末のオブジェクトを作成 */
-        $firstOfMonth = Carbon::now()->firstOfMonth();
-        $endOfMonth = $firstOfMonth->copy()->endOfMonth();
+        //何年かを取得
+        $Year = new Achievement();
+        $Year = $Year->getYear($request);
 
-        //送られてきた値から月の日数を取得
-        $startday = Carbon::now()->firstOfMonth()->endOfMonth()->daysInMonth;
+        //何月かを取得
+        $Month = new Achievement();
+        $Month = $Month->getMonth($request);
 
-        //実績データの登録日と当月の日数とを比較する値の作成
-        $day = new Carbon($firstOfMonth);
-        $formatday = 'Y-MM-DD';
-        $days[0] = $day->isoFormat($formatday);
+        $dMonth = new Achievement();
+        $dMonth = $dMonth->getDaysinMonth($request);
 
-        for ($i = 1; $i < $startday; $i++) {
-            $days[$i] = $day->copy()->addDay($i)->isoFormat($formatday);
-        }
+        $records = new Achievement();
+        $records = $records->getDays($request);
 
         $achievements = Achievement::with('User')
             ->join('users', 'users.id', '=', 'achievements.user_id')
             ->where('achievements.user_id', $request->id)
-            ->whereBetween('insert_date', [$firstOfMonth, $endOfMonth])
+            ->whereYear('insert_date', $Year)
+            ->whereMonth('insert_date',$Month)
+            // ->whereBetween('insert_date', [$firstOfMonth, $endOfMonth])
             ->orderBy('insert_date', 'asc')
             ->select(
                 'achievements.insert_date',
@@ -140,11 +175,10 @@ class Achievement extends Model
                 'achievements.note'
             )
             ->get();
-        //当月の連想配列を複製
-        $records = $days;
+
         //実績データの登録日と比較して一致したらその配列を上書き
         foreach ($achievements as $achievement) {
-            for ($n = 0; $n < $startday; $n++) {
+            for ($n = 0; $n < $dMonth; $n++) {
                 if ($records[$n] == $achievement->insert_date) {
                     $records[$n] = $achievement;
                 }
