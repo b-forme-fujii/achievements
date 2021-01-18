@@ -40,8 +40,9 @@ Route::get('/medical_up', 'AchievementController@medical_up');
 /**備考を更新*/
 Route::get('/note_up', 'AchievementController@note_up');
 
+Auth::routes();
+Route::get('/home', 'HomeController@index')->name('home');
 
 /** ログイン必須ページ*/
-Auth::routes();
 
-Route::get('/home', 'HomeController@index')->name('home');
+Route::get('/master', 'MasterController@master_index')->middleware('auth');
