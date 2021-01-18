@@ -49,11 +49,18 @@
                         </thead>
                         <tbody>
                             <tr align="center">
-                                <td>{{$one_recode->start_time}}</td>
+                                <td>
+                                    <div class="start mt-2">{{$one_recode->start_time}}</div>
+                                </td>
                                 @if ($one_recode->end_time == null)
-                                <td><a href="/end_time?id={{$user->id}}" class="btn btn-outline-danger">退勤</a></td>
+                                <td>
+                                    <div class="end mt-1"><a href="/end_time?id={{$user->id}}"
+                                            class="btn btn-outline-danger">退勤</a></div>
+                                </td>
                                 @else
-                                <td>{{$one_recode->end_time}}</td>
+                                <td>
+                                    <div class="end mt-2">{{$one_recode->end_time}}</div>
+                                </td>
                                 @endif
                                 @if ($one_recode->food == 0)
                                 <td>
@@ -230,8 +237,29 @@
             </div>
             @endif
             <div class="card  mt-4 mx-3">
-                <h5 class="card-header">実績記録表</h5>
+                <div class="card-header">
+                    <ul class="nav nav-tabs card-header-tabs">
+                        <li class="nav-item mx-2">
+                            <font size="2">支給決定障害者名</font>
+                            <p class="name">{{$user->first_name}} {{$user->last_name}}</p>
+                        </li>
+                        <li class="nav-item mx-1 mt-2">
+                            <form action="/achievement" method="get">
+                                @csrf
+                                    <select class="past my-1" name="month">
+                                        <option value="">{{$year}}年{{$month}}月</option>
+                                        @foreach (array_map(null, $pmonths, $nums) as [$pmonth, $num])
+                                        <option value={{(int)$num}}>{{$pmonth}}</option>
+                                        @endforeach
+                                    </select>
+                                    <input type="hidden" name="id" value={{$user->id}}>
+                                    <input type="submit" class="btn btn-outline-secondary btn-sm" value="変更">
+                            </form>
+                            </li>
+                    </ul>
+                </div>
                 <div class="card-body">
+                    <h1>{{$year}}年{{$month}}月分</h1>
                     <table class="table table-bordered">
                         <thead>
                             <tr align="center">
@@ -263,21 +291,21 @@
                                 <td>{{$recode->start_time}}</td>
                                 <td>{{$recode->end_time}}</td>
                                 @if ($recode->food == 0)
-                                <td></td>
+                                <td>無</td>
                                 @elseif ($recode->food == 1)
-                                <td>有</td>
+                                <td><font color="red">有</font></td>
                                 @endif
 
                                 @if ($recode->outside_support == 0)
-                                <td></td>
+                                <td>無</td>
                                 @elseif ($recode->outside_support == 2)
-                                <td>有</td>
+                                <td><font color="red">有</font></td>
                                 @endif
 
                                 @if ($recode->medical__support == 0)
-                                <td></td>
+                                <td>無</td>
                                 @elseif ($recode->medical__support == 2)
-                                <td>有</td>
+                                <td><font color="red">有</font></td>
                                 @endif
 
                                 @if ($recode->note)

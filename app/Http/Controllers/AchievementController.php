@@ -17,12 +17,12 @@ class AchievementController extends Controller
     public function selection(Request $request)
     {
         //年度取得
-        $Year = new Achievement();
-        $Year = $Year->getYear($request);
+        $year = new Achievement();
+        $year = $year->getYear($request);
 
         //何月かを取得
-        $Month = new Achievement();
-        $Month = $Month->getMonth($request);
+        $month = new Achievement();
+        $month = $month->getMonth($request);
  
         //当月の日数を取得
         $days = new Achievement();
@@ -35,6 +35,13 @@ class AchievementController extends Controller
         //当月の曜日を取得
         $weeks = new Achievement();
         $weeks = $weeks->getweeks($request);
+
+        //今月から過去1年間の月を取得
+        $pmonths = new Achievement();
+        $pmonths = $pmonths->PMonths();
+
+        $nums = new Achievement();
+        $nums = $nums->Mnum();
 
         //該当ユーザーの情報をを取得
         $user = new User();
@@ -50,11 +57,13 @@ class AchievementController extends Controller
 
         // dd($datas);
         $data = [
-            'Year' => $Year,
-            'Month' => $Month,
+            'year' => $year,
+            'month' => $month,
             'days' => $days,
             'fdays' => $fdays,
             'weeks' => $weeks,
+            'pmonths' => $pmonths,
+            'nums' => $nums,
             'user' => $user,
             'one_recode' => $one_recode,
             'recodes' => $recodes,

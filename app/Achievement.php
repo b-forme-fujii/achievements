@@ -22,28 +22,28 @@ class Achievement extends Model
     //今年の年度を取得
     public function getYear(Request $request){
         $Year = Carbon::now()->firstOfMonth()->addMonth($request->month);
-        $Year = $Year->format('Y');
+        $Year = $Year->isoformat('Y');
         return($Year);
     }
 
     //何月かを取得
     public function getMonth(Request $request){
         $Month = Carbon::now()->firstOfMonth()->addMonth($request->month);
-        $Month = $Month->format('m');
+        $Month = $Month->isoformat('M');
         return($Month);
     }
 
     //月初を取得
     public function getFirstofMonth(Request $request){
         $firstOfMonth = Carbon::now()->firstOfMonth()->addMonth($request->month);
-        $firstOfMonth = $firstOfMonth->format('Y-m-d');
+        $firstOfMonth = $firstOfMonth->isoformat('Y-M-D');
         return $firstOfMonth;
     }
 
     // //月末を取得
     // public function getEndofMonth(Request $request){
     //     $endofMonth =Carbon::now()->endOfMonth()->addMonth($request->month);
-    //     $endofMonth = $endofMonth->format('Y-m-d'); 
+    //     $endofMonth = $endofMonth->isoformat('Y-M-D'); 
     //     return $endofMonth;
     // }
 
@@ -72,7 +72,6 @@ class Achievement extends Model
         }
         return $days;
     }
-
     /**
      *当月の日数を取得
      *getDaysとは別フォーマット  
@@ -116,12 +115,37 @@ class Achievement extends Model
         return $weeks;
     }
 
+    //今月から過去1年間の月を取得
+    public function PMonths()
+    {
+        $firstOfMonth = Carbon::now()->firstOfMonth();
+
+        //実績データの登録日と当月の日数とを比較する値の作成
+        $day = new Carbon($firstOfMonth);
+        $formatFday = 'Y年M月';
+        $Months[0] = $day->isoFormat($formatFday);
+        
+        for ($i = 0; $i > -12; $i--) {
+            $Months[$i] = $day->copy()->addMonth($i)->isoFormat($formatFday);
+        }       
+        return $Months;
+    }
+
+    //過去一年分の引数を作成
+    public function Mnum()
+    {
+        for ($i = 0; $i > -12; $i--) {
+            $Mnum[$i] = ($i);
+        }       
+        return $Mnum;
+    }
+
     /**
      * ユーザーの当日の実績データを取得 
      */
     public function getOneRecord(Request $request)
     {
-        $now = Carbon::now()->format("Y-m-d");
+        $now = Carbon::now()->isoformat("Y-M-D");
 
         $one_record = Achievement::where('user_id', $request->id)
             ->wheredate('insert_date', $now)
@@ -152,18 +176,19 @@ class Achievement extends Model
         $Month = new Achievement();
         $Month = $Month->getMonth($request);
 
-        $dMonth = new Achievement();
-        $dMonth = $dMonth->getDaysinMonth($request);
-
+        //当月の日数を取得
         $records = new Achievement();
         $records = $records->getDays($request);
+        
+        //月の日数が何日かを取得
+        $dMonth = new Achievement();
+        $dMonth = $dMonth->getDaysinMonth($request);
 
         $achievements = Achievement::with('User')
             ->join('users', 'users.id', '=', 'achievements.user_id')
             ->where('achievements.user_id', $request->id)
             ->whereYear('insert_date', $Year)
             ->whereMonth('insert_date',$Month)
-            // ->whereBetween('insert_date', [$firstOfMonth, $endOfMonth])
             ->orderBy('insert_date', 'asc')
             ->select(
                 'achievements.insert_date',
