@@ -40,7 +40,7 @@ class User extends Model
      */
     public function getUser(Request $request)
     {
-        $user = User::where('id',$request->id)
+        $user = User::where('id',$request->user_id)
         ->select(
             'users.id',
             'users.school_id',

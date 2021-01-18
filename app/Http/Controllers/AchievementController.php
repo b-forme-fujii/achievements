@@ -4,7 +4,6 @@ namespace App\Http\Controllers;
 
 use App\User;
 use App\Achievement;
-use Carbon\Carbon;
 use Illuminate\Http\Request;
 
 class AchievementController extends Controller

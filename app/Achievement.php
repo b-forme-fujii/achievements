@@ -147,7 +147,7 @@ class Achievement extends Model
     {
         $now = Carbon::now()->isoformat("Y-M-D");
 
-        $one_record = Achievement::where('user_id', $request->id)
+        $one_record = Achievement::where('user_id', $request->user_id)
             ->wheredate('insert_date', $now)
             ->select(
                 'achievements.user_id',
@@ -187,11 +187,12 @@ class Achievement extends Model
         //該当ユーザーの当月のレコードを取得
         $achievements = Achievement::with('User')
             ->join('users', 'users.id', '=', 'achievements.user_id')
-            ->where('achievements.user_id', $request->id)
+            ->where('achievements.user_id', $request->user_id)
             ->whereYear('insert_date', $Year)
             ->whereMonth('insert_date',$Month)
             ->orderBy('insert_date', 'asc')
             ->select(
+                'achievements.id',
                 'achievements.insert_date',
                 'achievements.start_time',
                 'achievements.end_time',
@@ -232,7 +233,7 @@ class Achievement extends Model
         if($start_time > $fake_time) {
         Achievement::create(
             [
-                'user_id' => $request->id,
+                'user_id' => $request->user_id,
                 'insert_date' => $insert_date,
                 'start_time' => $start_time,
             ],
@@ -241,7 +242,7 @@ class Achievement extends Model
         } elseif($start_time < $fake_time){
             Achievement::create(
                 [
-                    'user_id' => $request->id,
+                    'user_id' => $request->user_id,
                     'insert_date' => $insert_date,
                     'start_time' => $fake_time,
                 ],
@@ -266,14 +267,14 @@ class Achievement extends Model
         
         //終了時刻が16時前なら$end_timeで終了時間を登録
        if($end_time < $fake_time){
-        Achievement::where('user_id', $request->id)
+        Achievement::where('user_id', $request->user_id)
         ->where('insert_date',$insert_date)
         ->update(
             ['end_time' => $end_time,]
         );
         //16時以降なら16時で登録
        }elseif($end_time > $fake_time) {
-        Achievement::where('user_id', $request->id)
+        Achievement::where('user_id', $request->user_id)
         ->where('insert_date',$insert_date)
         ->update(
             ['end_time' => $fake_time,]
@@ -287,7 +288,7 @@ class Achievement extends Model
         //今日の登録日を取得してフォーマット
         $insert_date = Carbon::now()->format("Y-m-d");
 
-        Achievement::where('user_id', $request->id)
+        Achievement::where('user_id', $request->user_id)
         ->where('insert_date',$insert_date)
         ->update(
             ['food' => $request->food,]
@@ -300,7 +301,7 @@ class Achievement extends Model
         //今日の登録日を取得してフォーマット
         $insert_date = Carbon::now()->format("Y-m-d");
 
-        Achievement::where('user_id', $request->id)
+        Achievement::where('user_id', $request->user_id)
         ->where('insert_date',$insert_date)
         ->update(
             ['outside_support' => $request->outside,]
@@ -313,7 +314,7 @@ class Achievement extends Model
         //今日の登録日を取得してフォーマット
         $insert_date = Carbon::now()->format("Y-m-d");
 
-        Achievement::where('user_id', $request->id)
+        Achievement::where('user_id', $request->user_id)
         ->where('insert_date',$insert_date)
         ->update(
             ['medical__support' => $request->medical,]
@@ -326,7 +327,7 @@ class Achievement extends Model
         //今日の登録日を取得してフォーマット
         $insert_date = Carbon::now()->format("Y-m-d");
 
-        Achievement::where('user_id', $request->id)
+        Achievement::where('user_id', $request->user_id)
         ->where('insert_date',$insert_date)
         ->update(
             ['note' => $request->note,]
