@@ -28,7 +28,7 @@
             <div class="alert alert-danger mt-4 mx-3" role="alert">
                 <div class="row">
                     <b class="mt-3 mr-auto">※今日の開始時間が登録されていません</b>
-                    <a href="/new_record?id={{$user->id}}" class="btn btn-outline-primary my-2 mr-5">出席</a>
+                    <a href="/new_record?user_id={{$user->id}}" class="btn btn-outline-primary my-2 mr-5">出席</a>
 
                 </div>
             </div>
@@ -54,7 +54,7 @@
                                 </td>
                                 @if (is_null($one_recode->end_time))
                                 <td>
-                                    <div class="end mt-1"><a href="/end_time?id={{$user->id}}"
+                                    <div class="end mt-1"><a href="/end_time?user_id={{$user->id}}"
                                             class="btn btn-outline-danger">退勤</a></div>
                                 </td>
                                 @else
@@ -70,7 +70,7 @@
                                                 checked="checked">無</span>
                                         <input type="radio" name="food" value=1>有
                                         <div class="food_up mt-3">
-                                            <input type="hidden" name="id" value={{$user->id}}>
+                                            <input type="hidden" name="user_id" value={{$user->id}}>
                                             <input type="submit" class="btn btn-outline-secondary btn-sm" value="変更">
                                         </div>
                                     </form>
@@ -83,7 +83,7 @@
                                                 value=0>無</span>
                                         <input type="radio" name="food" value=1 checked="checked">有
                                         <div class="food_up mt-3">
-                                            <input type="hidden" name="id" value={{$user->id}}>
+                                            <input type="hidden" name="user_id" value={{$user->id}}>
                                             <input type="submit" class="btn btn-outline-secondary btn-sm" value="変更">
                                         </div>
                                     </form>
@@ -98,7 +98,7 @@
                                                 checked="checked">無</span>
                                         <input type="radio" name="outside" value=2>有
                                         <div class="outside_up mt-3">
-                                            <input type="hidden" name="id" value={{$user->id}}>
+                                            <input type="hidden" name="user_id" value={{$user->id}}>
                                             <input type="submit" class="btn btn-outline-secondary btn-sm" value="変更">
                                         </div>
                                     </form>
@@ -111,7 +111,7 @@
                                                 value=0>無</span>
                                         <input type="radio" name="outside" value=2 checked="checked">有
                                         <div class="outside_up mt-3">
-                                            <input type="hidden" name="id" value={{$user->id}}>
+                                            <input type="hidden" name="user_id" value={{$user->id}}>
                                             <input type="submit" class="btn btn-outline-secondary btn-sm" value="変更">
                                         </div>
                                     </form>
@@ -125,7 +125,7 @@
                                                 checked="checked">無</span>
                                         <input type="radio" name="medical" value=2>有
                                         <div class="medical_up mt-3">
-                                            <input type="hidden" name="id" value={{$user->id}}>
+                                            <input type="hidden" name="user_id" value={{$user->id}}>
                                             <input type="submit" class="btn btn-outline-secondary btn-sm" value="変更">
                                         </div>
                                     </form>
@@ -138,7 +138,7 @@
                                                 value=0>無</span>
                                         <input type="radio" name="medical" value=2 checked="checked">有
                                         <div class="medical_up mt-3">
-                                            <input type="hidden" name="id" value={{$user->id}}>
+                                            <input type="hidden" name="user_id" value={{$user->id}}>
                                             <input type="submit" class="btn btn-outline-secondary btn-sm" value="変更">
                                         </div>
                                     </form>
@@ -156,7 +156,7 @@
                                             <option value="訪問">訪問　</option>
                                         </select>
                                         <div class="note_up my-1">
-                                            <input type="hidden" name="id" value={{$user->id}}>
+                                            <input type="hidden" name="user_id" value={{$user->id}}>
                                             <input type="submit" class="btn btn-outline-secondary btn-sm" value="変更">
                                         </div>
                                     </form>
@@ -173,7 +173,7 @@
                                             <option value="訪問">訪問　</option>
                                         </select>
                                         <div class="note_up my-1">
-                                            <input type="hidden" name="id" value={{$user->id}}>
+                                            <input type="hidden" name="user_id" value={{$user->id}}>
                                             <input type="submit" class="btn btn-outline-secondary btn-sm" value="変更">
                                         </div>
                                     </form>
@@ -190,7 +190,7 @@
                                             <option value="訪問">訪問　</option>
                                         </select>
                                         <div class="note_up my-1">
-                                            <input type="hidden" name="id" value={{$user->id}}>
+                                            <input type="hidden" name="user_id" value={{$user->id}}>
                                             <input type="submit" class="btn btn-outline-secondary btn-sm" value="変更">
                                         </div>
                                     </form>
@@ -207,7 +207,7 @@
                                             <option value="訪問">訪問　</option>
                                         </select>
                                         <div class="note_up my-1">
-                                            <input type="hidden" name="id" value={{$user->id}}>
+                                            <input type="hidden" name="user_id" value={{$user->id}}>
                                             <input type="submit" class="btn btn-outline-secondary btn-sm" value="変更">
                                         </div>
                                     </form>
@@ -224,7 +224,7 @@
                                             <option value="メール">メール　</option>
                                         </select>
                                         <div class="note_up my-1">
-                                            <input type="hidden" name="id" value={{$user->id}}>
+                                            <input type="hidden" name="user_id" value={{$user->id}}>
                                             <input type="submit" class="btn btn-outline-secondary btn-sm" value="変更">
                                         </div>
                                     </form>
@@ -247,12 +247,11 @@
                             <form action="/achievement" method="get">
                                 @csrf
                                     <select class="past my-1" name="month">
-                                        <option value=0>{{$year}}年{{$month}}月</option>
                                         @foreach (array_map(null, $pmonths, $nums) as [$pmonth, $num])
                                         <option value={{(int)$num}}>{{$pmonth}}</option>
                                         @endforeach
                                     </select>
-                                    <input type="hidden" name="id" value={{$user->id}}>
+                                    <input type="hidden" name="user_id" value={{$user->id}}>
                                     <input type="submit" class="btn btn-outline-secondary btn-sm" value="変更">
                             </form>
                             </li>
