@@ -46,3 +46,5 @@ Route::get('/home', 'HomeController@index')->name('home');
 /** ログイン必須ページ*/
 
 Route::get('/master', 'MasterController@master_index')->middleware('auth');
+
+Route::get('/check_recodes', 'MasterController@get_recodes')->middleware('auth');
