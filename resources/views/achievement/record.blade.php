@@ -24,7 +24,7 @@
                 </div>
             </nav>
 
-            @if ($one_recode == null)
+            @if (is_null($one_recode))
             <div class="alert alert-danger mt-4 mx-3" role="alert">
                 <div class="row">
                     <b class="mt-3 mr-auto">※今日の開始時間が登録されていません</b>
@@ -52,7 +52,7 @@
                                 <td>
                                     <div class="start mt-2">{{$one_recode->start_time}}</div>
                                 </td>
-                                @if ($one_recode->end_time == null)
+                                @if (is_null($one_recode->end_time))
                                 <td>
                                     <div class="end mt-1"><a href="/end_time?id={{$user->id}}"
                                             class="btn btn-outline-danger">退勤</a></div>
@@ -247,7 +247,7 @@
                             <form action="/achievement" method="get">
                                 @csrf
                                     <select class="past my-1" name="month">
-                                        <option value="">{{$year}}年{{$month}}月</option>
+                                        <option value=0>{{$year}}年{{$month}}月</option>
                                         @foreach (array_map(null, $pmonths, $nums) as [$pmonth, $num])
                                         <option value={{(int)$num}}>{{$pmonth}}</option>
                                         @endforeach

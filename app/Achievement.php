@@ -183,7 +183,8 @@ class Achievement extends Model
         //月の日数が何日かを取得
         $dMonth = new Achievement();
         $dMonth = $dMonth->getDaysinMonth($request);
-
+        
+        //該当ユーザーの当月のレコードを取得
         $achievements = Achievement::with('User')
             ->join('users', 'users.id', '=', 'achievements.user_id')
             ->where('achievements.user_id', $request->id)
