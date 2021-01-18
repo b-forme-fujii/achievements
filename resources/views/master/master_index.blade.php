@@ -5,13 +5,13 @@
 <div class="row justify-content-center my-3">
     <div class="col-md-10">
         <div class="card">
-            <div class="card-header">
+            <div class="card-header bg-primary">
                 <div class="row">
-                    <p class="title mt-2">管理者ページ</p>
+                    <p class="text-light mt-2 ml-2">管理者ページ</p>
                     <ul class="master list-unstyled ml-auto">
                         <li class="nav-item mt-2">
-                            <a href="#" class="nav-item mx-2">新規利用者登録</a>
-                            <a class="nav-item mx-2" href="{{ route('logout') }}" onclick="event.preventDefault();
+                            <a href="#" class="nav-item text-light mx-2">新規利用者登録</a>
+                            <a class="nav-item text-light mx-2" href="{{ route('logout') }}" onclick="event.preventDefault();
                                                      document.getElementById('logout-form').submit();">
                                 {{ __('Logout') }}
                             </a>

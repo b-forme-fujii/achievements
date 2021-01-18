@@ -11,13 +11,6 @@
                     <ul class="master list-unstyled ml-auto">
                         <li class="nav-item">
                             <a class="nav-link" href="{{ route('login') }}">管理者ログイン</a>
-                            <a class="nav-item mx-2" href="{{ route('logout') }}" onclick="event.preventDefault();
-                                document.getElementById('logout-form').submit();">
-                                {{ __('Logout') }}
-                            </a>
-                            <form id="logout-form" action="{{ route('logout') }}" method="POST" style="display: none;">
-                                @csrf
-                            </form>
                         </li>
                     </ul>
                 </div>
