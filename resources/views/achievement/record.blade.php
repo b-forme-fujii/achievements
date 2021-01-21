@@ -254,7 +254,7 @@
                                     <input type="hidden" name="user_id" value={{$user->id}}>
                                     <input type="submit" class="btn btn-outline-secondary btn-sm" value="変更">
                             </form>
-                            </li>
+                        </li>
                     </ul>
                 </div>
                 <div class="card-body">
