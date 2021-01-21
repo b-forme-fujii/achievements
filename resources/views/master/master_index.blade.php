@@ -7,10 +7,10 @@
         <div class="card">
             <div class="card-header bg-primary">
                 <div class="row">
-                    <p class="text-light mt-2 ml-2">管理者ページ</p>
+                    <p class="text-light mt-3 ml-2">管理者ページ</p>
                     <ul class="master list-unstyled ml-auto">
-                        <li class="nav-item mt-2">
-                            <a href="#" class="nav-item text-light mx-2">新規利用者登録</a>
+                        <li class="nav-item mt-3">
+                            <a href="/new_user" class="nav-item text-light mx-2">新規利用者登録</a>
                             <a class="nav-item text-light mx-2" href="{{ route('logout') }}" onclick="event.preventDefault();
                                                      document.getElementById('logout-form').submit();">
                                 {{ __('Logout') }}
@@ -65,7 +65,7 @@
                                 <p class="name">{{$user->first_name}} {{$user->last_name}}</p>
                             </li>
                             <li class="nav-item mx-1 mt-2">
-                                <form action="/achievement" method="get">
+                                <form action="/check_recodes" method="get">
                                     @csrf
                                         <select class="past my-1" name="month">
                                             @foreach (array_map(null, $pmonths, $nums) as [$pmonth, $num])
@@ -75,7 +75,7 @@
                                         <input type="hidden" name="user_id" value={{$user->id}}>
                                         <input type="submit" class="btn btn-outline-secondary btn-sm" value="変更">
                                 </form>
-                                </li>
+                            </li>
                         </ul>
                     </div>
                     <div class="card-body">

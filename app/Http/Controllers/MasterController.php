@@ -68,7 +68,8 @@ class MasterController extends Controller
         //該当ユーザーの情報をを取得
         $user = new User();
         $user = $user->getUser($request);
-        
+
+
         //該当ユーザーの月の実績データの取得
         $recodes = new Achievement();
         $recodes = $recodes->getAchievements($request);
