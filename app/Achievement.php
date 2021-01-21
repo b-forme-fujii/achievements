@@ -10,7 +10,7 @@ class Achievement extends Model
 {
     /**ガードするフィールド */
     protected $guarded = array('id');
-    
+
     protected $fillable = array('user_id', 'insert_date', 'start_time', 'end_time', 'food', 'outside_support', 'medical__support', 'note');
 
     //usersテーブルとリレーション処理
