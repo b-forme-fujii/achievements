@@ -44,7 +44,12 @@ Auth::routes();
 Route::get('/home', 'HomeController@index')->name('home');
 
 /** ログイン必須ページ*/
-
+//利用者情報のみ取得
 Route::get('/master', 'MasterController@master_index')->middleware('auth');
-
+//利用者と該当利用者の実績データを取得
 Route::get('/check_recodes', 'MasterController@get_recodes')->middleware('auth');
+//新規利用者登録ページへ移動
+Route::get('/new_user', 'UserController@add_user')->middleware('auth');
+//新規利用者の登録登録
+Route::post('/create_user', 'UserController@create_user')->middleware('auth');
+
