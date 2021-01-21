@@ -31,4 +31,22 @@ class UserController extends Controller
         ];
         return view('achievement.index', $data);
     }
+
+    //新規利用者登録ページへ移動
+    public function add_user()
+    {
+        return view('master.add');
+    }
+
+    //新規利用者の登録
+    public function create_user(Request $request)
+    {
+        //バリデーションの実行
+        $this->validate($request, User::$rules, User::$messages);
+
+        // Userモデルのオブジェクト作成
+        $user = new User();
+
+
+    }
 }

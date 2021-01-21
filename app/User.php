@@ -12,6 +12,41 @@ class User extends Model
     protected $guarded = array('id');
 
     protected $fillable = array('school_id', 'first_name', 'last_name', 'full_name', 'age');
+
+    
+     //利用者登録用のバリデーション
+    public static $rules = [
+        'first_name' => ['required', 'regex:/^[ぁ-んァ-ヶー一-龠]+$/', 'min:1|max:10'],
+        'last_name' => ['required', 'regex:/^[ぁ-んァ-ヶー一-龠]+$/', 'min:1|max:10'],
+        'full_name' => ['required', 'regex:/^[ア-ン゛゜ァ-ォャ-ョー「」、]+$/', 'min:2|max:30'],
+        'age' => ['required', 'numeric', 'between:0,150'],
+        'school_id' => ['required', 'between:1,2'],
+    ];
+
+     // バリデーションのエラーメッセージ
+     public static $messages = [
+        'first_name.required' => '名字を入力して下さい。',
+        'first_name.regex' => '全角文字で入力して下さい。',
+        'first_name.min' => '1文字以上で入力して下さい。',
+        'first_name.max' => '6文字以内で入力して下さい。',
+
+        'last_name.required' => '名前を入力して下さい。',
+        'last_name.regex' => '全角文字で入力して下さい。',
+        'last_name.min' => '1文字以上で入力して下さい。',
+        'last_name.max' => '10文字以内で入力して下さい。',
+
+        'full_name.required' => '必須項目です。',
+        'full_name.regex' => '全角カタカナで入力して下さい。',
+        'full_name.min' => '1文字以上で入力して下さい。',
+        'full_name.max' => '30文字以内で入力して下さい。',
+        
+        'age.required' => 'メールアドレスを入力して下さい。',
+        'age.numeric' => '年齢を整数で入力して下さい。',
+        'age.between' => '年齢は0~150の間で入力して下さい。',
+
+        'school_id.required' => '文字列で入力して下さい。',
+        'school_id.numeric' => 'エラーが発生しました。もう一度選択して下さい。',
+    ];
     
     /**
      * 本校の利用者一覧を取得
