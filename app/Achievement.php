@@ -72,28 +72,6 @@ class Achievement extends Model
         }
         return $days;
     }
-    /**
-     *当月の日数を取得
-     *getDaysとは別フォーマット  
-     */
-    public function getFDays(Request $request)
-    {
-        $firstOfMonth = new Achievement();
-        $firstOfMonth = $firstOfMonth->getFirstofMonth($request);
-
-        $dMonth = new Achievement();
-        $dMonth = $dMonth->getDaysinMonth($request);
-
-        //実績データの登録日と当月の日数とを比較する値の作成
-        $day = new Carbon($firstOfMonth);
-        $formatFday = 'DD';
-        $Fdays[0] = $day->isoFormat($formatFday);
-
-        for ($i = 1; $i < $dMonth; $i++) {
-            $Fdays[$i] = $day->copy()->addDay($i)->isoFormat($formatFday);
-        }
-        return $Fdays;
-    }
 
     //当月の曜日を取得
     public function getweeks(Request $request)
