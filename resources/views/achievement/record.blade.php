@@ -50,7 +50,7 @@
                         <tbody>
                             <tr align="center">
                                 <td>
-                                    <div class="start mt-2">{{$one_recode->start_time}}</div>
+                                    <div class="start mt-2">{{substr($one_recode->start_time,0, 5)}}</div>
                                 </td>
                                 @if (is_null($one_recode->end_time))
                                 <td>
@@ -59,7 +59,7 @@
                                 </td>
                                 @else
                                 <td>
-                                    <div class="end mt-2">{{$one_recode->end_time}}</div>
+                                    <div class="end mt-2">{{substr($one_recode->end_time,0, 5)}}</div>
                                 </td>
                                 @endif
                                 @if ($one_recode->food == 0)
@@ -273,10 +273,10 @@
                             </tr>
                         </thead>
                         <tbody>
-                            @foreach (array_map(null, $days, $weeks, $recodes, $fdays) as [$day, $week, $recode, $fday])
+                            @foreach (array_map(null, $days, $weeks, $recodes, ) as [$day, $week, $recode, ])
                             <tr align="center">
                                 @if ($day == $recode)
-                                <td>{{$fday}}</td>
+                                <td>{{substr($day,8,9)}}</td>
                                 <td>{{$week}}</td>
                                 <td></td>
                                 <td></td>
@@ -285,10 +285,10 @@
                                 <td></td>
                                 <td></td>
                                 @else
-                                <td>{{$fday}}</td>
+                                <td>{{substr($recode->insert_date,8,9)}}</td>
                                 <td>{{$week}}</td>
-                                <td>{{$recode->start_time}}</td>
-                                <td>{{$recode->end_time}}</td>
+                                <td>{{substr($recode->start_time,0, 5)}}</td>
+                                <td>{{substr($recode->end_time,0, 5)}}</td>
                                 @if ($recode->food == 0)
                                 <td>無</td>
                                 @elseif ($recode->food == 1)
