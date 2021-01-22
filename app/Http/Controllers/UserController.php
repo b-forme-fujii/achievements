@@ -44,9 +44,18 @@ class UserController extends Controller
         //バリデーションの実行
         $this->validate($request, User::$rules, User::$messages);
 
-        // Userモデルのオブジェクト作成
-        $user = new User();
+         User::create(
+            [
+                'first_name' => $request->first_name,
+                'last_name' => $request->last_name,
+                'full_name' => $request->full_name,
+                'age' => $request->age,
+                'school_id' => $request->school_id
+            ],
+        );
 
 
+         // 一覧表示画面へリダイレクト
+         return redirect('/master');
     }
 }

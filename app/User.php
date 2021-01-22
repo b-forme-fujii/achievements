@@ -18,8 +18,8 @@ class User extends Model
     public static $rules = [
         'first_name' => ['required', 'regex:/^[ぁ-んァ-ヶー一-龠]+$/', 'min:1|max:10'],
         'last_name' => ['required', 'regex:/^[ぁ-んァ-ヶー一-龠]+$/', 'min:1|max:10'],
-        'full_name' => ['required', 'regex:/^[ア-ン゛゜ァ-ォャ-ョー「」、]+$/', 'min:2|max:30'],
-        'age' => ['required', 'numeric', 'between:0,150'],
+        'full_name' => ['required', 'regex:/^[ァ-ヾ 　〜ー−]+$/u', 'min:2|max:30'],
+        'age' => ['required', 'numeric', 'between:18,150'],
         'school_id' => ['required', 'between:1,2'],
     ];
 
@@ -37,11 +37,11 @@ class User extends Model
 
         'full_name.required' => '必須項目です。',
         'full_name.regex' => '全角カタカナで入力して下さい。',
-        'full_name.min' => '1文字以上で入力して下さい。',
+        'full_name.min' => '2文字以上で入力して下さい。',
         'full_name.max' => '30文字以内で入力して下さい。',
         
         'age.required' => 'メールアドレスを入力して下さい。',
-        'age.numeric' => '年齢を整数で入力して下さい。',
+        'age.numeric' => '年齢を数字で入力して下さい。',
         'age.between' => '年齢は0~150の間で入力して下さい。',
 
         'school_id.required' => '文字列で入力して下さい。',
