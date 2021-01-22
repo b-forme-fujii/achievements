@@ -50,10 +50,6 @@ class MasterController extends Controller
         $days = new Achievement();
         $days = $days->getDays($request);
         
-        //当月の日数($daysとは別のフォーマット形式)を取得
-        $fdays = new Achievement();
-        $fdays = $fdays->getFDays($request);
-        
         //当月の曜日を取得
         $weeks = new Achievement();
         $weeks = $weeks->getweeks($request);
@@ -80,7 +76,6 @@ class MasterController extends Controller
             'year' => $year,
             'month' => $month,
             'days' => $days,
-            'fdays' => $fdays,
             'weeks' => $weeks,
             'pmonths' => $pmonths,
             'nums' => $nums,
