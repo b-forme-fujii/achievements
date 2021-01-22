@@ -22,22 +22,17 @@
     </script>
 
     <!-- Styles -->
-    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css" integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css"
+        integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
     <link rel="stylesheet" href="{{ asset('css/app.css') }}">
     @yield('css')
-    <style>
-    </style>
-    
-
+    <style></style>
 </head>
 
 <body>
-    <div class="container-sm">
-
-        @section('content')
-        <div class='menutitle'>@yield('menutitle')</div>
-        <div class="content">@yield('content')</div>
-    </div>
+    <main class="py-4">
+        @yield('content')
+    </main>
 </body>
 
 </html>

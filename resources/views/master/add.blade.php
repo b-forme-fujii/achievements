@@ -1,4 +1,4 @@
-@extends('layouts.achievement')
+@extends('layouts.master_app')
 @section('title', '利用者登録画面')
 @yield('css')
 @section('content')
@@ -7,19 +7,7 @@
         <div class="card">
             <div class="card-header bg-primary">
                 <div class="row">
-                    <p class="text-light mt-3 ml-2">利用者登録ページ</p>
-                    <ul class="master list-unstyled ml-auto">
-                        <li class="nav-item mt-3">
-                            <a href="/new_user" class="nav-item text-light mx-2">新規利用者登録</a>
-                            <a class="nav-item text-light mx-2" href="{{ route('logout') }}" onclick="event.preventDefault();
-                                                     document.getElementById('logout-form').submit();">
-                                {{ __('Logout') }}
-                            </a>
-                            <form id="logout-form" action="{{ route('logout') }}" method="POST" style="display: none;">
-                                @csrf
-                            </form>
-                        </li>
-                    </ul>
+                    <p class="text-light mt-3 ml-2">新規利用者登録</p>
                 </div>
             </div>
             <div class="row justify-content-center">

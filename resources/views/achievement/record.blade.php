@@ -1,4 +1,4 @@
-@extends('layouts.achievement')
+@extends('layouts.ach_app')
 @section('title', '実績画面')
 @yield('css')
 @section('content')
@@ -6,21 +6,25 @@
     <div class="col-1"></div>
     <div class="col-md-10">
         <div class="card">
-            <nav class="navbar navbar-expand-lg navbar-light bg-light">
-                <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNav4"
-                    aria-controls="navbarNav4" aria-expanded="false" aria-label="Toggle navigation">
-                    <span class="navbar-toggler-icon"></span>
-                </button>
-                <a class="navbar-brand" href="#">出欠確認</a>
-                <div class="collapse navbar-collapse justify-content-end">
-                    <ul class="navbar-nav mt-3">
-                        <li class="nav-item active">
-                            <p>{{$user->first_name}}{{$user->last_name}}さんの実績ページ</p>
-                        </li>
-                        <li class="nav-item ml-3">
-                            <a href="{{ url('/') }}">ログアウト</a>
-                        </li>
-                    </ul>
+            <nav class="navbar navbar-expand-md navbar-light bg-white shadow-sm">
+                <div class="container">
+                    実績ページ
+
+                    <div class="collapse navbar-collapse" id="navbarSupportedContent">
+                        <!-- Left Side Of Navbar -->
+                        <ul class="navbar-nav mr-auto"></ul>
+                        <!-- Right Side Of Navbar -->
+                        <ul class="navbar-nav ml-auto">
+                            <li class="nav-item dropdown">
+                                <a id="navbarDropdown" class="nav-link dropdown-toggle" href="#" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" v-pre>
+                                    {{$user->first_name}}{{$user->last_name}} <span class="caret"></span>
+                                </a>
+                                <div class="dropdown-menu" aria-labelledby="navbarDropdown">
+                                    <a a class="dropdown-item text-black" href="/">ログアウト</a>
+                                </div>
+                            </li>
+                        </ul>
+                    </div>
                 </div>
             </nav>
 
@@ -252,7 +256,7 @@
                                         @endforeach
                                     </select>
                                     <input type="hidden" name="user_id" value={{$user->id}}>
-                                    <input type="submit" class="btn btn-outline-secondary btn-sm" value="変更">
+                                    <input type="submit" class="btn btn-outline-secondary btn-sm mx-2" value="変更">
                             </form>
                         </li>
                     </ul>
@@ -273,7 +277,7 @@
                             </tr>
                         </thead>
                         <tbody>
-                            @foreach (array_map(null, $days, $weeks, $recodes, ) as [$day, $week, $recode, ])
+                            @foreach (array_map(null, $days, $weeks, $recodes) as [$day, $week, $recode])
                             <tr align="center">
                                 @if ($day == $recode)
                                 <td>{{substr($day,8,9)}}</td>
@@ -322,5 +326,6 @@
             </div>
         </div>
     </div>
+    <div class="col-1"></div>
 </div>
 @endsection

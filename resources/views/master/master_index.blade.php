@@ -1,25 +1,13 @@
-@extends('layouts.achievement')
-@section('title', '管理者画面')
+@extends('layouts.master_app')
 @yield('css')
+@section('title', '管理者画面')
 @section('content')
 <div class="row justify-content-center my-3">
     <div class="col-md-10">
         <div class="card">
             <div class="card-header bg-primary">
                 <div class="row">
-                    <p class="text-light mt-3 ml-2">管理者ページ</p>
-                    <ul class="master list-unstyled ml-auto">
-                        <li class="nav-item mt-3">
-                            <a href="/new_user" class="nav-item text-light mx-2">新規利用者登録</a>
-                            <a class="nav-item text-light mx-2" href="{{ route('logout') }}" onclick="event.preventDefault();
-                                                     document.getElementById('logout-form').submit();">
-                                {{ __('Logout') }}
-                            </a>
-                            <form id="logout-form" action="{{ route('logout') }}" method="POST" style="display: none;">
-                                @csrf
-                            </form>
-                        </li>
-                    </ul>
+                    <p class="text-light mt-2 ml-2">実績閲覧</p>
                 </div>
             </div>
             <div class="card-body">
@@ -27,11 +15,10 @@
                     @csrf
                     <div class="form-group row">
                         <label for="school-1" class="col-md-4 col-form-label text-md-center">本校の利用者</label>
-
                         <div class="col-md-6">
                             <select class="form-control" name="user_id">
-                                @foreach ($school_1 as $item1)
-                                <option value={{$item1->id}}>{{$item1->first_name}}　{{$item1->last_name}}</option>
+                                @foreach ($school_1 as $sch1)
+                                <option value={{$sch1->id}}>{{$sch1->first_name}}　{{$sch1->last_name}}</option>
                                 @endforeach
                             </select>
                             <input type="hidden" name="month" value=0>
@@ -46,8 +33,8 @@
                         <label for="school-2" class="col-md-4 col-form-label text-md-center">２校の利用者</label>
                         <div class="col-md-6">
                             <select class="form-control" name="user_id">
-                                @foreach ($school_2 as $item2)
-                                <option value={{$item2->id}}>{{$item2->first_name}}　{{$item2->last_name}}</option>
+                                @foreach ($school_2 as $sch2)
+                                <option value={{$sch2->id}}>{{$sch2->first_name}}　{{$sch2->last_name}}</option>
                                 @endforeach
                             </select>
                             <input type="hidden" name="month" value=0>
@@ -67,14 +54,17 @@
                             <li class="nav-item mx-1 mt-2">
                                 <form action="/check_recodes" method="get">
                                     @csrf
-                                        <select class="past my-1" name="month">
-                                            @foreach (array_map(null, $pmonths, $nums) as [$pmonth, $num])
-                                            <option value={{(int)$num}}>{{$pmonth}}</option>
-                                            @endforeach
-                                        </select>
-                                        <input type="hidden" name="user_id" value={{$user->id}}>
-                                        <input type="submit" class="btn btn-outline-secondary btn-sm" value="変更">
+                                    <select class="past my-1" name="month">
+                                        @foreach (array_map(null, $pmonths, $nums) as [$pmonth, $num])
+                                        <option value={{(int)$num}}>{{$pmonth}}</option>
+                                        @endforeach
+                                    </select>
+                                    <input type="hidden" name="user_id" value={{$user->id}}>
+                                    <input type="submit" class="btn btn-outline-primary btn-sm mx-2" value="変更">
                                 </form>
+                            </li>
+                            <li class="nav-item ml-auto">
+                                <button type="button" class="btn btn-outline-secondary btn-sm mx-1 mt-2" onclick="location.href='/master';">記録を作成</button>
                             </li>
                         </ul>
                     </div>
@@ -117,21 +107,27 @@
                                     @if ($recode->food == 0)
                                     <td>無</td>
                                     @elseif ($recode->food == 1)
-                                    <td><font color="red">有</font></td>
+                                    <td>
+                                        <font color="red">有</font>
+                                    </td>
                                     @endif
-    
+
                                     @if ($recode->outside_support == 0)
                                     <td>無</td>
                                     @elseif ($recode->outside_support == 2)
-                                    <td><font color="red">有</font></td>
+                                    <td>
+                                        <font color="red">有</font>
+                                    </td>
                                     @endif
-    
+
                                     @if ($recode->medical__support == 0)
                                     <td>無</td>
                                     @elseif ($recode->medical__support == 2)
-                                    <td><font color="red">有</font></td>
+                                    <td>
+                                        <font color="red">有</font>
+                                    </td>
                                     @endif
-    
+
                                     @if ($recode->note)
                                     <td>{{$recode->note}}</td>
                                     @else
@@ -142,8 +138,8 @@
                                             @csrf
                                             <input type="hidden" name="id" value={{$recode->id}}>
                                             <input type="hidden" name="user_id" value={{$user->id}}>
+                                            <input type="submit" class="btn btn-outline-secondary btn-sm" value="編集">
                                         </form>
-                                        <input type="submit" class="btn btn-outline-secondary btn-sm" value="編集">
                                     </td>
                                     <td></td>
                                     @endif
