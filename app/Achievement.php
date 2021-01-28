@@ -163,9 +163,7 @@ class Achievement extends Model
         $dMonth = $dMonth->getDaysinMonth($request);
         
         //該当ユーザーの当月のレコードを取得
-        $achievements = Achievement::with('User')
-            ->join('users', 'users.id', '=', 'achievements.user_id')
-            ->where('achievements.user_id', $request->user_id)
+        $achievements = Achievement::where('achievements.user_id', $request->user_id)
             ->whereYear('insert_date', $Year)
             ->whereMonth('insert_date',$Month)
             ->orderBy('insert_date', 'asc')
