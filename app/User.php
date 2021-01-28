@@ -15,12 +15,11 @@ class User extends Model
 
     
      //利用者登録用のバリデーション
-    public static $rules = [
+     public static $rules = [
         'first_name' => ['required', 'regex:/^[ぁ-んァ-ヶー一-龠]+$/', 'min:1|max:10'],
-        'last_name' => ['required', 'regex:/^[ぁ-んァ-ヶー一-龠]+$/', 'min:1|max:10'],
+        'last_name' => ['required', 'regex:/^[ぁ-んァ-ヶー一-龠]+$/', 'min:1|max:20'],
         'full_name' => ['required', 'regex:/^[ァ-ヾ 　〜ー−]+$/u', 'min:2|max:30'],
-        'age' => ['required', 'numeric', 'between:18,150'],
-        'school_id' => ['required', 'between:1,2'],
+        'age' => ['required', 'numeric', 'min:18|max:100'],
     ];
 
      // バリデーションのエラーメッセージ
@@ -28,12 +27,12 @@ class User extends Model
         'first_name.required' => '名字を入力して下さい。',
         'first_name.regex' => '全角文字で入力して下さい。',
         'first_name.min' => '1文字以上で入力して下さい。',
-        'first_name.max' => '6文字以内で入力して下さい。',
+        'first_name.max' => '10文字以内で入力して下さい。',
 
         'last_name.required' => '名前を入力して下さい。',
         'last_name.regex' => '全角文字で入力して下さい。',
         'last_name.min' => '1文字以上で入力して下さい。',
-        'last_name.max' => '10文字以内で入力して下さい。',
+        'last_name.max' => '20文字以内で入力して下さい。',
 
         'full_name.required' => '必須項目です。',
         'full_name.regex' => '全角カタカナで入力して下さい。',
@@ -41,10 +40,11 @@ class User extends Model
         'full_name.max' => '30文字以内で入力して下さい。',
         
         'age.required' => 'メールアドレスを入力して下さい。',
-        'age.numeric' => '年齢を数字で入力して下さい。',
-        'age.between' => '年齢は0~150の間で入力して下さい。',
+        'age.numeric' => '年齢は数字で入力して下さい。',
+        'age.min' => '年齢は18以上で入力して下さい。',
+        'age.max' => '年齢は100以下で入力して下さい。',
 
-        'school_id.required' => '文字列で入力して下さい。',
+        'school_id.required' => '所属校を選択して下さい。',
         'school_id.numeric' => 'エラーが発生しました。もう一度選択して下さい。',
     ];
     
@@ -76,12 +76,7 @@ class User extends Model
     public function getUser(Request $request)
     {
         $user = User::where('id',$request->user_id)
-        ->select(
-            'users.id',
-            'users.school_id',
-            'users.first_name',
-            'users.last_name',
-        )->first();
+        ->first();
         return($user);
     }    
 }
