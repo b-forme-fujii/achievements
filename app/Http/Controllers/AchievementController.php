@@ -11,7 +11,7 @@ class AchievementController extends Controller
     /**
      * @param Request $request
      * @return void
-     * 選択された利用者のidを取得できていたら実績データを取得して登録ページへ移動
+     * 実績データと当月の日数、曜日、使用する引数を取得して登録ページへ移動
      */
     public function selection(Request $request)
     {
@@ -66,7 +66,10 @@ class AchievementController extends Controller
     }
 
     /**
-     * 当日の開始時刻と登録日を取得して実績テーブルに新規レコードを作成
+     * 実績テーブルに新規レコードを作成
+     * @param Request $request
+     * @return void
+     * 当日の開始時刻と登録日を作成
      */
     public function new_record(Request $request)
     {
@@ -85,8 +88,10 @@ class AchievementController extends Controller
         }
     }
     
-    /**
+     /**
      * 当日の終了時刻を取得してレコードに追加
+     * @param Request $request
+     * @return void
      */
     public function end_time(Request $request){
 
@@ -107,6 +112,8 @@ class AchievementController extends Controller
 
     /**
      * 食事提供加算の更新処理
+     * @param Request $request
+     * @return void
      */
     public function food_up(Request $request)
     {
@@ -127,6 +134,8 @@ class AchievementController extends Controller
 
     /**
      * 施設外支援の更新処理
+     * @param Request $request
+     * @return void
      */
     public function outside_up(Request $request)
     {
@@ -145,8 +154,10 @@ class AchievementController extends Controller
         }
     }
 
-    /**
+     /**
      * 医療連携体制加算の更新処理
+     * @param Request $request
+     * @return void
      */
     public function medical_up(Request $request)
     {
@@ -167,6 +178,8 @@ class AchievementController extends Controller
 
     /**
      * 備考の更新処理
+     * @param Request $request
+     * @return void
      */
     public function note_up(Request $request)
     {
@@ -183,5 +196,19 @@ class AchievementController extends Controller
             //存在しなかった場合戻る
             return back();
         }
+    }
+
+    /**
+     * 利用者実績の作成ページへ移動
+     * @param Request $request
+     * @return void
+     */
+    public function add_achievement(Request $request)
+    {
+        //利用者情報を取得
+        $user = new User();
+        $user = $user->getUser($request);
+        
+        return view('master.add_achievement', $user);
     }
 }
