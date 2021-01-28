@@ -44,6 +44,7 @@
                             <div class="dropdown-menu dropdown-menu-right" aria-labelledby="navbarDropdown">
                                 <a class="dropdown-item text-black" href="/master">実績閲覧</a>
                                 <a class="dropdown-item text-black" href="/new_user">新規利用者登録</a>
+                                <a class="dropdown-item text-black" href="/edit_user">利用者情報の編集</a>
 
                                 <a class="dropdown-item" href="{{ route('logout') }}" onclick="event.preventDefault();
                                                      document.getElementById('logout-form').submit();">
