@@ -61,3 +61,8 @@ Route::post('/edit_user', 'UserController@update_user')->middleware('auth');
 Route::get('/add_achievement', 'AchievementController@add_achievement')->middleware('auth');
 //利用者の実績作成処理を実行
 Route::post('/add_achievement', 'AchievementController@create_achievement')->middleware('auth');
+
+//実績データの編集ページへ移動
+Route::get('/edit_achievement', 'AchievementController@edit_achievement')->middleware('auth');
+//実績データの編集を実行
+Route::post('/edit_achievement', 'AchievementController@update_achievement')->middleware('auth');

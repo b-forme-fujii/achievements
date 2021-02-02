@@ -231,12 +231,63 @@ class AchievementController extends Controller
                 ->withInput()
                 ->with('error', '既に実績データが登録されています。');
         } else {
+
+            //Achievementモデルのオブジェクト作成
             $achievement = new Achievement();
-            /**formの内容を全て取得 */
+            //formの内容を全て取得
             $form = $request->all();
-            /**内容を更新して保存 */
-            $achievement->fill($form)->save();    
+            //内容を更新して保存
+            $achievement->fill($form)->save();
+            //実績閲覧ページにリダイレクト   
             return redirect('/master');
         }
     }
+
+    /**
+     * 実績編集ページ
+     * @pahram Request $request
+     * @return void
+     * idからレコードを抽出して編集ページに渡す
+     */
+    public function edit_achievement(Request $request)
+    {
+        $achievement = Achievement::with('User')
+        ->join('users', 'users.id', '=', 'achievements.user_id')
+        ->where('achievements.id', $request->id)
+        ->select(
+            'achievements.id',
+            'achievements.user_id',
+            'achievements.insert_date',
+            'achievements.start_time',
+            'achievements.end_time',
+            'achievements.food',
+            'achievements.outside_support',
+            'achievements.medical__support',
+            'achievements.note',
+            'users.first_name',
+            'users.last_name',
+        )
+        ->first();
+        return view('master.edit_achievement', $achievement);
+    }
+
+    /**
+     * 実績編集を実行
+     * @pahram Request $request
+     * @return void
+     * idからレコードを抽出して各項目を編集
+     */
+    public function update_achievement(Request $request)
+    {
+        //Achievementモデルのオブジェクト作成
+        $achievement = Achievement::where('id',$request->id)
+        ->first();
+        //formの内容を全て取得
+        $form = $request->all();
+        //内容を更新して保存
+        $achievement->fill($form)->save(); 
+        //実績閲覧ページにリダイレクト   
+        return redirect('/master');
+    }
+    
 }
