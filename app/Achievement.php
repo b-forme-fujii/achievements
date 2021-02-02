@@ -16,25 +16,28 @@ class Achievement extends Model
     //usersテーブルとリレーション処理
     public function user()
     {
-        return $this->belongsTo('App\User','id');
+        return $this->belongsTo('App\User', 'id');
     }
 
     //今年の年度を取得
-    public function getYear(Request $request){
+    public function getYear(Request $request)
+    {
         $Year = Carbon::now()->firstOfMonth()->addMonth($request->month);
         $Year = $Year->isoformat('Y');
-        return($Year);
+        return ($Year);
     }
 
     //何月かを取得
-    public function getMonth(Request $request){
+    public function getMonth(Request $request)
+    {
         $Month = Carbon::now()->firstOfMonth()->addMonth($request->month);
         $Month = $Month->isoformat('M');
-        return($Month);
+        return ($Month);
     }
 
     //月初を取得
-    public function getFirstofMonth(Request $request){
+    public function getFirstofMonth(Request $request)
+    {
         $firstOfMonth = Carbon::now()->firstOfMonth()->addMonth($request->month);
         $firstOfMonth = $firstOfMonth->isoformat('Y-M-D');
         return $firstOfMonth;
@@ -48,7 +51,8 @@ class Achievement extends Model
     // }
 
     //月の日数が何日かを取得
-    public function getDaysinMonth(Request $request){
+    public function getDaysinMonth(Request $request)
+    {
         $dMonth = Carbon::now()->firstOfMonth()->addMonth($request->month)->daysInMonth;
         return $dMonth;
     }
@@ -102,19 +106,24 @@ class Achievement extends Model
         $day = new Carbon($firstOfMonth);
         $formatFday = 'Y年M月';
         $Months[0] = $day->isoFormat($formatFday);
-        
+
         for ($i = 0; $i > -12; $i--) {
             $Months[$i] = $day->copy()->addMonth($i)->isoFormat($formatFday);
-        }       
+        }
         return $Months;
     }
 
     //過去一年分の引数を作成
     public function Mnum()
     {
+        //引数の配列を作成
+        // $numbers = array(0,-1,-2,-3,-4,-5,-6,-7,-8,-9,-10,-11);
+        // // collectヘルパに配列を渡す
+        // $collection = collect($numbers);
+
         for ($i = 0; $i > -12; $i--) {
             $Mnum[$i] = ($i);
-        }       
+        }
         return $Mnum;
     }
 
@@ -157,15 +166,15 @@ class Achievement extends Model
         //当月の日数を取得
         $records = new Achievement();
         $records = $records->getDays($request);
-        
+
         //月の日数が何日かを取得
         $dMonth = new Achievement();
         $dMonth = $dMonth->getDaysinMonth($request);
-        
+
         //該当ユーザーの当月のレコードを取得
         $achievements = Achievement::where('achievements.user_id', $request->user_id)
             ->whereYear('insert_date', $Year)
-            ->whereMonth('insert_date',$Month)
+            ->whereMonth('insert_date', $Month)
             ->orderBy('insert_date', 'asc')
             ->select(
                 'achievements.id',
@@ -206,16 +215,16 @@ class Achievement extends Model
         $fake_time = $fake_time->format("H:i");
 
         //$start_timeが９時３０分以前なら９時３０分で登録
-        if($start_time > $fake_time) {
-        Achievement::create(
-            [
-                'user_id' => $request->user_id,
-                'insert_date' => $insert_date,
-                'start_time' => $start_time,
-            ],
-        );
-        //それ以降は$start_timeの時間で登録
-        } elseif($start_time < $fake_time){
+        if ($start_time > $fake_time) {
+            Achievement::create(
+                [
+                    'user_id' => $request->user_id,
+                    'insert_date' => $insert_date,
+                    'start_time' => $start_time,
+                ],
+            );
+            //それ以降は$start_timeの時間で登録
+        } elseif ($start_time < $fake_time) {
             Achievement::create(
                 [
                     'user_id' => $request->user_id,
@@ -240,22 +249,22 @@ class Achievement extends Model
 
         $fake_time = new Carbon('16:00:00');
         $fake_time = $fake_time->format("H:i");
-        
+
         //終了時刻が16時前なら$end_timeで終了時間を登録
-       if($end_time < $fake_time){
-        Achievement::where('user_id', $request->user_id)
-        ->where('insert_date',$insert_date)
-        ->update(
-            ['end_time' => $end_time,]
-        );
-        //16時以降なら16時で登録
-       }elseif($end_time > $fake_time) {
-        Achievement::where('user_id', $request->user_id)
-        ->where('insert_date',$insert_date)
-        ->update(
-            ['end_time' => $fake_time,]
-        ); 
-       }
+        if ($end_time < $fake_time) {
+            Achievement::where('user_id', $request->user_id)
+                ->where('insert_date', $insert_date)
+                ->update(
+                    ['end_time' => $end_time,]
+                );
+            //16時以降なら16時で登録
+        } elseif ($end_time > $fake_time) {
+            Achievement::where('user_id', $request->user_id)
+                ->where('insert_date', $insert_date)
+                ->update(
+                    ['end_time' => $fake_time,]
+                );
+        }
     }
 
     //食事提供加算を更新
@@ -265,10 +274,10 @@ class Achievement extends Model
         $insert_date = Carbon::now()->format("Y-m-d");
 
         Achievement::where('user_id', $request->user_id)
-        ->where('insert_date',$insert_date)
-        ->update(
-            ['food' => $request->food,]
-        );
+            ->where('insert_date', $insert_date)
+            ->update(
+                ['food' => $request->food,]
+            );
     }
 
     //施設外支援を更新
@@ -278,10 +287,10 @@ class Achievement extends Model
         $insert_date = Carbon::now()->format("Y-m-d");
 
         Achievement::where('user_id', $request->user_id)
-        ->where('insert_date',$insert_date)
-        ->update(
-            ['outside_support' => $request->outside,]
-        );
+            ->where('insert_date', $insert_date)
+            ->update(
+                ['outside_support' => $request->outside,]
+            );
     }
 
     //医療連携体制加算を更新
@@ -291,10 +300,10 @@ class Achievement extends Model
         $insert_date = Carbon::now()->format("Y-m-d");
 
         Achievement::where('user_id', $request->user_id)
-        ->where('insert_date',$insert_date)
-        ->update(
-            ['medical__support' => $request->medical,]
-        );
+            ->where('insert_date', $insert_date)
+            ->update(
+                ['medical__support' => $request->medical,]
+            );
     }
 
     //備考を更新
@@ -304,9 +313,9 @@ class Achievement extends Model
         $insert_date = Carbon::now()->format("Y-m-d");
 
         Achievement::where('user_id', $request->user_id)
-        ->where('insert_date',$insert_date)
-        ->update(
-            ['note' => $request->note,]
-        );
+            ->where('insert_date', $insert_date)
+            ->update(
+                ['note' => $request->note,]
+            );
     }
 }

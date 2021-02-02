@@ -22,7 +22,7 @@ class AchievementController extends Controller
         //何月かを取得
         $month = new Achievement();
         $month = $month->getMonth($request);
- 
+
         //当月の日数を取得
         $days = new Achievement();
         $days = $days->getDays($request);
@@ -45,7 +45,7 @@ class AchievementController extends Controller
         //該当ユーザーの今日の実績データの取得 
         $one_recode = new Achievement();
         $one_recode = $one_recode->getOneRecord($request);
-        
+
         //該当ユーザーの月の実績データの取得
         $recodes = new Achievement();
         $recodes = $recodes->getAchievements($request);
@@ -87,13 +87,14 @@ class AchievementController extends Controller
             return back();
         }
     }
-    
-     /**
+
+    /**
      * 当日の終了時刻を取得してレコードに追加
      * @param Request $request
      * @return void
      */
-    public function end_time(Request $request){
+    public function end_time(Request $request)
+    {
 
         //該当ユーザーの今日の実績データを検索
         $one_record = new Achievement();
@@ -154,7 +155,7 @@ class AchievementController extends Controller
         }
     }
 
-     /**
+    /**
      * 医療連携体制加算の更新処理
      * @param Request $request
      * @return void
@@ -208,7 +209,28 @@ class AchievementController extends Controller
         //利用者情報を取得
         $user = new User();
         $user = $user->getUser($request);
-        
+
         return view('master.add_achievement', $user);
+    }
+
+    /**
+     * 利用者実績の作成を実行
+     * @param Request $request
+     * @return void
+     */
+    public function create_achievement(Request $request)
+    {
+        // dd($request->insert_date);
+        //該当ユーザーの当日レコードが存在しないかをチェック
+        $one_record = Achievement::where('user_id', $request->user_id)
+            ->wheredate('insert_date', $request->insert_date)
+            ->first();
+        //当日のレコードが存在していた場合セッションにメッセージを保存して戻る
+        if ($one_record != null) {
+            return back()
+                ->withInput()
+                ->with('error', '既に実績データが登録されています。');
+        } else {
+        }
     }
 }
