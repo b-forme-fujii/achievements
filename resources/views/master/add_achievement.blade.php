@@ -63,11 +63,11 @@
                             </label>
 
                             <div class="col-md-3 mt-1">
-                                <input id="last_time" type="time"
-                                    class="form-control @error('last_time') is-invalid @enderror" name="last_time" step="900"
-                                    value="{{ empty(old('last_time')) ? ("16:00") : old('last_time')}}" min="10:15"
-                                    max="16:00" required autocomplete="last_time" autofocus>
-                                @error('last_time')
+                                <input id="end_time" type="time"
+                                    class="form-control @error('end_time') is-invalid @enderror" name="end_time" step="900"
+                                    value="{{ empty(old('end_time')) ? ("16:00") : old('end_time')}}" min="10:15"
+                                    max="16:00" required autocomplete="end_time" autofocus>
+                                @error('end_time')
                                 <span class="invalid-feedback" role="alert">
                                     <strong>{{ $message }}</strong>
                                 </span>
