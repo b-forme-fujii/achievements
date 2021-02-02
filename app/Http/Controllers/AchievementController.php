@@ -231,6 +231,12 @@ class AchievementController extends Controller
                 ->withInput()
                 ->with('error', '既に実績データが登録されています。');
         } else {
+            $achievement = new Achievement();
+            /**formの内容を全て取得 */
+            $form = $request->all();
+            /**内容を更新して保存 */
+            $achievement->fill($form)->save();    
+            return redirect('/master');
         }
     }
 }
