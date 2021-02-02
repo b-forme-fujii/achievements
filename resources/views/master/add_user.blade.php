@@ -13,7 +13,7 @@
             </div>
             <div class="row justify-content-center">
                 <div class="card-body">
-                    <form method="POST" action="/create_user">
+                    <form method="POST" action="/add_user">
                         @csrf
 
                         <div class="form-group row">

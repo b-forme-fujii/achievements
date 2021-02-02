@@ -64,7 +64,7 @@
                     </li>
                     <li class="nav-item ml-auto">
                         <button type="button" class="btn btn-outline-secondary btn-sm mx-1 mt-2"
-                            onclick="location.href='/master';">記録を作成</button>
+                            onclick="location.href='/add_achievement?user_id={{$user->id}}';">記録を作成</button>
                     </li>
                 </ul>
             </div>
