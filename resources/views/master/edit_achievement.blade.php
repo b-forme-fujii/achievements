@@ -138,7 +138,7 @@
 
                             <div class="col-md-6 mt-1">
                                 <select class="note my-1" name="note">
-                                    <option value=$note >{{$note}}</option>
+                                    <option value={{$note}} >{{$note}}</option>
                                     <option value="通所" @if(old('note')=="通所" ) selected @endif>通所</option>
                                     <option value="Skype" @if(old('note')=="Skype" ) selected @endif>Skype</option>
                                     <option value="メール" @if(old('note')=="メール" ) selected @endif>メール</option>
@@ -151,9 +151,7 @@
                                 @enderror
                             </div>
                         </div>
-                        <input type="hidden" name="user_id" value={{$id}}>
-
-
+                        <input type="hidden" name="id" value={{$id}}>
 
                         <div class="form-group row mb-0">
                             <div class="col-md-6 offset-md-4">

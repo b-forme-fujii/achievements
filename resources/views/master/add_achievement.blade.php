@@ -17,15 +17,15 @@
                         @csrf
 
                         <div class="form-group row">
-                            <label for="first_name" class="col-md-4 col-form-label text-md-right">利用者名</label>
+                            <label for="first_name" class="col-md-5 col-form-label text-md-right">利用者名</label>
 
-                            <div class="col-md-4">
+                            <div class="col-md-5">
                                 <p class="mt-2">{{$first_name}} {{$last_name}}</p>
                             </div>
                         </div>
 
                         <div class="form-group row">
-                            <label for="last_name" class="col-md-4 col-form-label text-md-right">登録日</label>
+                            <label for="insert_date" class="col-md-5 col-form-label text-md-right">登録日</label>
 
                             <div class="col-md-5">
                                 <input id="insert_date" type="date"
@@ -40,7 +40,7 @@
                         </div>
 
                         <div class="form-group row">
-                            <label for="start_time" class="col-md-4 col-form-label text-md-right">
+                            <label for="start_time" class="col-md-5 col-form-label text-md-right">
                                 開始時間
                             </label>
 
@@ -58,7 +58,7 @@
                         </div>
 
                         <div class="form-group row">
-                            <label for="last_time" class="col-md-4 col-form-label text-md-right">
+                            <label for="end_time" class="col-md-5 col-form-label text-md-right">
                                 終了時間
                             </label>
 
@@ -76,7 +76,7 @@
                         </div>
 
                         <div class="form-group row">
-                            <label for="food" class="col-md-4 col-form-label text-md-right">食事提供加算</label>
+                            <label for="food" class="col-md-5 col-form-label text-md-right">食事提供加算</label>
 
                             <div class="col-md-6 mt-1">
                                 <label class="mr-3">
@@ -96,7 +96,7 @@
                         </div>
 
                         <div class="form-group row">
-                            <label for="outside_support" class="col-md-4 col-form-label text-md-right">施設外支援</label>
+                            <label for="outside_support" class="col-md-5 col-form-label text-md-right">施設外支援</label>
 
                             <div class="col-md-6 mt-1">
                                 <label class="mr-3">
@@ -118,7 +118,7 @@
                         </div>
 
                         <div class="form-group row">
-                            <label for="medical__support" class="col-md-4 col-form-label text-md-right">医療連携体制加算</label>
+                            <label for="medical__support" class="col-md-5 col-form-label text-md-right">医療連携体制加算</label>
 
                             <div class="col-md-6 mt-1">
                                 <label class="mr-3">
@@ -140,7 +140,7 @@
                         </div>
 
                         <div class="form-group row">
-                            <label for="medical__support" class="col-md-4 col-form-label text-md-right">備考</label>
+                            <label for="note" class="col-md-5 col-form-label text-md-right">備考</label>
 
                             <div class="col-md-6 mt-1">
                                 <select class="note my-1" name="note">
@@ -149,7 +149,7 @@
                                     <option value="メール" @if(old('note')=="メール" ) selected @endif>メール</option>
                                     <option value="訪問" @if(old('note')=="訪問" ) selected @endif>訪問</option>
                                 </select>
-                                @error('medical__support')
+                                @error('note')
                                 <span class="invalid-feedback" role="alert">
                                     <strong>{{ $message }}</strong>
                                 </span>

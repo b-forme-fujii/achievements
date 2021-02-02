@@ -81,8 +81,6 @@
                             <th>施設外支援</th>
                             <th>医療連携体制加算</th>
                             <th>備考</th>
-                            <th></th>
-                            <th></th>
                         </tr>
                     </thead>
                     <tbody>
@@ -134,12 +132,7 @@
                             <td></td>
                             @endif
                             <td>
-                                <form action="" method="get">
-                                    @csrf
-                                    <input type="hidden" name="id" value={{$recode->id}}>
-                                    <input type="hidden" name="user_id" value={{$user->id}}>
-                                    <input type="submit" class="btn btn-outline-secondary btn-sm" value="編集">
-                                </form>
+                                <button type="button" class="btn btn-secondary btn-sm" onclick="location.href='/edit_achievement?id={{$recode->id}}';">編集</button>
                             </td>
                             <td></td>
                             @endif
