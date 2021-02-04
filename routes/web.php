@@ -22,7 +22,7 @@ Route::get('/', 'UserController@index');
 /**実績登録ページ*/
 Route::get('/achievement', 'AchievementController@selection');
 
-/**実績テーブルにレコードを新規作成 */
+/**実績表のレコードを新規作成 */
 Route::get('/new_record', 'AchievementController@new_record');
 
 /**終了時刻を登録 */
@@ -46,6 +46,9 @@ Route::get('/home', 'HomeController@index')->name('home');
 /** ログイン必須ページ*/
 //利用者情報閲覧ページ
 Route::get('/master', 'MasterController@master_index')->middleware('auth');
+
+//利用者の過去の実績データを表示
+Route::get('/check_records', 'MasterController@check_records')->middleware('auth');
 
 //新規利用者登録ページへ移動
 Route::get('/add_user', 'UserController@add_user')->middleware('auth');
