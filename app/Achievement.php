@@ -29,43 +29,7 @@ class Achievement extends Model
          return ($date);
      }
 
-    //リクエストで送られてきた値から日付を取得
-    // public function Search_Date(Request $request)
-    // {
-    //     $date = Carbon::now()->firstOfMonth()->addMonth($request->month);
-    //     return ($date);
-    // }
-
-    //何月かを取得
-    // public function getMonth(Request $request)
-    // {
-    //     $Month = Carbon::now()->firstOfMonth()->addMonth($request->month);
-    //     $Month = $Month->isoformat('M');
-    //     return ($Month);
-    // }
-
-    //月初を取得
-    // public function getFirstofMonth(Request $request)
-    // {
-    //     $firstOfMonth = Carbon::now()->firstOfMonth()->addMonth($request->month);
-    //     $firstOfMonth = $firstOfMonth->isoformat('Y-M-D');
-    //     return $firstOfMonth;
-    // }
-
-    // //月末を取得
-    // public function getEndofMonth(Request $request){
-    //     $endofMonth =Carbon::now()->endOfMonth()->addMonth($request->month);
-    //     $endofMonth = $endofMonth->isoformat('Y-M-D'); 
-    //     return $endofMonth;
-    // }
-
-    //月の日数が何日かを取得
-    // public function getDaysinMonth(Request $request)
-    // {
-    //     $dMonth = Carbon::now()->firstOfMonth()->addMonth($request->month)->daysInMonth;
-    //     return $dMonth;
-    // }
-
+    
     //当月の日数を取得
     public function getDays(Request $request)
     {
@@ -83,26 +47,6 @@ class Achievement extends Model
         }
         return $days;
     }
-
-    //当月の曜日を取得
-    // public function getweeks(Request $request)
-    // {
-    //     $firstOfMonth = new Achievement();
-    //     $firstOfMonth = $firstOfMonth->getFirstofMonth($request);
-
-    //     $dMonth = new Achievement();
-    //     $dMonth = $dMonth->getDaysinMonth($request);
-
-    //     //実績表に表示する曜日の値の作成
-    //     Carbon::setLocale('ja');
-    //     $week = new Carbon($firstOfMonth);
-    //     $formatweek = 'ddd';
-    //     $weeks[0] = $week->isoFormat($formatweek);
-    //     for ($n = 1; $n < $dMonth; $n++) {
-    //         $weeks[$n] = $week->copy()->addDay($n)->isoFormat($formatweek);
-    //     }
-    //     return $weeks;
-    // }
 
     //今月から過去1年間の月を取得
     public function PMonths()
