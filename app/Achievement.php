@@ -30,8 +30,8 @@ class Achievement extends Model
      }
 
     
-    //当月の日数を取得
-    public function getDays(Request $request)
+    //一ヶ月の日数を取得 
+    public function One_Month(Request $request)
     {
         $firstOfMonth = new Achievement();
         $firstOfMonth = $firstOfMonth->Beginning($request);
@@ -51,17 +51,11 @@ class Achievement extends Model
     //今月から過去1年間の月を取得
     public function PMonths()
     {
-        $firstOfMonth = Carbon::now()->firstOfMonth();
-
-        //実績データの登録日と当月の日数とを比較する値の作成
-        $day = new Carbon($firstOfMonth);
-        $formatFday = 'Y年M月';
-        $Months[0] = $day->isoFormat($formatFday);
-
+        $month = Carbon::now()->firstOfMonth();
         for ($i = 0; $i > -12; $i--) {
-            $Months[$i] = $day->copy()->addMonth($i)->isoFormat($formatFday);
+            $months[$i] = $month->copy()->addMonth($i);
         }
-        return $Months;
+        return $months;
     }
 
     //過去一年分の引数を作成
@@ -96,21 +90,20 @@ class Achievement extends Model
      */
     public function getAchievements(Request $request)
     {
-        //何年かを取得
+        //月初を取得
         $year = new Achievement();
         $year = $year->Beginning($request);
 
-        //月の日数が何日かを取得
+        //一ヶ月の日数を取得
+        $recodes = new Achievement();
+        $recodes = $recodes->One_Month($request);
+
+        //月の日数を作成
         $addMonth = new Achievement();
         $addMonth = $addMonth->Beginning($request);
         $addMonth =$addMonth->daysInMonth;
 
-        //月の日数
-        $recodes = new Achievement();
-        $recodes = $recodes->getDays($request);
-        
-
-        //該当ユーザーの当月のレコードを取得
+        //利用者の一ヶ月間のレコードを取得
         $achievements = Achievement::where('achievements.user_id', $request->user_id)
             ->whereYear('insert_date', $year)
             ->whereMonth('insert_date', $year)
@@ -127,7 +120,7 @@ class Achievement extends Model
             )
             ->get();
 
-        //実績データの登録日と比較して一致したらその配列を上書き
+        //実績データの登録日と一ヶ月の日数を比較して一致したらその配列を上書き
         foreach ($achievements as $achievement) {
             for ($n = 0; $n < $addMonth; $n++) {
                 if ($recodes[$n] == $achievement->insert_date) {

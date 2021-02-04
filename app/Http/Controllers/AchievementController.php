@@ -23,7 +23,7 @@ class AchievementController extends Controller
 
         //当月の日数を取得
         $days = new Achievement();
-        $days = $days->getDays($request);
+        $days = $days->One_Month($request);
 
         //今月から過去1年間の月を取得
         $pmonths = new Achievement();
