@@ -26,8 +26,8 @@ class AchievementController extends Controller
         $days = $days->One_Month($request);
 
         //今月から過去1年間の月を取得
-        $pmonths = new Achievement();
-        $pmonths = $pmonths->PMonths();
+        $years = new Achievement();
+        $years = $years->One_Year();
 
         $nums = new Achievement();
         $nums = $nums->Mnum();
@@ -47,8 +47,7 @@ class AchievementController extends Controller
         $data = [
             'month' => $month,
             'days' => $days,
-            // 'weeks' => $weeks,
-            'pmonths' => $pmonths,
+            'years' => $years,
             'nums' => $nums,
             'user' => $user,
             'one_recode' => $one_recode,

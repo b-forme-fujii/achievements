@@ -49,13 +49,16 @@ class Achievement extends Model
     }
 
     //今月から過去1年間の月を取得
-    public function PMonths()
+    public function One_Year()
     {
-        $month = Carbon::now()->firstOfMonth();
-        for ($i = 0; $i > -12; $i--) {
-            $months[$i] = $month->copy()->addMonth($i);
+        $firstOfMonth = Carbon::now()->firstOfMonth();
+
+        //実績データの登録日と当月の日数とを比較する値の作成
+
+        for ($i = 0; $i < 12; $i++) {
+            $years[$i] = $firstOfMonth->copy()->subMonth($i);
         }
-        return $months;
+        return $years;
     }
 
     //過去一年分の引数を作成
