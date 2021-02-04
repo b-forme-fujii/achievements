@@ -51,27 +51,26 @@ class User extends Model
     /**
      * 本校の利用者一覧を取得
      */
-    public function School_1()
+    public function Users()
     {
         $school_1 = User::where('school_id', 1)
         ->orderBy('full_name','asc')
         ->get();
-        return $school_1;
-    }
 
-     /**
-     * 2校の利用者一覧を取得
-     */
-    public function School_2()
-    {
         $school_2 = User::where('school_id', 2)
         ->orderBy('full_name','asc')
         ->get();
-        return $school_2;
+
+        $data = [
+            'school_1' => $school_1,
+            'school_2' => $school_2,
+        ];
+        return ($data);
     }
 
+
     /**
-     * 該当ユーザーのfirst_nameとlast_nameを取得
+     * 該当ユーザーの情報を取得
      */
     public function getUser(Request $request)
     {

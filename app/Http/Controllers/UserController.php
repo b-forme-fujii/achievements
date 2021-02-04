@@ -17,17 +17,9 @@ class UserController extends Controller
     public function index()
     {
         //本校のユーザー情報の取得
-        $school_1 = new User();
-        $school_1 = $school_1->School_1();
+        $data = new User();
+        $data = $data->Users();
 
-        //2校のユーザー情報の取得
-        $school_2 = new User();
-        $school_2 = $school_2->School_2();
-
-        $data = [
-            'school_1' => $school_1,
-            'school_2' => $school_2,
-        ];
         return view('achievement.index', $data);
     }
 
