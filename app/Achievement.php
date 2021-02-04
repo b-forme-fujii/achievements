@@ -29,7 +29,6 @@ class Achievement extends Model
          return ($date);
      }
 
-    
     //一ヶ月の日数を取得 
     public function One_Month(Request $request)
     {
@@ -51,9 +50,8 @@ class Achievement extends Model
     //今月から過去1年間の月を取得
     public function One_Year()
     {
+        //今月の月初を取得
         $firstOfMonth = Carbon::now()->firstOfMonth();
-
-        //実績データの登録日と当月の日数とを比較する値の作成
 
         for ($i = 0; $i < 12; $i++) {
             $years[$i] = $firstOfMonth->copy()->subMonth($i);
@@ -62,13 +60,8 @@ class Achievement extends Model
     }
 
     //過去一年分の引数を作成
-    public function Mnum()
+    public function Manth_Nums()
     {
-        //引数の配列を作成
-        // $numbers = array(0,-1,-2,-3,-4,-5,-6,-7,-8,-9,-10,-11);
-        // // collectヘルパに配列を渡す
-        // $collection = collect($numbers);
-
         for ($i = 0; $i > -12; $i--) {
             $Mnum[$i] = ($i);
         }
@@ -76,9 +69,9 @@ class Achievement extends Model
     }
 
     /**
-     * ユーザーの当日の実績データを取得 
+     * 利用者の当日の実績データを取得 
      */
-    public function getOneRecord(Request $request)
+    public function One_Record(Request $request)
     {
         $now = Carbon::now()->isoformat("Y-M-D");
 
@@ -91,15 +84,15 @@ class Achievement extends Model
      /**
      * ユーザーの当月の実績データを取得 
      */
-    public function getAchievements(Request $request)
+    public function Month_Records(Request $request)
     {
         //月初を取得
         $year = new Achievement();
         $year = $year->Beginning($request);
 
         //一ヶ月の日数を取得
-        $recodes = new Achievement();
-        $recodes = $recodes->One_Month($request);
+        $records = new Achievement();
+        $records = $records->One_Month($request);
 
         //月の日数を作成
         $addMonth = new Achievement();
@@ -122,16 +115,15 @@ class Achievement extends Model
                 'achievements.note'
             )
             ->get();
-
-        //実績データの登録日と一ヶ月の日数を比較して一致したらその配列を上書き
+        //実績データの登録日と一ヶ月の日数を比較して一致した日数にレコードを代入
         foreach ($achievements as $achievement) {
             for ($n = 0; $n < $addMonth; $n++) {
-                if ($recodes[$n] == $achievement->insert_date) {
-                    $recodes[$n] = $achievement;
+                if ($records[$n] == $achievement->insert_date) {
+                    $records[$n] = $achievement;
                 }
             }
         }
-        return $recodes;
+        return $records;
     }
 
     //当日の実績レコードの作成
@@ -152,6 +144,7 @@ class Achievement extends Model
 
         //$start_timeが9時30分以前なら9時30分で登録
         if ($start_time > $fake_time) {
+
             Achievement::create(
                 [
                     'user_id' => $request->user_id,

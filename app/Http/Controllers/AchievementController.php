@@ -30,19 +30,19 @@ class AchievementController extends Controller
         $years = $years->One_Year();
 
         $nums = new Achievement();
-        $nums = $nums->Mnum();
+        $nums = $nums->Manth_Nums();
 
         //該当ユーザーの情報をを取得
         $user = new User();
         $user = $user->getUser($request);
 
-        //該当利用者の当日の実績データと利用者情報の取得 
-        $one_recode = new Achievement();
-        $one_recode = $one_recode->getOneRecord($request);
+        //利用者の当日の実績データを取得 
+        $one_record = new Achievement();
+        $one_record = $one_record->One_Record($request);
 
         //該当ユーザーの月の実績データの取得
-        $recodes = new Achievement();
-        $recodes = $recodes->getAchievements($request);
+        $records = new Achievement();
+        $records = $records->Month_Records($request);
 
         $data = [
             'month' => $month,
@@ -50,8 +50,8 @@ class AchievementController extends Controller
             'years' => $years,
             'nums' => $nums,
             'user' => $user,
-            'one_recode' => $one_recode,
-            'recodes' => $recodes,
+            'one_record' => $one_record,
+            'records' => $records,
         ];
         return view('achievement.record', $data);
     }
