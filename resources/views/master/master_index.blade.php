@@ -41,6 +41,7 @@
             </div>
         </div>
     </div>
+
     @if (isset($user))
     <div class="col-10 mt-3">
         <div class="card">
@@ -51,15 +52,16 @@
                         <p class="name">{{$user->first_name}} {{$user->last_name}}</p>
                     </li>
                     <li class="nav-item mx-1 mt-2">
-                        <form action="/check_recodes" method="get">
+                        <form action="/check_records" method="get">
                             @csrf
                             <select class="past my-1" name="month">
-                                @foreach (array_map(null, $pmonths, $nums) as [$pmonth, $num])
-                                <option value={{(int)$num}}>{{$pmonth}}</option>
+                                <option>{{$month->isoformat('Y年M月')}}</option>
+                                @foreach (array_map(null, $years, $nums) as [$year, $num])
+                                <option value={{(int)$num}}>{{$year->isoformat('Y年M月')}}</option>
                                 @endforeach
                             </select>
                             <input type="hidden" name="user_id" value={{$user->id}}>
-                            <input type="submit" class="btn btn-outline-primary btn-sm mx-2" value="変更">
+                            <input type="submit" class="btn btn-outline-secondary btn-sm mx-2" value="変更">
                         </form>
                     </li>
                     <li class="nav-item ml-auto">
@@ -69,7 +71,7 @@
                 </ul>
             </div>
             <div class="card-body">
-                <h1>{{$year}}年{{$month}}月分</h1>
+                <h1>{{$month->isoformat('Y年M月')}}分</h1>
                 <table class="table table-bordered">
                     <thead>
                         <tr align="center">
@@ -84,11 +86,11 @@
                         </tr>
                     </thead>
                     <tbody>
-                        @foreach (array_map(null, $days, $weeks, $recodes) as [$day, $week, $recode])
+                        @foreach (array_map(null, $days, $records) as [$day, $record])
                         <tr align="center">
-                            @if ($day == $recode)
-                            <td>{{substr($day,8,9)}}</td>
-                            <td>{{$week}}</td>
+                            @if ($day == $record)
+                            <td>{{$day->isoformat('D')}}</td>
+                            <td>{{$day->isoformat('ddd')}}</td>
                             <td></td>
                             <td></td>
                             <td></td>
@@ -98,43 +100,45 @@
                             <td></td>
                             <td></td>
                             @else
-                            <td>{{substr($recode->insert_date,8,9)}}</td>
-                            <td>{{$week}}</td>
-                            <td>{{substr($recode->start_time,0, 5)}}</td>
-                            <td>{{substr($recode->end_time,0, 5)}}</td>
-                            @if ($recode->food == 0)
+                            <td>{{$day->isoformat('D')}}</td>
+                            <td>{{$day->isoformat('ddd')}}</td>
+                            <td>{{substr($record->start_time,0, 5)}}</td>
+                            <td>{{substr($record->end_time,0, 5)}}</td>
+                            @if ($record->food == 0)
                             <td>無</td>
-                            @elseif ($recode->food == 1)
+                            @elseif ($record->food == 1)
                             <td>
                                 <font color="red">有</font>
                             </td>
                             @endif
 
-                            @if ($recode->outside_support == 0)
+                            @if ($record->outside_support == 0)
                             <td>無</td>
-                            @elseif ($recode->outside_support == 2)
+                            @elseif ($record->outside_support == 2)
                             <td>
                                 <font color="red">有</font>
                             </td>
                             @endif
 
-                            @if ($recode->medical__support == 0)
+                            @if ($record->medical__support == 0)
                             <td>無</td>
-                            @elseif ($recode->medical__support == 2)
+                            @elseif ($record->medical__support == 2)
                             <td>
                                 <font color="red">有</font>
                             </td>
                             @endif
 
-                            @if ($recode->note)
-                            <td>{{$recode->note}}</td>
+                            @if ($record->note)
+                            <td>{{$record->note}}</td>
                             @else
                             <td></td>
                             @endif
                             <td>
-                                <button type="button" class="btn btn-secondary btn-sm" onclick="location.href='/edit_achievement?id={{$recode->id}}';">編集</button>
+                            <button type="button" class="btn btn-secondary btn-sm"
+                            onclick="location.href='/edit_achievement?id={{$record->id}}';">編集</button>
                             </td>
                             <td></td>
+
                             @endif
                         </tr>
                         @endforeach
