@@ -3,33 +3,27 @@
 namespace App\Http\Controllers;
 
 use App\User;
+use App\Master;
 use App\Achievement;
 use Illuminate\Http\Request;
 
 class AchievementController extends Controller
 {
     /**
+     * 利用者の実績ページ
      * @param Request $request
      * @return void
      * 実績データと当月の日数、曜日、使用する引数を取得して登録ページへ移動
      */
     public function selection(Request $request)
     {
-        //年度取得
-        $year = new Achievement();
-        $year = $year->getYear($request);
-
-        //何月かを取得
+        //月初を取得
         $month = new Achievement();
-        $month = $month->getMonth($request);
+        $month = $month->Beginning($request);
 
         //当月の日数を取得
         $days = new Achievement();
         $days = $days->getDays($request);
-
-        //当月の曜日を取得
-        $weeks = new Achievement();
-        $weeks = $weeks->getweeks($request);
 
         //今月から過去1年間の月を取得
         $pmonths = new Achievement();
@@ -42,7 +36,7 @@ class AchievementController extends Controller
         $user = new User();
         $user = $user->getUser($request);
 
-        //該当ユーザーの今日の実績データの取得 
+        //該当利用者の当日の実績データと利用者情報の取得 
         $one_recode = new Achievement();
         $one_recode = $one_recode->getOneRecord($request);
 
@@ -50,12 +44,10 @@ class AchievementController extends Controller
         $recodes = new Achievement();
         $recodes = $recodes->getAchievements($request);
 
-        // dd($datas);
         $data = [
-            'year' => $year,
             'month' => $month,
             'days' => $days,
-            'weeks' => $weeks,
+            // 'weeks' => $weeks,
             'pmonths' => $pmonths,
             'nums' => $nums,
             'user' => $user,
@@ -285,9 +277,14 @@ class AchievementController extends Controller
         //formの内容を全て取得
         $form = $request->all();
         //内容を更新して保存
-        $achievement->fill($form)->save(); 
+        $achievement->fill($form)->save();
+        
+        //該当利用者の当月の実績データを取得
+        $data = new Master();
+        $data = $data->Master_index($request);
+
         //実績閲覧ページにリダイレクト   
-        return redirect('/master');
+        return view('master.master_index', $data);
     }
     
 }
