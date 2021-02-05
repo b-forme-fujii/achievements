@@ -17,11 +17,20 @@ class UserController extends Controller
     public function index()
     {
         //本校のユーザー情報の取得
-        $data = new User();
-        $data = $data->Users();
+        $school_1 = new User();
+        $school_1 = $school_1->School_1();
 
+        //2校のユーザー情報の取得
+        $school_2 = new User();
+        $school_2 = $school_2->School_2();
+
+        $data = [
+            'school_1' => $school_1,
+            'school_2' => $school_2,
+        ];
         return view('achievement.index', $data);
     }
+
 
     /**
      * 新規利用者登録ページへ移動
@@ -113,12 +122,11 @@ class UserController extends Controller
         $user = new User();
         $user = $user->getUser($request);
 
-         /**formの内容を全て取得 */
-         $form = $request->all();
-         /**内容を更新して保存 */
-         $user->fill($form)->save();
-         
-          return redirect('/master');
+        /**formの内容を全て取得 */
+        $form = $request->all();
+        /**内容を更新して保存 */
+        $user->fill($form)->save();
 
+        return redirect('/master');
     }
 }
