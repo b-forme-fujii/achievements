@@ -280,7 +280,7 @@ class AchievementController extends Controller
         
         //該当利用者の当月の実績データを取得
         $data = new Master();
-        $data = $data->Master_index($request);
+        $data = $data->Records($request);
 
         //実績閲覧ページにリダイレクト   
         return view('master.master_index', $data);
