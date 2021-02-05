@@ -48,24 +48,27 @@ class User extends Model
         'school_id.numeric' => 'エラーが発生しました。もう一度選択して下さい。',
     ];
     
+     
     /**
      * 本校の利用者一覧を取得
      */
-    public function Users()
+    public function School_1()
     {
         $school_1 = User::where('school_id', 1)
         ->orderBy('full_name','asc')
         ->get();
+        return $school_1;
+    }
 
+     /**
+      * 2校の利用者一覧を取得
+      */
+    public function School_2()
+    {
         $school_2 = User::where('school_id', 2)
         ->orderBy('full_name','asc')
         ->get();
-
-        $data = [
-            'school_1' => $school_1,
-            'school_2' => $school_2,
-        ];
-        return ($data);
+        return $school_2;
     }
 
 
