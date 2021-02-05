@@ -7,7 +7,7 @@
         <div class="card">
             <div class="card-header">実績閲覧</div>
             <div class="card-body">
-                <form method="GET" action="/master">
+                <form method="GET" action="/check_records">
                     @csrf
                     <div class="form-group row">
                         <label for="school-1" class="col-md-4 col-form-label text-md-center">本校の利用者</label>
@@ -23,7 +23,7 @@
                     </div>
                 </form>
 
-                <form method="GET" action="/master">
+                <form method="GET" action="/check_records">
                     @csrf
                     <div class="form-group row">
                         <label for="school-2" class="col-md-4 col-form-label text-md-center">２校の利用者</label>
