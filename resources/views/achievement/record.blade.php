@@ -9,7 +9,6 @@
             <nav class="navbar navbar-expand-md navbar-light bg-white shadow-sm">
                 <div class="container">
                     実績ページ
-
                     <div class="collapse navbar-collapse" id="navbarSupportedContent">
                         <!-- Left Side Of Navbar -->
                         <ul class="navbar-nav mr-auto"></ul>
@@ -28,7 +27,7 @@
                 </div>
             </nav>
 
-            @if (is_null($one_recode))
+            @if (is_null($one_record))
             <div class="alert alert-danger mt-4 mx-3" role="alert">
                 <div class="row">
                     <b class="mt-3 mr-auto">※今日の開始時間が登録されていません</b>
@@ -54,19 +53,19 @@
                         <tbody>
                             <tr align="center">
                                 <td>
-                                    <div class="start mt-2">{{substr($one_recode->start_time,0, 5)}}</div>
+                                    <div class="start mt-2">{{substr($one_record->start_time,0, 5)}}</div>
                                 </td>
-                                @if (is_null($one_recode->end_time))
+                                @if (is_null($one_record->end_time))
                                 <td>
                                     <div class="end mt-1"><a href="/end_time?user_id={{$user->id}}"
                                             class="btn btn-outline-danger">退勤</a></div>
                                 </td>
                                 @else
                                 <td>
-                                    <div class="end mt-2">{{substr($one_recode->end_time,0, 5)}}</div>
+                                    <div class="end mt-2">{{substr($one_record->end_time,0, 5)}}</div>
                                 </td>
                                 @endif
-                                @if ($one_recode->food == 0)
+                                @if ($one_record->food == 0)
                                 <td>
                                     <form action="/food_up" method="get">
                                         @csrf
@@ -79,7 +78,7 @@
                                         </div>
                                     </form>
                                 </td>
-                                @elseif ($one_recode->food == 1)
+                                @elseif ($one_record->food == 1)
                                 <td>
                                     <form action="/food_up" method="get">
                                         @csrf
@@ -94,7 +93,7 @@
                                 </td>
                                 @endif
 
-                                @if ($one_recode->outside_support == 0)
+                                @if ($one_record->outside_support == 0)
                                 <td>
                                     <form action="/outside_up" method="get">
                                         @csrf
@@ -107,7 +106,7 @@
                                         </div>
                                     </form>
                                 </td>
-                                @elseif ($one_recode->outside_support == 2)
+                                @elseif ($one_record->outside_support == 2)
                                 <td>
                                     <form action="/outside_up" method="get">
                                         @csrf
@@ -121,7 +120,7 @@
                                     </form>
                                 </td>
                                 @endif
-                                @if ($one_recode->medical__support == 0)
+                                @if ($one_record->medical__support == 0)
                                 <td>
                                     <form action="/medical_up" method="get">
                                         @csrf
@@ -134,7 +133,7 @@
                                         </div>
                                     </form>
                                 </td>
-                                @elseif ($one_recode->medical__support == 2)
+                                @elseif ($one_record->medical__support == 2)
                                 <td>
                                     <form action="/medical_up" method="get">
                                         @csrf
@@ -148,7 +147,7 @@
                                     </form>
                                 </td>
                                 @endif
-                                @if ($one_recode->note == null)
+                                @if ($one_record->note == null)
                                 <td>
                                     <form action="/note_up" method="get">
                                         @csrf
@@ -166,12 +165,12 @@
                                     </form>
                                 </td>
 
-                                @elseif($one_recode->note == "通所")
+                                @elseif($one_record->note == "通所")
                                 <td>
                                     <form action="/note_up" method="get">
                                         @csrf
                                         <select class="note my-1" name="note">
-                                            <option value={{$one_recode->note}}>{{$one_recode->note}}　</option>
+                                            <option value={{$one_record->note}}>{{$one_record->note}}　</option>
                                             <option value="Skype">Skype　</option>
                                             <option value="メール">メール　</option>
                                             <option value="訪問">訪問　</option>
@@ -183,12 +182,12 @@
                                     </form>
                                 </td>
 
-                                @elseif($one_recode->note == "Skype")
+                                @elseif($one_record->note == "Skype")
                                 <td>
                                     <form action="/note_up" method="get">
                                         @csrf
                                         <select class="note my-1" name="note">
-                                            <option value={{$one_recode->note}}>{{$one_recode->note}}　</option>
+                                            <option value={{$one_record->note}}>{{$one_record->note}}　</option>
                                             <option value="通所">通所　</option>
                                             <option value="メール">メール　</option>
                                             <option value="訪問">訪問　</option>
@@ -200,12 +199,12 @@
                                     </form>
                                 </td>
 
-                                @elseif($one_recode->note == "メール")
+                                @elseif($one_record->note == "メール")
                                 <td>
                                     <form action="/note_up" method="get">
                                         @csrf
                                         <select class="note my-1" name="note">
-                                            <option value={{$one_recode->note}}>{{$one_recode->note}}　</option>
+                                            <option value={{$one_record->note}}>{{$one_record->note}}　</option>
                                             <option value="通所">通所　</option>
                                             <option value="Skype">Skype　</option>
                                             <option value="訪問">訪問　</option>
@@ -217,12 +216,12 @@
                                     </form>
                                 </td>
 
-                                @elseif($one_recode->note == "訪問")
+                                @elseif($one_record->note == "訪問")
                                 <td>
                                     <form action="/note_up" method="get">
                                         @csrf
                                         <select class="note my-1" name="note">
-                                            <option value={{$one_recode->note}}>{{$one_recode->note}}　</option>
+                                            <option value={{$one_record->note}}>{{$one_record->note}}　</option>
                                             <option value="通所">通所　</option>
                                             <option value="Skype">Skype　</option>
                                             <option value="メール">メール　</option>
@@ -240,6 +239,7 @@
                 </div>
             </div>
             @endif
+            
             <div class="card  mt-4 mx-3">
                 <div class="card-header">
                     <ul class="nav nav-tabs card-header-tabs">
@@ -251,8 +251,9 @@
                             <form action="/achievement" method="get">
                                 @csrf
                                     <select class="past my-1" name="month">
-                                        @foreach (array_map(null, $pmonths, $nums) as [$pmonth, $num])
-                                        <option value={{(int)$num}}>{{$pmonth}}</option>
+                                        <option>{{$month->isoformat('Y年M月')}}</option>
+                                        @foreach (array_map(null, $years, $nums) as [$year, $num])
+                                        <option value={{(int)$num}}>{{$year->isoformat('Y年M月')}}</option>
                                         @endforeach
                                     </select>
                                     <input type="hidden" name="user_id" value={{$user->id}}>
@@ -262,7 +263,7 @@
                     </ul>
                 </div>
                 <div class="card-body">
-                    <h1>{{$year}}年{{$month}}月分</h1>
+                    <h1>{{$month->isoformat('Y年M月')}}分</h1>
                     <table class="table table-bordered">
                         <thead>
                             <tr align="center">
@@ -277,11 +278,11 @@
                             </tr>
                         </thead>
                         <tbody>
-                            @foreach (array_map(null, $days, $weeks, $recodes) as [$day, $week, $recode])
+                            @foreach (array_map(null, $days, $records) as [$day, $record])
                             <tr align="center">
-                                @if ($day == $recode)
-                                <td>{{substr($day,8,9)}}</td>
-                                <td>{{$week}}</td>
+                                @if ($day == $record)
+                                <td>{{$day->isoformat('D')}}</td>
+                                <td>{{$day->isoformat('ddd')}}</td>
                                 <td></td>
                                 <td></td>
                                 <td></td>
@@ -289,30 +290,30 @@
                                 <td></td>
                                 <td></td>
                                 @else
-                                <td>{{substr($recode->insert_date,8,9)}}</td>
-                                <td>{{$week}}</td>
-                                <td>{{substr($recode->start_time,0, 5)}}</td>
-                                <td>{{substr($recode->end_time,0, 5)}}</td>
-                                @if ($recode->food == 0)
+                                <td>{{$day->isoformat('D')}}</td>
+                                <td>{{$day->isoformat('ddd')}}</td>
+                                <td>{{substr($record->start_time,0, 5)}}</td>
+                                <td>{{substr($record->end_time,0, 5)}}</td>
+                                @if ($record->food == 0)
                                 <td>無</td>
-                                @elseif ($recode->food == 1)
+                                @elseif ($record->food == 1)
                                 <td><font color="red">有</font></td>
                                 @endif
 
-                                @if ($recode->outside_support == 0)
+                                @if ($record->outside_support == 0)
                                 <td>無</td>
-                                @elseif ($recode->outside_support == 2)
+                                @elseif ($record->outside_support == 2)
                                 <td><font color="red">有</font></td>
                                 @endif
 
-                                @if ($recode->medical__support == 0)
+                                @if ($record->medical__support == 0)
                                 <td>無</td>
-                                @elseif ($recode->medical__support == 2)
+                                @elseif ($record->medical__support == 2)
                                 <td><font color="red">有</font></td>
                                 @endif
 
-                                @if ($recode->note)
-                                <td>{{$recode->note}}</td>
+                                @if ($record->note)
+                                <td>{{$record->note}}</td>
                                 @else
                                 <td></td>
                                 @endif
