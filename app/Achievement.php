@@ -106,6 +106,7 @@ class Achievement extends Model
             ->orderBy('insert_date', 'asc')
             ->select(
                 'achievements.id',
+                'achievements.user_id',
                 'achievements.insert_date',
                 'achievements.start_time',
                 'achievements.end_time',
