@@ -141,11 +141,11 @@
                             @endif
                             <td>
                                 <button type="button" class="btn btn-primary btn-sm"
-                                    onclick="location.href='/edit_achievement?id={{$record->id}}&user_id={{$user->id}}';">編集</button>
+                                    onclick="location.href='/edit_achievement?id={{$record->id}}&user_id={{$record->user_id}}';">編集</button>
                             </td>
                             <td>
                                 <input type="button" class="btn btn-danger btn-sm"
-                                onclick="dProduct({{$record->id }}, '{{ $record->insert_date }}');" value="削除">
+                                onclick="dAchievement({{$record->id }}, '{{ $record->insert_date->isoformat('Y年M月D日') }}');" value="削除">
                             </td>
                             @endif
                         </tr>
@@ -157,16 +157,14 @@
     </div>
     @endif
 </div>
-
- 
  <script src="{{ asset('js/jquery-ui-1.12.1/external/jquery/jquery.js') }}"></script>
  <script src="{{ asset('js/jquery-ui-1.12.1/jquery-ui.min.js') }}"></script>
  <script>
     $(function () {
         $("#dialog-confirm").hide();
     });
-    function dProduct(id, insert_date) {
-        $("#product-delete").text(insert_date);
+    function dAchievement(id, insert_date) {
+        $("#dAchievement").text(insert_date);
         $("#dialog-confirm").dialog({
             resizable: false,
             height: "auto",
@@ -175,7 +173,7 @@
             buttons: {
                 "削除": function () {
                     $(this).dialog("close");
-                    location.href = '/login/delete?id=' + id;
+                    location.href = '/del_achievement?id=' + id;
                 },
                 "キャンセル": function () {
                     $(this).dialog("close");
@@ -186,8 +184,8 @@
  </script>
 <div id="dialog-confirm" title="削除">
     <p><span class=" ui-icon ui-icon-alert" style="float:left; margin:12px 12px 20px 0;"></span>
-        下記の商品をカートから削除してもいいですか？<br>
-        <p id="product-delete"></p>
+        下記の実績を削除してもいいですか？
+        <p id="dAchievement"></p>
     </p>
 </div>
 @endsection
