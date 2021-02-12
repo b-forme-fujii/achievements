@@ -320,12 +320,8 @@ class AchievementController extends Controller
             //存在していた場合削除処理を実行
             $achievement->delete();   
 
-            //該当利用者の当月の実績データを取得
-            $data = new Master();
-            $data = $data->Records($request);
-
-            //実績閲覧ページにリダイレクト   
-            return view('master.master_index', $data);
+           //実績閲覧ページにリダイレクト   
+           return redirect('/master');
         }
     }
 }
