@@ -7,7 +7,7 @@
         <div class="card">
             <div class="card-header">
                 <div class="row">
-                    <p class="mt-3 ml-2">実績データの編集   </p>
+                    <p class="mt-3 ml-2">実績データの編集 </p>
 
                 </div>
             </div>
@@ -20,7 +20,7 @@
                             <label for="first_name" class="col-md-5 col-form-label text-md-right">利用者名</label>
 
                             <div class="col-md-5">
-                                <p class="user_name mt-2">{{$first_name}} {{$last_name}}</p>
+                                <p class="user_name mt-2">{{$user->first_name}} {{$user->last_name}}</p>
                             </div>
                         </div>
 
@@ -28,7 +28,7 @@
                             <label for="insert_date" class="col-md-5 col-form-label text-md-right">登録日</label>
 
                             <div class="col-md-5">
-                                <p class="insert_date mt-2">{{$insert_date}}</p>
+                                <p class="insert_date mt-2">{{$record->insert_date->isoformat('Y年M月D日')}}</p>
                             </div>
                         </div>
 
@@ -40,7 +40,7 @@
                             <div class="col-md-3 mt-1">
                                 <input id="start_time" type="time"
                                     class="form-control @error('start_time') is-invalid @enderror" name="start_time" step="900" 
-                                    value="{{ empty(old('start_time')) ? ("$start_time") : old('start_time')}}" min="09:30"
+                                    value="{{ empty(old('start_time')) ? ("$record->start_time") : old('start_time')}}" min="09:30"
                                     max="16:00" required autocomplete="start_time" autofocus>
                                 @error('start_time')
                                 <span class="invalid-feedback" role="alert">
@@ -58,7 +58,7 @@
                             <div class="col-md-3 mt-1">
                                 <input id="end_time" type="time"
                                     class="form-control @error('end_time') is-invalid @enderror" name="end_time" step="900"
-                                    value="{{ empty(old('end_time')) ? ("$end_time") : old('end_time')}}" min="10:15"
+                                    value="{{ empty(old('end_time')) ? ("$record->end_time") : old('end_time')}}" min="10:15"
                                     max="16:00" required autocomplete="end_time" autofocus>
                                 @error('end_time')
                                 <span class="invalid-feedback" role="alert">
@@ -75,11 +75,11 @@
                                 
                                 <label class="mr-3">
                                     <input class="@error('food') is-invalid @enderror" type="radio" name="food" value=0
-                                        @if ($food ==0) checked @endif required autocomplete="food" autofocus>無
+                                        @if ($record->food ==0) checked @endif required autocomplete="food" autofocus>無
                                 </label>
                                 <label>
                                     <input class="@error('food') is-invalid @enderror" type="radio" name="food" value=1
-                                        @if ($food ==1)  checked @endif required autocomplete="food" autofocus>有
+                                        @if ($record->food ==1)  checked @endif required autocomplete="food" autofocus>有
                                 </label>
                                 @error('food')
                                 <span class="invalid-feedback" role="alert">
@@ -95,12 +95,12 @@
                             <div class="col-md-6 mt-1">
                                 <label class="mr-3">
                                     <input class="@error('outside_support') is-invalid @enderror" type="radio"
-                                        name="outside_support" value=0 @if($outside_support==0) checked @endif
+                                        name="outside_support" value=0 @if($record->outside_support==0) checked @endif
                                         required autocomplete="outside_support" autofocus>無
                                 </label>
                                 <label>
                                     <input class="@error('outside_support') is-invalid @enderror" type="radio"
-                                        name="outside_support" value=2 @if($outside_support==2) checked @endif
+                                        name="outside_support" value=2 @if($record->outside_support==2) checked @endif
                                         required autocomplete="outside_support" autofocus>有
                                 </label>
                                 @error('outside_support')
@@ -117,12 +117,12 @@
                             <div class="col-md-6 mt-1">
                                 <label class="mr-3">
                                     <input class="@error('medical__support') is-invalid @enderror" type="radio"
-                                        name="medical__support" value=0 @if($medical__support==0) checked @endif
+                                        name="medical__support" value=0 @if($record->medical__support==0) checked @endif
                                         required autocomplete="medical__support" autofocus>無
                                 </label>
                                 <label>
                                     <input class="@error('medical__support') is-invalid @enderror" type="radio"
-                                        name="medical__support" value=2 @if($medical__support==2)  checked @endif
+                                        name="medical__support" value=2 @if($record->medical__support==2)  checked @endif
                                         required autocomplete="medical__support" autofocus>有
                                 </label>
                                 @error('medical__support')
@@ -138,7 +138,7 @@
 
                             <div class="col-md-6 mt-1">
                                 <select class="note my-1" name="note">
-                                    <option value={{$note}} >{{$note}}</option>
+                                    <option value={{$record->note}} >{{$record->note}}</option>
                                     <option value="通所" @if(old('note')=="通所" ) selected @endif>通所</option>
                                     <option value="Skype" @if(old('note')=="Skype" ) selected @endif>Skype</option>
                                     <option value="メール" @if(old('note')=="メール" ) selected @endif>メール</option>
@@ -151,7 +151,9 @@
                                 @enderror
                             </div>
                         </div>
-                        <input type="hidden" name="id" value={{$id}}>
+                        <input type="hidden" name="id" value={{$record->id}}>
+                        <input type="hidden" name="user_id" value={{$record->user_id}}>
+                        <input type="hidden" name="month" value=0>
 
                         <div class="form-group row mb-0">
                             <div class="col-md-6 offset-md-4">
