@@ -3,7 +3,7 @@
 <link rel="stylesheet" href="{{ asset('js/jquery-ui-1.12.1/jquery-ui.min.css') }}">
 <link rel="stylesheet" href="{{ asset('js/jquery-ui-1.12.1/jquery-ui.structure.min.css') }}">
 <link rel="stylesheet" href="{{ asset('js/jquery-ui-1.12.1/jquery-ui.theme.min.css') }}">
-@section('title', 'sample管理者画面')
+@section('title', '管理者画面')
 @section('menubar')
 @section('content')
 <div class="row justify-content-center my-3">
@@ -182,8 +182,9 @@
         });
     }
  </script>
+ 
 <div id="dialog-confirm" title="削除">
-    <p><span class=" ui-icon ui-icon-alert" style="float:left; margin:12px 12px 20px 0;"></span>
+    <p><span class=" ui-icon ui-icon-alert" style="float:left; margin:3px 2px;"></span>
         下記の実績を削除してもいいですか？
         <p id="dAchievement"></p>
     </p>
