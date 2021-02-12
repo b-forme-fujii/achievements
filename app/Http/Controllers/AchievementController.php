@@ -245,13 +245,12 @@ class AchievementController extends Controller
         $user = new User();
         $user = $user->getUser($request); 
 
-        $record = Achievement::
-            where('achievements.id', $request->id)
+        $achievement = Achievement::where('achievements.id', $request->id)
             ->first();
 
             $data = [
                 'user' => $user,
-                'record' => $record,
+                'achievement' => $achievement,
             ];
         return view('master.edit_achievement', $data);
     }
@@ -266,7 +265,7 @@ class AchievementController extends Controller
     {
         //Achievementモデルのオブジェクト作成
         $achievement = Achievement::where('id', $request->id)
-            ->first();
+        ->first();
         //formの内容を全て取得
         $form = $request->all();
         //内容を更新して保存
@@ -304,19 +303,23 @@ class AchievementController extends Controller
         return view('master.master_index', $data);
     }
 
+    /**
+     * 実績削除を実行
+     * @pahram Request $request
+     * @return void
+     * ダイアログ
+     */
     public function delete_achievement(Request $request)
     {
-        $record = Achievement::where('id', $request->id)
-            ->where('user_id', $request->user_id)
+        $achievement = Achievement::where('id', $request->id)
             ->first();
-
-        if (is_null($record)) {
+        if (is_null($achievement)) {
             //該当実績データがない場合
             return redirect('/master');
         } else {
             //存在していた場合削除処理を実行
-            $record->delete();
-            
+            $achievement->delete();   
+
             //該当利用者の当月の実績データを取得
             $data = new Master();
             $data = $data->Records($request);
