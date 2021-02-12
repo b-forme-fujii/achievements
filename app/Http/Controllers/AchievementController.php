@@ -66,7 +66,7 @@ class AchievementController extends Controller
     {
         //該当ユーザーの今日の実績データを検索 
         $one_record = new Achievement();
-        $one_record = $one_record->getOneRecord($request);
+        $one_record = $one_record->One_Record($request);
 
         //データが存在した場合戻る
         if ($one_record != null) {
@@ -89,7 +89,7 @@ class AchievementController extends Controller
 
         //該当ユーザーの今日の実績データを検索
         $one_record = new Achievement();
-        $one_record = $one_record->getOneRecord($request);
+        $one_record = $one_record->One_Record($request);
 
         //当日のデータのend_timeの値がnullでなかった場合は戻る
         if ($one_record->end_time != null) {
@@ -111,7 +111,7 @@ class AchievementController extends Controller
     {
         //該当ユーザーの今日の実績データを検索 
         $one_record = new Achievement();
-        $one_record = $one_record->getOneRecord($request);
+        $one_record = $one_record->One_Record($request);
 
         //データが存在した場合食事提供加算のレコードを更新して戻る
         if ($one_record != null) {
@@ -133,7 +133,7 @@ class AchievementController extends Controller
     {
         //該当ユーザーの今日の実績データを検索 
         $one_record = new Achievement();
-        $one_record = $one_record->getOneRecord($request);
+        $one_record = $one_record->One_Record($request);
 
         //データが存在した場合食事提供加算のレコードを更新して戻る
         if ($one_record != null) {
@@ -155,7 +155,7 @@ class AchievementController extends Controller
     {
         //該当ユーザーの今日の実績データを検索 
         $one_record = new Achievement();
-        $one_record = $one_record->getOneRecord($request);
+        $one_record = $one_record->One_Record($request);
 
         //データが存在した場合食事提供加算のレコードを更新して戻る
         if ($one_record != null) {
@@ -177,7 +177,7 @@ class AchievementController extends Controller
     {
         //該当ユーザーの今日の実績データを検索 
         $one_record = new Achievement();
-        $one_record = $one_record->getOneRecord($request);
+        $one_record = $one_record->One_Record($request);
 
         //データが存在した場合食事提供加算のレコードを更新して戻る
         if ($one_record != null) {
@@ -242,24 +242,18 @@ class AchievementController extends Controller
      */
     public function edit_achievement(Request $request)
     {
-        $achievement = Achievement::with('User')
-        ->join('users', 'users.id', '=', 'achievements.user_id')
-        ->where('achievements.id', $request->id)
-        ->select(
-            'achievements.id',
-            'achievements.user_id',
-            'achievements.insert_date',
-            'achievements.start_time',
-            'achievements.end_time',
-            'achievements.food',
-            'achievements.outside_support',
-            'achievements.medical__support',
-            'achievements.note',
-            'users.first_name',
-            'users.last_name',
-        )
-        ->first();
-        return view('master.edit_achievement', $achievement);
+        $user = new User();
+        $user = $user->getUser($request); 
+
+        $record = Achievement::
+            where('achievements.id', $request->id)
+            ->first();
+
+            $data = [
+                'user' => $user,
+                'record' => $record,
+            ];
+        return view('master.edit_achievement', $data);
     }
 
     /**
@@ -271,13 +265,13 @@ class AchievementController extends Controller
     public function update_achievement(Request $request)
     {
         //Achievementモデルのオブジェクト作成
-        $achievement = Achievement::where('id',$request->id)
-        ->first();
+        $achievement = Achievement::where('id', $request->id)
+            ->first();
         //formの内容を全て取得
         $form = $request->all();
         //内容を更新して保存
         $achievement->fill($form)->save();
-        
+
         //該当利用者の当月の実績データを取得
         $data = new Master();
         $data = $data->Records($request);
@@ -285,5 +279,50 @@ class AchievementController extends Controller
         //実績閲覧ページにリダイレクト   
         return view('master.master_index', $data);
     }
-    
+
+    /**
+     * 実績編集を実行
+     * @pahram Request $request
+     * @return void
+     * idからレコードを抽出して各項目を編集
+     */
+    public function del_conf(Request $request)
+    {
+        //Achievementモデルのオブジェクト作成
+        $achievement = Achievement::where('id', $request->id)
+            ->first();
+        //formの内容を全て取得
+        $form = $request->all();
+        //内容を更新して保存
+        $achievement->fill($form)->save();
+
+        //該当利用者の当月の実績データを取得
+        $data = new Master();
+        $data = $data->Records($request);
+
+        //実績閲覧ページにリダイレクト   
+        return view('master.master_index', $data);
+    }
+
+    public function delete_achievement(Request $request)
+    {
+        $record = Achievement::where('id', $request->id)
+            ->where('user_id', $request->user_id)
+            ->first();
+
+        if (is_null($record)) {
+            //該当実績データがない場合
+            return redirect('/master');
+        } else {
+            //存在していた場合削除処理を実行
+            $record->delete();
+            
+            //該当利用者の当月の実績データを取得
+            $data = new Master();
+            $data = $data->Records($request);
+
+            //実績閲覧ページにリダイレクト   
+            return view('master.master_index', $data);
+        }
+    }
 }
