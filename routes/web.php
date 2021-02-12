@@ -69,3 +69,6 @@ Route::post('/add_achievement', 'AchievementController@create_achievement')->mid
 Route::get('/edit_achievement', 'AchievementController@edit_achievement')->middleware('auth');
 //実績データの編集を実行
 Route::post('/edit_achievement', 'AchievementController@update_achievement')->middleware('auth');
+
+//実績データの削除を実行
+Route::get('/del_achievement', 'AchievementController@delete_achievement')->middleware('auth');
