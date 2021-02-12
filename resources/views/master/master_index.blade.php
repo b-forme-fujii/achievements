@@ -1,6 +1,10 @@
 @extends('layouts.master_app')
-@yield('css')
-@section('title', '管理者画面')
+@section('css')
+<link rel="stylesheet" href="{{ asset('js/jquery-ui-1.12.1/jquery-ui.min.css') }}">
+<link rel="stylesheet" href="{{ asset('js/jquery-ui-1.12.1/jquery-ui.structure.min.css') }}">
+<link rel="stylesheet" href="{{ asset('js/jquery-ui-1.12.1/jquery-ui.theme.min.css') }}">
+@section('title', 'sample管理者画面')
+@section('menubar')
 @section('content')
 <div class="row justify-content-center my-3">
     <div class="col-md-10">
@@ -83,6 +87,8 @@
                             <th>施設外支援</th>
                             <th>医療連携体制加算</th>
                             <th>備考</th>
+                            <th></th>
+                            <th></th>
                         </tr>
                     </thead>
                     <tbody>
@@ -108,7 +114,7 @@
                             <td>無</td>
                             @elseif ($record->food == 1)
                             <td>
-                                <font color="red">有</font>
+                                <font color=>有</font>
                             </td>
                             @endif
 
@@ -134,11 +140,13 @@
                             <td></td>
                             @endif
                             <td>
-                            <button type="button" class="btn btn-secondary btn-sm"
-                            onclick="location.href='/edit_achievement?id={{$record->id}}';">編集</button>
+                                <button type="button" class="btn btn-primary btn-sm"
+                                    onclick="location.href='/edit_achievement?id={{$record->id}}&user_id={{$user->id}}';">編集</button>
                             </td>
-                            <td></td>
-
+                            <td>
+                                <input type="button" class="btn btn-danger btn-sm"
+                                onclick="dProduct({{$record->id }}, '{{ $record->insert_date }}');" value="削除">
+                            </td>
                             @endif
                         </tr>
                         @endforeach
@@ -148,5 +156,38 @@
         </div>
     </div>
     @endif
+</div>
+
+ 
+ <script src="{{ asset('js/jquery-ui-1.12.1/external/jquery/jquery.js') }}"></script>
+ <script src="{{ asset('js/jquery-ui-1.12.1/jquery-ui.min.js') }}"></script>
+ <script>
+    $(function () {
+        $("#dialog-confirm").hide();
+    });
+    function dProduct(id, insert_date) {
+        $("#product-delete").text(insert_date);
+        $("#dialog-confirm").dialog({
+            resizable: false,
+            height: "auto",
+            width: 400,
+            modal: true,
+            buttons: {
+                "削除": function () {
+                    $(this).dialog("close");
+                    location.href = '/login/delete?id=' + id;
+                },
+                "キャンセル": function () {
+                    $(this).dialog("close");
+                }
+            }
+        });
+    }
+ </script>
+<div id="dialog-confirm" title="削除">
+    <p><span class=" ui-icon ui-icon-alert" style="float:left; margin:12px 12px 20px 0;"></span>
+        下記の商品をカートから削除してもいいですか？<br>
+        <p id="product-delete"></p>
+    </p>
 </div>
 @endsection
