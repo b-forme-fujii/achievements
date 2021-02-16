@@ -9,9 +9,9 @@
                 <div class="card-header">
                     <div class="row">
                         <p class="title mt-2 ml-2">利用者確認ページ</p>
-                        <ul class="navbar-nav ml-auto ">
+                        <ul class="navbar-nav ml-auto">
                             <li class="nav-item">
-                                <a class="nav-link" href="{{ route('login') }}">管理者ログイン</a>
+                                <a class="nav-link" href="{{ route('login') }}">管理者ページ</a>
                             </li>
                         </ul>
                     </div>
