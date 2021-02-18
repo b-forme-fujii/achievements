@@ -133,17 +133,6 @@ class Achievement extends Model
             ->whereYear('insert_date', $year)
             ->whereMonth('insert_date', $year)
             ->orderBy('insert_date', 'asc')
-            ->select(
-                'achievements.id',
-                'achievements.user_id',
-                'achievements.insert_date',
-                'achievements.start_time',
-                'achievements.end_time',
-                'achievements.food',
-                'achievements.outside_support',
-                'achievements.medical__support',
-                'achievements.note'
-            )
             ->get();
 
         //実績データの登録日と一ヶ月の日数を比較して一致した日数にレコードを代入
