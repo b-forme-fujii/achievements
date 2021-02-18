@@ -20,15 +20,6 @@
                         <li class="nav-item">
                             <a class="nav-link" href="/">ログアウト</a>
                         </li>
-                        {{--  <li class="nav-item dropdown">
-                            <a id="navbarDropdown" class="nav-link dropdown-toggle" href="#" role="button"
-                                data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" v-pre>
-                                
-                            </a>
-                            <div class="dropdown-menu" aria-labelledby="navbarDropdown">
-                                
-                            </div>
-                        </li>  --}}
                     </ul>
                 </div>
             </nav>
@@ -226,26 +217,43 @@
             @endif
 
             <div class="card  mt-4 mx-3">
-                <div class="card-header">
-                    <ul class="nav nav-tabs card-header-tabs">
-                        <li class="nav-item mx-2">
-                            <font size="2">支給決定障害者名</font>
-                            <p class="name">{{$user->first_name}} {{$user->last_name}}</p>
-                        </li>
-                        <li class="nav-item mx-1 mt-2">
-                            <form action="/achievement" method="get">
-                                @csrf
-                                <select class="past my-1" name="month">
-                                    <option>{{$month->isoformat('Y年M月')}}</option>
-                                    @foreach (array_map(null, $years, $nums) as [$year, $num])
-                                    <option value={{(int)$num}}>{{$year->isoformat('Y年M月')}}</option>
-                                    @endforeach
-                                </select>
-                                <input type="hidden" name="user_id" value={{$user->id}}>
-                                <input type="submit" class="btn btn-outline-secondary btn-sm mx-2" value="変更">
-                            </form>
-                        </li>
-                    </ul>
+                <div class="card-header mb-2">
+                    <div class="row">
+                        <ul class="nav card-header-tabs mr-auto">
+                            <li class="user_name mx-3">
+                                <font class="name_title">支給決定障害者氏名</font>
+                                <br>
+                                <font class="name">{{$user->first_name}} {{$user->last_name}}</font>
+                            </li>
+                            <li class="month-select mx-1 mt-2">
+                                <form action="/achievement" method="get">
+                                    @csrf
+                                    <select class="past my-1" name="month">
+                                        <option>{{$month->isoformat('Y年M月')}}</option>
+                                        @foreach (array_map(null, $years, $nums) as [$year, $num])
+                                        <option value={{(int)$num}}>{{$year->isoformat('Y年M月')}}</option>
+                                        @endforeach
+                                    </select>
+                                    <input type="hidden" name="user_id" value={{$user->id}}>
+                                    <input type="submit" class="btn btn-outline-secondary btn-sm mx-2" value="変更">
+                                </form>
+                            </li>
+                            <li class="card-title mx-1 mt-2">
+                                <font>実績記録表</font>
+                            </li>
+                        </ul>
+                        <ul class="nav card-header-tabs ml-auto">
+                            <li class="business_operator mx-3">
+                                <font class="business">事業者及びその事業所</font>
+                                <br>
+                                @if ($user->school_id == 1)
+                                <font class="school_name">未来のかたち　本町本校</font>    
+                                @elseif($user->school_id == 2)
+                                <font class="school_name">未来のかたち　本町2校</font>
+                                @endif
+                            </li>
+                        </ul>
+                    </div>
                 </div>
                 <div class="card-body">
                     <h1>{{$month->isoformat('Y年M月')}}分</h1>
