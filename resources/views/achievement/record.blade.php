@@ -16,10 +16,19 @@
                     <ul class="navbar-nav ml-auto mt-2">
                         <li class="nav-item active mt-2 mr-3">
                             <p class="user_name">利用者名： {{$user->first_name}}{{$user->last_name}} </p>
-                          </li>
-                          <li class="nav-item">
+                        </li>
+                        <li class="nav-item">
                             <a class="nav-link" href="/">ログアウト</a>
                         </li>
+                        {{--  <li class="nav-item dropdown">
+                            <a id="navbarDropdown" class="nav-link dropdown-toggle" href="#" role="button"
+                                data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" v-pre>
+                                
+                            </a>
+                            <div class="dropdown-menu" aria-labelledby="navbarDropdown">
+                                
+                            </div>
+                        </li>  --}}
                     </ul>
                 </div>
             </nav>
@@ -50,100 +59,79 @@
                         <tbody>
                             <tr align="center">
                                 <td>
-                                    <div class="start mt-3">{{substr($one_record->start_time,0, 5)}}</div>
+                                    <div class="start mt-4">{{substr($one_record->start_time,0, 5)}}</div>
                                 </td>
                                 @if (is_null($one_record->end_time))
                                 <td>
-                                    <div class="end mt-2"><a href="/end_time?user_id={{$user->id}}"
+                                    <div class="end mt-3"><a href="/end_time?user_id={{$user->id}}"
                                             class="btn btn-outline-danger">退勤</a></div>
                                 </td>
                                 @else
                                 <td>
-                                    <div class="end mt-3">{{substr($one_record->end_time,0, 5)}}</div>
+                                    <div class="end mt-4">{{substr($one_record->end_time,0, 5)}}</div>
                                 </td>
                                 @endif
-                                @if ($one_record->food == 0)
                                 <td>
                                     <form action="/food_up" method="get">
                                         @csrf
-                                        <span style="margin-right: 1em;"><input type="radio" name="food" value=0
-                                                checked="checked">無</span>
-                                        <input type="radio" name="food" value=1>有
-                                        <div class="food_up mt-3">
+                                        <div class="food_check mt-2">
+                                            <label class="mr-3">
+                                                <input class="" type="radio" name="food" value=0 @if($one_record->food
+                                                == 0) checked @endif>無
+                                            </label>
+                                            <label>
+                                                <input class="" type="radio" name="food" value=1 @if($one_record->food
+                                                == 1) checked @endif>有
+                                            </label>
+                                        </div>
+                                        <div class="food_up">
                                             <input type="hidden" name="user_id" value={{$user->id}}>
                                             <input type="submit" class="btn btn-outline-secondary btn-sm" value="変更">
                                         </div>
                                     </form>
                                 </td>
-                                @elseif ($one_record->food == 1)
-                                <td>
-                                    <form action="/food_up" method="get">
-                                        @csrf
-                                        <span style="margin-right: 1em;"><input type="radio" name="food"
-                                                value=0>無</span>
-                                        <input type="radio" name="food" value=1 checked="checked">有
-                                        <div class="food_up mt-3">
-                                            <input type="hidden" name="user_id" value={{$user->id}}>
-                                            <input type="submit" class="btn btn-outline-secondary btn-sm" value="変更">
-                                        </div>
-                                    </form>
-                                </td>
-                                @endif
-
-                                @if ($one_record->outside_support == 0)
                                 <td>
                                     <form action="/outside_up" method="get">
                                         @csrf
-                                        <span style="margin-right: 1em;"><input type="radio" name="outside" value=0
-                                                checked="checked">無</span>
-                                        <input type="radio" name="outside" value=2>有
-                                        <div class="outside_up mt-3">
+                                        <div class="food_check mt-2">
+                                            <label class="mr-3">
+                                                <input class="" type="radio" name="outside" value=0
+                                                    @if($one_record->outside_support
+                                                == 0) checked @endif>無
+                                            </label>
+                                            <label>
+                                                <input class="" type="radio" name="outside" value=2
+                                                    @if($one_record->outside_support
+                                                == 2) checked @endif>有
+                                            </label>
+                                        </div>
+                                        <div class="outside_up">
                                             <input type="hidden" name="user_id" value={{$user->id}}>
                                             <input type="submit" class="btn btn-outline-secondary btn-sm" value="変更">
                                         </div>
                                     </form>
                                 </td>
-                                @elseif ($one_record->outside_support == 2)
-                                <td>
-                                    <form action="/outside_up" method="get">
-                                        @csrf
-                                        <span style="margin-right: 1em;"><input type="radio" name="outside"
-                                                value=0>無</span>
-                                        <input type="radio" name="outside" value=2 checked="checked">有
-                                        <div class="outside_up mt-3">
-                                            <input type="hidden" name="user_id" value={{$user->id}}>
-                                            <input type="submit" class="btn btn-outline-secondary btn-sm" value="変更">
-                                        </div>
-                                    </form>
-                                </td>
-                                @endif
-                                @if ($one_record->medical__support == 0)
                                 <td>
                                     <form action="/medical_up" method="get">
                                         @csrf
-                                        <span style="margin-right: 1em;"><input type="radio" name="medical" value=0
-                                                checked="checked">無</span>
-                                        <input type="radio" name="medical" value=2>有
-                                        <div class="medical_up mt-3">
+                                        <div class="food_check mt-2">
+                                            <label class="mr-3">
+                                                <input class="" type="radio" name="medical" value=0
+                                                    @if($one_record->medical__support
+                                                == 0) checked @endif>無
+                                            </label>
+                                            <label>
+                                                <input class="" type="radio" name="medical" value=2
+                                                    @if($one_record->medical__support
+                                                == 2) checked @endif>有
+                                            </label>
+                                        </div>
+                                        <div class="medical_up">
                                             <input type="hidden" name="user_id" value={{$user->id}}>
                                             <input type="submit" class="btn btn-outline-secondary btn-sm" value="変更">
                                         </div>
                                     </form>
                                 </td>
-                                @elseif ($one_record->medical__support == 2)
-                                <td>
-                                    <form action="/medical_up" method="get">
-                                        @csrf
-                                        <span style="margin-right: 1em;"><input type="radio" name="medical"
-                                                value=0>無</span>
-                                        <input type="radio" name="medical" value=2 checked="checked">有
-                                        <div class="medical_up mt-3">
-                                            <input type="hidden" name="user_id" value={{$user->id}}>
-                                            <input type="submit" class="btn btn-outline-secondary btn-sm" value="変更">
-                                        </div>
-                                    </form>
-                                </td>
-                                @endif
                                 @if ($one_record->note == null)
                                 <td>
                                     <form action="/note_up" method="get">
