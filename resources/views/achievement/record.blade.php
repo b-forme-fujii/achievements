@@ -6,38 +6,35 @@
     <div class="col-1"></div>
     <div class="col-md-10">
         <div class="card">
-            <nav class="navbar navbar-expand-md navbar-light bg-white shadow-sm">
-                <div class="container">
-                    実績ページ
-                    <div class="collapse navbar-collapse" id="navbarSupportedContent">
-                        <!-- Left Side Of Navbar -->
-                        <ul class="navbar-nav mr-auto"></ul>
-                        <!-- Right Side Of Navbar -->
-                        <ul class="navbar-nav ml-auto">
-                            <li class="nav-item dropdown">
-                                <a id="navbarDropdown" class="nav-link dropdown-toggle" href="#" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" v-pre>
-                                    {{$user->first_name}}{{$user->last_name}} <span class="caret"></span>
-                                </a>
-                                <div class="dropdown-menu" aria-labelledby="navbarDropdown">
-                                    <a a class="dropdown-item text-black" href="/">ログアウト</a>
-                                </div>
-                            </li>
-                        </ul>
-                    </div>
+            <nav class="navbar navbar-expand-lg navbar-light bg-light">
+                <div class="collapse navbar-collapse" id="navbarSupportedContent">
+                    <!-- Left Side Of Navbar -->
+                    <ul class="navbar-nav mr-auto">
+                        <a class="navbar-brand" href="/achievement?user_id={{$user->id}}&month=0">実績ページ</a>
+                    </ul>
+                    <!-- Right Side Of Navbar -->
+                    <ul class="navbar-nav ml-auto mt-2">
+                        <li class="nav-item active mt-2 mr-3">
+                            <p class="user_name">利用者名： {{$user->first_name}}{{$user->last_name}} </p>
+                          </li>
+                          <li class="nav-item">
+                            <a class="nav-link" href="/">ログアウト</a>
+                        </li>
+                    </ul>
                 </div>
             </nav>
 
             @if (is_null($one_record))
             <div class="alert alert-danger mt-4 mx-3" role="alert">
                 <div class="row">
-                    <b class="mt-3 mr-auto">※今日の開始時間が登録されていません</b>
-                    <a href="/new_record?user_id={{$user->id}}" class="btn btn-outline-primary my-2 mr-5">出席</a>
+                    <b class="mt-3 mx-2 mr-auto">今日の開始時間が登録されていません</b>
+                    <a href="/new_record?user_id={{$user->id}}" class="btn btn-primary my-2 mr-5">出席</a>
 
                 </div>
             </div>
             @else
             <div class="card mt-4 mx-3">
-                <h5 class="card-header text-white bg-primary mb-3">本日の利用状況</h5>
+                <h5 class="card-header mb-3">本日の利用状況</h5>
                 <div class="card-body">
                     <table class="table table-bordered">
                         <thead>
@@ -53,16 +50,16 @@
                         <tbody>
                             <tr align="center">
                                 <td>
-                                    <div class="start mt-2">{{substr($one_record->start_time,0, 5)}}</div>
+                                    <div class="start mt-3">{{substr($one_record->start_time,0, 5)}}</div>
                                 </td>
                                 @if (is_null($one_record->end_time))
                                 <td>
-                                    <div class="end mt-1"><a href="/end_time?user_id={{$user->id}}"
+                                    <div class="end mt-2"><a href="/end_time?user_id={{$user->id}}"
                                             class="btn btn-outline-danger">退勤</a></div>
                                 </td>
                                 @else
                                 <td>
-                                    <div class="end mt-2">{{substr($one_record->end_time,0, 5)}}</div>
+                                    <div class="end mt-3">{{substr($one_record->end_time,0, 5)}}</div>
                                 </td>
                                 @endif
                                 @if ($one_record->food == 0)
@@ -239,7 +236,7 @@
                 </div>
             </div>
             @endif
-            
+
             <div class="card  mt-4 mx-3">
                 <div class="card-header">
                     <ul class="nav nav-tabs card-header-tabs">
@@ -250,14 +247,14 @@
                         <li class="nav-item mx-1 mt-2">
                             <form action="/achievement" method="get">
                                 @csrf
-                                    <select class="past my-1" name="month">
-                                        <option>{{$month->isoformat('Y年M月')}}</option>
-                                        @foreach (array_map(null, $years, $nums) as [$year, $num])
-                                        <option value={{(int)$num}}>{{$year->isoformat('Y年M月')}}</option>
-                                        @endforeach
-                                    </select>
-                                    <input type="hidden" name="user_id" value={{$user->id}}>
-                                    <input type="submit" class="btn btn-outline-secondary btn-sm mx-2" value="変更">
+                                <select class="past my-1" name="month">
+                                    <option>{{$month->isoformat('Y年M月')}}</option>
+                                    @foreach (array_map(null, $years, $nums) as [$year, $num])
+                                    <option value={{(int)$num}}>{{$year->isoformat('Y年M月')}}</option>
+                                    @endforeach
+                                </select>
+                                <input type="hidden" name="user_id" value={{$user->id}}>
+                                <input type="submit" class="btn btn-outline-secondary btn-sm mx-2" value="変更">
                             </form>
                         </li>
                     </ul>
@@ -297,19 +294,25 @@
                                 @if ($record->food == 0)
                                 <td>無</td>
                                 @elseif ($record->food == 1)
-                                <td><font color="red">有</font></td>
+                                <td>
+                                    <font color="red">有</font>
+                                </td>
                                 @endif
 
                                 @if ($record->outside_support == 0)
                                 <td>無</td>
                                 @elseif ($record->outside_support == 2)
-                                <td><font color="red">有</font></td>
+                                <td>
+                                    <font color="red">有</font>
+                                </td>
                                 @endif
 
                                 @if ($record->medical__support == 0)
                                 <td>無</td>
                                 @elseif ($record->medical__support == 2)
-                                <td><font color="red">有</font></td>
+                                <td>
+                                    <font color="red">有</font>
+                                </td>
                                 @endif
 
                                 @if ($record->note)
