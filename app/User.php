@@ -8,13 +8,14 @@ use Illuminate\Http\Request;
 
 class User extends Model
 {
-    /**ガードするフィールド */
+    /** ガードするフィールド */
     protected $guarded = array('id');
 
+    /** 変更を許可するフィールド */
     protected $fillable = array('school_id', 'first_name', 'last_name', 'full_name', 'age');
 
     
-     //利用者登録用のバリデーション
+     /** 利用者登録用のバリデーション */
      public static $rules = [
         'first_name' => ['required', 'regex:/^[ぁ-んァ-ヶー一-龠]+$/', 'min:1|max:10'],
         'last_name' => ['required', 'regex:/^[ぁ-んァ-ヶー一-龠]+$/', 'min:1|max:20'],
@@ -22,7 +23,7 @@ class User extends Model
         'age' => ['required', 'numeric', 'min:18|max:100'],
     ];
 
-     // バリデーションのエラーメッセージ
+     /** バリデーションのエラーメッセージ */
      public static $messages = [
         'first_name.required' => '名字を入力して下さい。',
         'first_name.regex' => '全角文字で入力して下さい。',
@@ -48,9 +49,10 @@ class User extends Model
         'school_id.numeric' => 'エラーが発生しました。もう一度選択して下さい。',
     ];
     
-     
     /**
-     * 本校の利用者一覧を取得
+     * 本校の利用者一覧を取得 
+     * 
+     * @return void
      */
     public function School_1()
     {
@@ -60,9 +62,11 @@ class User extends Model
         return $school_1;
     }
 
-     /**
-      * 2校の利用者一覧を取得
-      */
+    /**
+     * 2校の利用者一覧を取得
+     * 
+     * @return void
+     */
     public function School_2()
     {
         $school_2 = User::where('school_id', 2)
@@ -73,7 +77,10 @@ class User extends Model
 
 
     /**
-     * 該当ユーザーの情報を取得
+     * 利用者の情報を取得
+     * 
+     * @return void
+     * @param Request $request
      */
     public function getUser(Request $request)
     {

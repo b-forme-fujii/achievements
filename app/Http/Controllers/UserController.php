@@ -10,17 +10,19 @@ use Illuminate\Support\Facades\DB;
 
 class UserController extends Controller
 {
-    /**
-     * ユーザー選択ページ（スタートページ）
-     * 本校と2校別でユーザー情報を取得
+     /**
+     * 利用者選択ページ（スタートページ）
+     * 
+     * @return void
+     * 本校と2校別で利用者情報を取得
      */
     public function index()
     {
-        //本校のユーザー情報の取得
+        //本校の利用者情報の取得
         $school_1 = new User();
         $school_1 = $school_1->School_1();
 
-        //2校のユーザー情報の取得
+        //2校の利用者情報の取得
         $school_2 = new User();
         $school_2 = $school_2->School_2();
 
@@ -34,6 +36,8 @@ class UserController extends Controller
 
     /**
      * 新規利用者登録ページへ移動
+     * 
+     * @return void
      */
     public function add_user()
     {
@@ -64,20 +68,21 @@ class UserController extends Controller
     }
 
     /**
-     * ユーザー情報編集ページの処理
+     * 利用者情報編集ページへ移動
+     * 
      * @param Request $request
      * @return void
-     * requestでidが送られてきているかで処理を分岐
+     * 利用者が選択されたどうかで処理を分岐
      */
     public function edit_user(Request $request)
     {
-        //user_idがnullだった場合は在籍校別のユーザー情報のみを取得
+        //user_idがnullだった場合は在籍校別の利用者情報のみを取得
         if ($request->user_id == null) {
-            //本校のユーザー情報の取得
+            //本校の利用者情報の取得
             $school_1 = new User();
             $school_1 = $school_1->School_1();
 
-            //2校のユーザー情報の取得
+            //2校の利用者情報の取得
             $school_2 = new User();
             $school_2 = $school_2->School_2();
 
@@ -87,15 +92,15 @@ class UserController extends Controller
             ];
             return view('master.edit_user', $data);
         } else {
-            //本校のユーザー情報の取得
+            //本校の利用者情報の取得
             $school_1 = new User();
             $school_1 = $school_1->School_1();
 
-            //2校のユーザー情報の取得
+            //2校の利用者情報の取得
             $school_2 = new User();
             $school_2 = $school_2->School_2();
 
-            //ユーザー情報を取得
+            //利用者情報を取得
             $user = new User();
             $user = $user->getUser($request);
 
@@ -109,7 +114,8 @@ class UserController extends Controller
     }
 
     /**
-     * ユーザー情報を編集
+     * 利用者情報を編集を実行
+     * 
      * @param Request $request
      * @return void
      */
@@ -118,13 +124,13 @@ class UserController extends Controller
         //バリデーションの実行
         $this->validate($request, User::$rules, User::$messages);
 
-        //ユーザー情報を取得
+        //利用者情報を取得
         $user = new User();
         $user = $user->getUser($request);
 
-        /**formの内容を全て取得 */
+        //formの内容を全て取得
         $form = $request->all();
-        /**内容を更新して保存 */
+        //内容を更新して保存 
         $user->fill($form)->save();
 
         return redirect('/master');

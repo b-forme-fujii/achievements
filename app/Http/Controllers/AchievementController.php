@@ -32,7 +32,7 @@ class AchievementController extends Controller
         $nums = new Achievement();
         $nums = $nums->Manth_Nums();
 
-        //該当ユーザーの情報をを取得
+        //利用者の情報をを取得
         $user = new User();
         $user = $user->getUser($request);
 
@@ -40,7 +40,7 @@ class AchievementController extends Controller
         $one_record = new Achievement();
         $one_record = $one_record->One_Record($request);
 
-        //該当ユーザーの月の実績データの取得
+        //利用者の月の実績データの取得
         $records = new Achievement();
         $records = $records->Month_Records($request);
 
@@ -64,7 +64,7 @@ class AchievementController extends Controller
      */
     public function new_record(Request $request)
     {
-        //該当ユーザーの今日の実績データを検索 
+        //利用者の今日の実績データを検索 
         $one_record = new Achievement();
         $one_record = $one_record->One_Record($request);
 
@@ -87,7 +87,7 @@ class AchievementController extends Controller
     public function end_time(Request $request)
     {
 
-        //該当ユーザーの今日の実績データを検索
+        //利用者の今日の実績データを検索
         $one_record = new Achievement();
         $one_record = $one_record->One_Record($request);
 
@@ -109,7 +109,7 @@ class AchievementController extends Controller
      */
     public function food_up(Request $request)
     {
-        //該当ユーザーの今日の実績データを検索 
+        //利用者の今日の実績データを検索 
         $one_record = new Achievement();
         $one_record = $one_record->One_Record($request);
 
@@ -131,7 +131,7 @@ class AchievementController extends Controller
      */
     public function outside_up(Request $request)
     {
-        //該当ユーザーの今日の実績データを検索 
+        //利用者の今日の実績データを検索 
         $one_record = new Achievement();
         $one_record = $one_record->One_Record($request);
 
@@ -153,7 +153,7 @@ class AchievementController extends Controller
      */
     public function medical_up(Request $request)
     {
-        //該当ユーザーの今日の実績データを検索 
+        //利用者の今日の実績データを検索 
         $one_record = new Achievement();
         $one_record = $one_record->One_Record($request);
 
@@ -175,7 +175,7 @@ class AchievementController extends Controller
      */
     public function note_up(Request $request)
     {
-        //該当ユーザーの今日の実績データを検索 
+        //利用者の今日の実績データを検索 
         $one_record = new Achievement();
         $one_record = $one_record->One_Record($request);
 
@@ -211,7 +211,7 @@ class AchievementController extends Controller
      */
     public function create_achievement(Request $request)
     {
-        //該当ユーザーの当日レコードが存在しないかをチェック
+        //利用者の当日レコードが存在しないかをチェック
         $one_record = Achievement::where('user_id', $request->user_id)
             ->wheredate('insert_date', $request->insert_date)
             ->first();
@@ -274,7 +274,7 @@ class AchievementController extends Controller
         //内容を更新して保存
         $achievement->fill($form)->save();
 
-        //該当利用者の当月の実績データを取得
+        //利用者の当月の実績データを取得
         $data = new Master();
         $data = $data->Records($request);
 
@@ -298,7 +298,7 @@ class AchievementController extends Controller
         //内容を更新して保存
         $achievement->fill($form)->save();
 
-        //該当利用者の当月の実績データを取得
+        //利用者の当月の実績データを取得
         $data = new Master();
         $data = $data->Records($request);
 
@@ -317,12 +317,11 @@ class AchievementController extends Controller
         $achievement = Achievement::where('id', $request->id)
             ->first();
         if (is_null($achievement)) {
-            //該当実績データがない場合
+            //実績データがない場合
             return redirect('/master');
         } else {
             //存在していた場合削除処理を実行
-            $achievement->delete();   
-
+            $achievement->delete();
            //実績閲覧ページにリダイレクト   
            return redirect('/master');
         }

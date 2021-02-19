@@ -13,11 +13,11 @@ class MasterController extends Controller
     //利用者情報を在籍校別で取得
     public function master_index(Request $request)
     {
-        //本校のユーザー情報の取得
+        //本校の利用者情報の取得
         $school_1 = new User();
         $school_1 = $school_1->School_1();
 
-        //2校のユーザー情報の取得
+        //2校の利用者情報の取得
         $school_2 = new User();
         $school_2 = $school_2->School_2();
 

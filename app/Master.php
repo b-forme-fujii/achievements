@@ -47,11 +47,11 @@ class Master extends Authenticatable
     public function Records(Request $request)
     {
 
-        //本校のユーザー情報の取得
+        //本校の利用者情報の取得
         $school_1 = new User();
         $school_1 = $school_1->School_1();
 
-        //2校のユーザー情報の取得
+        //2校の利用者情報の取得
         $school_2 = new User();
         $school_2 = $school_2->School_2();
 
@@ -71,11 +71,11 @@ class Master extends Authenticatable
         $nums = new Achievement();
         $nums = $nums->Manth_Nums();
 
-        //該当ユーザーの情報をを取得
+        //利用者の情報をを取得
         $user = new User();
         $user = $user->getUser($request);
 
-        //該当ユーザーの月の実績データの取得
+        //利用者の月の実績データの取得
         $records = new Achievement();
         $records = $records->Month_Records($request);
 

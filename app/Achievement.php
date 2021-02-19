@@ -122,7 +122,7 @@ class Achievement extends Model
     }
 
     /**
-     * ユーザーの当月の実績データを取得 
+     * 利用者の当月の実績データを取得 
      * 
      * @param Request $request
      * @return void

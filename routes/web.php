@@ -16,7 +16,7 @@
 // });
 Route::get('hello', 'HelloController@index');
 
-/**ユーザー選択ページ*/
+/**利用者選択ページ*/
 Route::get('/', 'UserController@index');
 
 /**実績登録ページ*/
