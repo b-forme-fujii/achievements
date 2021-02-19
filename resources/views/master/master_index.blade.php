@@ -77,7 +77,7 @@
                                 @endforeach
                             </select>
                             <input type="hidden" name="month" value=0>
-                            <input type="submit" value="一覧表示" class="button">
+                            <input type="submit" value="実績表示" class="button">
                         </div>
                     </div>
                 </form>
@@ -97,7 +97,7 @@
                                 @endforeach
                             </select>
                             <input type="hidden" name="month" value=0>
-                            <input type="submit" value="一覧表示" class="button">
+                            <input type="submit" value="実績表示" class="button">
                         </div>
                     </div>
                 </form>
