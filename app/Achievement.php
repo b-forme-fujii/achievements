@@ -17,6 +17,22 @@ class Achievement extends Model
     /** date型にキャストするフィールド */
     protected $dates = array('insert_date');
 
+    //実績登録、編集用のバリデーション
+    public static $rules = [
+        'start_time' => ['required', 'date_format:H:i'],
+        'end_time' => ['required', 'date_format:H:i', 'after:start_time'],
+    ];
+
+     /** バリデーションのエラーメッセージ */
+    public static $messages = [
+        'start_time.required' => '必須項目です',
+        'start_time.date_format' => 'H:i形式で入力して下さい。',
+
+        'end_time.required' => '必須項目です',
+        'end_time.date_format' => 'H:i形式で入力して下さい。',
+        'end_time.after' => '開始時間より後の時間を入力して下さい。',
+    ];
+
     /** usersテーブルとリレーション処理 */
     public function user()
     {
