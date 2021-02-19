@@ -247,7 +247,7 @@
                                 <font class="business">事業者及びその事業所</font>
                                 <br>
                                 @if ($user->school_id == 1)
-                                <font class="school_name">未来のかたち　本町本校</font>    
+                                <font class="school_name">未来のかたち　本町本校</font>
                                 @elseif($user->school_id == 2)
                                 <font class="school_name">未来のかたち　本町2校</font>
                                 @endif
@@ -259,15 +259,18 @@
                     <h1>{{$month->isoformat('Y年M月')}}分</h1>
                     <table class="table table-bordered">
                         <thead>
-                            <tr align="center">
-                                <th>日付</th>
-                                <th>曜日</th>
+                            <tr class="text-center">
+                                <th class="align-middle" rowspan="2">日付</td>
+                                <th class="align-middle" rowspan="2">曜日</td>
+                                <th colspan="5">サービス提供実績</th>
+                                <th class="align-middle" rowspan="2">備考</td>
+                            </tr>
+                            <tr class="text-center">
                                 <th>開始時間</th>
                                 <th>終了時間</th>
                                 <th>食事提供加算</th>
                                 <th>施設外支援</th>
                                 <th>医療連携体制加算</th>
-                                <th>備考</th>
                             </tr>
                         </thead>
                         <tbody>
