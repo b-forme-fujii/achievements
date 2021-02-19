@@ -64,6 +64,10 @@
     font-size: 15px;  
   }
 
+  font.master_title{
+    font-size: 25px;
+    color: #818182;
+  }
   @import url(https://fonts.googleapis.com/css?family=Nunito);
   @charset "UTF-8";
 
