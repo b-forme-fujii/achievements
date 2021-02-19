@@ -7,9 +7,7 @@
         <div class="card">
             <div class="card-header">
                 <nav class="navbar navbar-expand-lg navbar-light bg-light">
-                    <a class="navbar-brand" href="/master">
-                        <font class="master_title">実績データの追加</font>
-                    </a>
+                    <font class="master_title">実績データの追加</font>
                     <div class="collapse navbar-collapse" id="navbarSupportedContent">
                         <!-- Left Side Of Navbar -->
                         <ul class="navbar-nav mr-auto"></ul>
@@ -68,12 +66,13 @@
                         <div class="form-group row">
                             <label for="insert_date" class="col-md-5 col-form-label text-md-right">登録日</label>
 
-                            <div class="col-md-5">
+                            <div class="col-md-3">
                                 <input id="insert_date" type="date"
                                     class="form-control @if(session('error')) is-invalid @endif" name="insert_date"
-                                    value="{{ old('insert_date', date('Y-m-d')) }}" required autocomplete="insert_date" autofocus>
-                                 @if (session('error')) 
-                                 <span class="invalid-feedback" role="alert">
+                                    value="{{ old('insert_date', date('Y-m-d')) }}" required autocomplete="insert_date"
+                                    autofocus>
+                                @if (session('error'))
+                                <span class="invalid-feedback" role="alert">
                                     <strong>{{ session('error') }}</strong>
                                 </span>
                                 @endif
@@ -87,9 +86,9 @@
 
                             <div class="col-md-3 mt-1">
                                 <input id="start_time" type="time"
-                                    class="form-control @error('start_time') is-invalid @enderror" name="start_time" step="900" 
-                                    value="{{ empty(old('start_time')) ? ("09:30") : old('start_time')}}" min="09:30"
-                                    max="16:00" required autocomplete="start_time" autofocus>
+                                    class="form-control @error('start_time') is-invalid @enderror" name="start_time"
+                                    step="900" value="{{ empty(old('start_time')) ? ("09:30") : old('start_time')}}"
+                                    min="09:30" max="16:00" required autocomplete="start_time" autofocus>
                                 @error('start_time')
                                 <span class="invalid-feedback" role="alert">
                                     <strong>{{ $message }}</strong>
@@ -105,9 +104,9 @@
 
                             <div class="col-md-3 mt-1">
                                 <input id="end_time" type="time"
-                                    class="form-control @error('end_time') is-invalid @enderror" name="end_time" step="900"
-                                    value="{{ empty(old('end_time')) ? ("16:00") : old('end_time')}}" min="10:15"
-                                    max="16:00" required autocomplete="end_time" autofocus>
+                                    class="form-control @error('end_time') is-invalid @enderror" name="end_time"
+                                    step="900" value="{{ empty(old('end_time')) ? ("16:00") : old('end_time')}}"
+                                    min="10:15" max="16:00" required autocomplete="end_time" autofocus>
                                 @error('end_time')
                                 <span class="invalid-feedback" role="alert">
                                     <strong>{{ $message }}</strong>
@@ -198,8 +197,6 @@
                             </div>
                         </div>
                         <input type="hidden" name="user_id" value={{$id}}>
-
-
 
                         <div class="form-group row mb-0">
                             <div class="col-md-6 offset-md-4">
