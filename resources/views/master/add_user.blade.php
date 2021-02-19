@@ -89,7 +89,9 @@
 
                         <div class="form-group row">
                             <label for="full_name" class="col-md-4 col-form-label text-md-right">
-                                利用者のフルネーム<br>(カタカナ)
+                                <font class=>利用者のフルネーム</font>
+                                <br>
+                                <font class="mr-5">(カナ)</font>
                             </label>
 
                             <div class="col-md-6 mt-1">
