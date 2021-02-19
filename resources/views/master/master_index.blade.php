@@ -3,19 +3,76 @@
 <link rel="stylesheet" href="{{ asset('js/jquery-ui-1.12.1/jquery-ui.min.css') }}">
 <link rel="stylesheet" href="{{ asset('js/jquery-ui-1.12.1/jquery-ui.structure.min.css') }}">
 <link rel="stylesheet" href="{{ asset('js/jquery-ui-1.12.1/jquery-ui.theme.min.css') }}">
-@section('title', '管理者画面')
-@section('menubar')
+@yield('css')
+<style>
+    .ui-dialog-titlebar {
+        color: white;
+        background: red;
+    }
+
+</style>
+@section('title', '管理者実績閲覧画面')
 @section('content')
 <div class="row justify-content-center my-3">
     <div class="col-md-10">
         <div class="card">
-            <div class="card-header">実績閲覧</div>
+            <div class="card-header">
+                <nav class="navbar navbar-expand-lg navbar-light bg-light">
+                    <a class="navbar-brand" href="/master">
+                        <font class="master_title">実績閲覧</font>
+                    </a>
+                    <div class="collapse navbar-collapse" id="navbarSupportedContent">
+                        <!-- Left Side Of Navbar -->
+                        <ul class="navbar-nav mr-auto"></ul>
+                        <!-- Right Side Of Navbar -->
+                        <ul class="navbar-nav ml-auto">
+                            <!-- Authentication Links -->
+                            @guest
+                            <li class="nav-item">
+                                <a class="nav-link" href="{{ route('login') }}">{{ __('Login') }}</a>
+                            </li>
+                            @if (Route::has('register'))
+                            <li class="nav-item">
+                                <a class="nav-link" href="{{ route('register') }}">{{ __('Register') }}</a>
+                            </li>
+                            @endif
+                            @else
+                            <li class="nav-item dropdown">
+                                <a id="navbarDropdown" class="nav-link dropdown-toggle mt-1 mx-2" href="#" role="button"
+                                    data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" v-pre>
+                                    管理者機能一覧<span class="caret"></span>
+                                </a>
+
+                                <div class="dropdown-menu dropdown-menu-right" aria-labelledby="navbarDropdown">
+                                    <a class="dropdown-item text-black" href="/master">実績閲覧</a>
+                                    <a class="dropdown-item text-black" href="/add_user">新規利用者登録</a>
+                                    <a class="dropdown-item text-black" href="/edit_user">利用者情報の編集</a>
+                                    <a class="dropdown-item" href="{{ route('logout') }}" onclick="event.preventDefault();
+                                                             document.getElementById('logout-form').submit();">
+                                        {{ __('Logout') }}
+                                    </a>
+
+                                    <form id="logout-form" action="{{ route('logout') }}" method="POST"
+                                        style="display: none;">
+                                        @csrf
+                                    </form>
+                                </div>
+                            </li>
+                            @endguest
+                        </ul>
+                    </div>
+                </nav>
+            </div>
             <div class="card-body">
                 <form method="GET" action="/check_records">
                     @csrf
                     <div class="form-group row">
-                        <label for="school-1" class="col-md-4 col-form-label text-md-center">本校の利用者</label>
-                        <div class="col-md-6">
+                        <label for="school-1" class="col-md-4 col-form-label text-md-center">
+                            <font class="school_1">本校の利用者</font>
+                            <br>
+                            <a class ="d_excel "href="#">全員分をダウンロード</a>
+                        </label>
+                        <div class="col-md-4">
                             <select class="form-control" name="user_id">
                                 @foreach ($school_1 as $sch1)
                                 <option value={{$sch1->id}}>{{$sch1->first_name}}　{{$sch1->last_name}}</option>
@@ -30,8 +87,12 @@
                 <form method="GET" action="/check_records">
                     @csrf
                     <div class="form-group row">
-                        <label for="school-2" class="col-md-4 col-form-label text-md-center">２校の利用者</label>
-                        <div class="col-md-6">
+                        <label for="school-2" class="col-md-4 col-form-label text-md-center">
+                            <font class="school_2">２校の利用者</font>
+                            <br>
+                            <a class ="d_excel "href="#">全員分をダウンロード</a>
+                        </label>
+                        <div class="col-md-4">
                             <select class="form-control" name="user_id">
                                 @foreach ($school_2 as $sch2)
                                 <option value={{$sch2->id}}>{{$sch2->first_name}}　{{$sch2->last_name}}</option>
@@ -49,46 +110,61 @@
     @if (isset($user))
     <div class="col-10 mt-3">
         <div class="card">
-            <div class="card-header">
-                <ul class="nav nav-tabs card-header-tabs">
-                    <li class="nav-item mx-2">
-                        <font size="2">支給決定障害者名</font>
-                        <p class="name">{{$user->first_name}} {{$user->last_name}}</p>
-                    </li>
-                    <li class="nav-item mx-1 mt-2">
-                        <form action="/check_records" method="get">
-                            @csrf
-                            <select class="past my-1" name="month">
-                                <option>{{$month->isoformat('Y年M月')}}</option>
-                                @foreach (array_map(null, $years, $nums) as [$year, $num])
-                                <option value={{(int)$num}}>{{$year->isoformat('Y年M月')}}</option>
-                                @endforeach
-                            </select>
-                            <input type="hidden" name="user_id" value={{$user->id}}>
-                            <input type="submit" class="btn btn-outline-secondary btn-sm mx-2" value="変更">
-                        </form>
-                    </li>
-                    <li class="nav-item ml-auto">
-                        <button type="button" class="btn btn-outline-secondary btn-sm mx-1 mt-2"
-                            onclick="location.href='/add_achievement?user_id={{$user->id}}';">記録を作成</button>
-                    </li>
-                </ul>
+            <div class="card-header mb-2">
+                <div class="row">
+                    <ul class="nav card-header-tabs mr-auto">
+                        <li class="user_name mx-3">
+                            <font class="name_title">支給決定障害者氏名</font>
+                            <br>
+                            <font class="name">{{$user->first_name}} {{$user->last_name}}</font>
+                        </li>
+                        <li class="month-select mx-1 mt-2">
+                            <form action="/check_records" method="get">
+                                @csrf
+                                <select class="past my-1" name="month">
+                                    <option>{{$month->isoformat('Y年M月')}}</option>
+                                    @foreach (array_map(null, $years, $nums) as [$year, $num])
+                                    <option value={{(int)$num}}>{{$year->isoformat('Y年M月')}}</option>
+                                    @endforeach
+                                </select>
+                                <input type="hidden" name="user_id" value={{$user->id}}>
+                                <input type="submit" class="btn btn-outline-secondary btn-sm mx-2" value="変更">
+                            </form>
+                        </li>
+                        <li class="card-title mx-1 mt-2">
+                            <font>実績記録表</font>
+                        </li>
+                    </ul>
+                    <ul class="nav card-header-tabs ml-auto">
+                        <li class="add_achievement mx-3">
+                            <button type="button" class="btn btn-outline-secondary btn-sm mx-1 mt-2"
+                            onclick="location.href='/add_achievement?user_id={{$user->id}}';">実績を追加する</button>
+                        </li>
+                        <li class="add_achievement mr-5">
+                            <button type="button" class="btn btn-outline-primary btn-sm mx-1 mt-2"
+                            onclick="location.href='#'">ダウンロード</button>
+                        </li>
+                    </ul>
+                </div>
             </div>
             <div class="card-body">
                 <h1>{{$month->isoformat('Y年M月')}}分</h1>
                 <table class="table table-bordered">
                     <thead>
-                        <tr align="center">
-                            <th>日付</th>
-                            <th>曜日</th>
+                        <tr class="text-center">
+                            <th class="align-middle" rowspan="2">日付</th>
+                            <th class="align-middle" rowspan="2">曜日</th>
+                            <th colspan="5">サービス提供実績</th>
+                            <th class="align-middle" rowspan="2">備考</th>
+                            <th rowspan="2"></th>
+                            <th rowspan="2"></th>
+                        </tr>
+                        <tr class="text-center">
                             <th>開始時間</th>
                             <th>終了時間</th>
                             <th>食事提供加算</th>
                             <th>施設外支援</th>
                             <th>医療連携体制加算</th>
-                            <th>備考</th>
-                            <th></th>
-                            <th></th>
                         </tr>
                     </thead>
                     <tbody>
@@ -145,7 +221,8 @@
                             </td>
                             <td>
                                 <input type="button" class="btn btn-danger btn-sm"
-                                onclick="dAchievement({{$record->id }}, '{{ $record->insert_date->isoformat('Y年M月D日') }}');" value="削除">
+                                    onclick="dAchievement({{$record->id }}, '{{ $record->insert_date->isoformat('Y年M月D日') }}');"
+                                    value="削除">
                             </td>
                             @endif
                         </tr>
@@ -157,12 +234,13 @@
     </div>
     @endif
 </div>
- <script src="{{ asset('js/jquery-ui-1.12.1/external/jquery/jquery.js') }}"></script>
- <script src="{{ asset('js/jquery-ui-1.12.1/jquery-ui.min.js') }}"></script>
- <script>
+<script src="{{ asset('js/jquery-ui-1.12.1/external/jquery/jquery.js') }}"></script>
+<script src="{{ asset('js/jquery-ui-1.12.1/jquery-ui.min.js') }}"></script>
+<script>
     $(function () {
         $("#dialog-confirm").hide();
     });
+
     function dAchievement(id, insert_date) {
         $("#dAchievement").text(insert_date);
         $("#dialog-confirm").dialog({
@@ -181,9 +259,10 @@
             }
         });
     }
- </script>
- 
-<div id="dialog-confirm" title="削除">
+
+</script>
+
+<div id="dialog-confirm" title="実績を削除">
     <p><span class=" ui-icon ui-icon-alert" style="float:left; margin:3px 2px;"></span>
         下記の実績を削除してもいいですか？
         <p id="dAchievement"></p>
