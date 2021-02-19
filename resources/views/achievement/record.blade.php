@@ -260,10 +260,10 @@
                     <table class="table table-bordered">
                         <thead>
                             <tr class="text-center">
-                                <th class="align-middle" rowspan="2">日付</td>
-                                <th class="align-middle" rowspan="2">曜日</td>
+                                <th class="align-middle" rowspan="2">日付</th>
+                                <th class="align-middle" rowspan="2">曜日</th>
                                 <th colspan="5">サービス提供実績</th>
-                                <th class="align-middle" rowspan="2">備考</td>
+                                <th class="align-middle" rowspan="2">備考</th>
                             </tr>
                             <tr class="text-center">
                                 <th>開始時間</th>
