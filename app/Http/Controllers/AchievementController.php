@@ -211,7 +211,6 @@ class AchievementController extends Controller
      */
     public function create_achievement(Request $request)
     {
-        // dd($request->insert_date);
         //該当ユーザーの当日レコードが存在しないかをチェック
         $one_record = Achievement::where('user_id', $request->user_id)
             ->wheredate('insert_date', $request->insert_date)
@@ -222,13 +221,17 @@ class AchievementController extends Controller
                 ->withInput()
                 ->with('error', '既に実績データが登録されています。');
         } else {
+            //バリデーションを実行
+            $this->validate($request, Achievement::$rules, Achievement::$messages);
 
             //Achievementモデルのオブジェクト作成
             $achievement = new Achievement();
+
             //formの内容を全て取得
             $form = $request->all();
             //内容を更新して保存
             $achievement->fill($form)->save();
+            
             //実績閲覧ページにリダイレクト   
             return redirect('/master');
         }
