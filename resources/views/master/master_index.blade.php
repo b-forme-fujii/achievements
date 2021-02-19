@@ -9,9 +9,8 @@
         color: white;
         background: red;
     }
-
 </style>
-@section('title', '管理者実績閲覧画面')
+@section('title', '管理者実績閲覧')
 @section('content')
 <div class="row justify-content-center my-3">
     <div class="col-md-10">

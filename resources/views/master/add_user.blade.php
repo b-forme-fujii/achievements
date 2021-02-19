@@ -1,5 +1,5 @@
 @extends('layouts.master_app')
-@section('title', '利用者登録画面')
+@section('title', '利用者登録')
 @yield('css')
 @section('content')
 <div class="row justify-content-center my-3">

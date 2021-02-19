@@ -1,6 +1,6 @@
 @extends('layouts.master_app')
 @yield('css')
-@section('title', '管理者画面')
+@section('title', '利用者情報の編集')
 @section('content')
 <div class="row justify-content-center my-3">
     <div class="col-md-10">

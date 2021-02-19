@@ -1,5 +1,5 @@
 @extends('layouts.ach_app')
-@section('title', 'ユーザー選択画面')
+@section('title', '利用者選択画面')
 @yield('css')
 @section('content')
 <div class="container">
