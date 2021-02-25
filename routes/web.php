@@ -72,3 +72,11 @@ Route::post('/edit_achievement', 'AchievementController@update_achievement')->mi
 
 //実績データの削除を実行
 Route::get('/del_achievement', 'AchievementController@delete_achievement')->middleware('auth');
+
+//利用者の実績データを取得を個別で取得
+Route::get('/one_data', 'MasterController@one_data')->middleware('auth');
+//本校の利用者一覧の実績のダウンロードページ
+Route::get('/dl_school1', 'MasterController@dl_school1')->middleware('auth');
+
+//2校の利用者一覧の実績のダウンロードページ
+Route::get('/dl_school2', 'MasterController@dl_school2')->middleware('auth');
