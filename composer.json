@@ -15,7 +15,7 @@
         "laravel/tinker": "^2.5",
         "laravel/ui": "1.*",
         "nesbot/carbon": "^2.42",
-        "phpoffice/phpspreadsheet": "^1.15"
+        "phpoffice/phpspreadsheet": "^1.16"
     },
     "require-dev": {
         "barryvdh/laravel-debugbar": "^3.5",
