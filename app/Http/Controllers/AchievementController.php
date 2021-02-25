@@ -29,10 +29,11 @@ class AchievementController extends Controller
         $years = new Achievement();
         $years = $years->One_Year();
 
+        //過去のデータを取得する為の引数を取得
         $nums = new Achievement();
         $nums = $nums->Manth_Nums();
 
-        //利用者の情報をを取得
+        //利用者の情報を取得
         $user = new User();
         $user = $user->getUser($request);
 
