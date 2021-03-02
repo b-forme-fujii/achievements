@@ -9,6 +9,9 @@ use Illuminate\Support\Facades\DB;
 use App\Exports\Export;
 use App\Http\Requests\AchievementFormRequest;
 use Illuminate\Http\Request;
+use PhpOffice\PhpSpreadsheet\Writer\Xlsx;
+use PhpOffice\PhpSpreadsheet\IOFactory;
+use PhpOffice\PhpSpreadsheet\Shared\File;
 
 class MasterController extends Controller
 {
@@ -58,28 +61,35 @@ class MasterController extends Controller
      * @return void
      * 
      */
-    public function one_data(Request $request){
+    public function one_data(Request $request)
+    {
+        //テンプレートファイル取得
+        $spreadsheet = \PhpOffice\PhpSpreadsheet\IOFactory::load('./excel/sample.xlsx');
 
-        //利用者の情報を取得
-        $user = new User();
-        $user = $user->getUser($request);
+        $sheet = $spreadsheet->getActiveSheet();
 
-         //当月の日数を取得
-         $days = new Achievement();
-         $days = $days->One_Month($request);
+        $sheet->setCellValue('E1', '2021年');
 
-        //利用者の月の実績データの取得
-        $records = new Achievement();
-        $records = $records->Month_Records($request);
+        $writer = new Xlsx($spreadsheet);
+        $writer->save('write.xlsx');
+        return response()->download('write.xlsx');
 
-        $data = [
-            'user' => $user,
-            'days' => $days,
-            'records' => $records,
-        ];
-        return view('master.export_one', $data);
-        // $view = \view('master.export_one', $data);
-        // return \Excel::download(new Export($view), 'users.xlsx');
+        // //利用者の情報を取得
+        // $user = new User();
+        // $user = $user->getUser($request);
+
+        //  //当月の日数を取得
+        //  $days = new Achievement();
+        //  $days = $days->One_Month($request);
+
+        // //利用者の月の実績データの取得
+        // $records = new Achievement();
+        // $records = $records->Month_Records($request);
+
+        // $data = [
+        //     'user' => $user,
+        //     'days' => $days,
+        //     'records' => $records,
+        // ];
     }
-
 }
