@@ -100,10 +100,10 @@ class Master extends Authenticatable
         $month = new Achievement();
         $month = $month->Beginning($request);
 
-         //月の日数が何日かを取得
-         $addMonth = new Achievement();
-         $addMonth = $addMonth->Beginning($request);
-         $addMonth = $addMonth->daysInMonth;
+        //月の日数が何日かを取得
+        $addMonth = new Achievement();
+        $addMonth = $addMonth->Beginning($request);
+        $addMonth = $addMonth->daysInMonth;
 
         for ($i = 0; $i < $addMonth; $i++) {
             $weeks[][$i] = $month->copy()->addDay($i)->isoFormat('ddd');
@@ -117,14 +117,52 @@ class Master extends Authenticatable
         $month = new Achievement();
         $month = $month->Beginning($request);
 
-         //月の日数が何日かを取得
-         $addMonth = new Achievement();
-         $addMonth = $addMonth->Beginning($request);
-         $addMonth = $addMonth->daysInMonth;
-        
+        //月の日数が何日かを取得
+        $addMonth = new Achievement();
+        $addMonth = $addMonth->Beginning($request);
+        $addMonth = $addMonth->daysInMonth;
+
         for ($i = 0; $i < $addMonth; $i++) {
             $days[][$i] = $month->copy()->addDay($i)->isoFormat('D日');
         }
         return $days;
+    }
+
+    public function Month_Records(Request $request)
+    {
+        //月初を取得
+        $year = new Achievement();
+        $year = $year->Beginning($request);
+
+        //一ヶ月の日数を取得
+        $records = new Achievement();
+        $records = $records->One_Month($request);
+
+        //月の日数を作成
+        $addMonth = new Achievement();
+        $addMonth = $addMonth->Beginning($request);
+        $addMonth = $addMonth->daysInMonth;
+
+        $dm = [];
+        for ($n = 0; $n < $addMonth; $n++) {
+            $dm[] = [];
+        }
+
+        //利用者の一ヶ月間のレコードを取得
+        $achievements = Achievement::where('achievements.user_id', $request->user_id)
+            ->whereYear('insert_date', $year)
+            ->whereMonth('insert_date', $year)
+            ->orderBy('insert_date', 'asc')
+            ->get();
+
+        //実績データの登録日と一ヶ月の日数を比較して一致した日数にレコードを代入
+        foreach ($achievements as $achievement) {
+            for ($n = 0; $n < $addMonth; $n++) {
+                if ($records[$n] == $achievement->insert_date) {
+                    $dm[$n] = $achievement;
+                }
+            }
+        }
+        return $dm;
     }
 }
