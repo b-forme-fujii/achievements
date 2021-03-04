@@ -4,7 +4,9 @@ namespace App;
 
 use Illuminate\Contracts\Auth\MustVerifyEmail;
 use Illuminate\Foundation\Auth\User as Authenticatable;
+use App\Achievement;
 use Illuminate\Http\Request;
+use Carbon\Carbon;
 use Illuminate\Notifications\Notifiable;
 
 class Master extends Authenticatable
@@ -90,5 +92,39 @@ class Master extends Authenticatable
             'records' => $records,
         ];
         return ($data);
+    }
+
+    public function Weeks(Request $request)
+    {
+        //月初を取得
+        $month = new Achievement();
+        $month = $month->Beginning($request);
+
+         //月の日数が何日かを取得
+         $addMonth = new Achievement();
+         $addMonth = $addMonth->Beginning($request);
+         $addMonth = $addMonth->daysInMonth;
+
+        for ($i = 0; $i < $addMonth; $i++) {
+            $weeks[][$i] = $month->copy()->addDay($i)->isoFormat('ddd');
+        }
+        return $weeks;
+    }
+
+    public function Days(Request $request)
+    {
+        //月初を取得
+        $month = new Achievement();
+        $month = $month->Beginning($request);
+
+         //月の日数が何日かを取得
+         $addMonth = new Achievement();
+         $addMonth = $addMonth->Beginning($request);
+         $addMonth = $addMonth->daysInMonth;
+        
+        for ($i = 0; $i < $addMonth; $i++) {
+            $days[][$i] = $month->copy()->addDay($i)->isoFormat('D日');
+        }
+        return $days;
     }
 }
