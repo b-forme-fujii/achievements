@@ -71,9 +71,6 @@ class MasterController extends Controller
         $month = new Achievement();
         $month = $month->Beginning($request);
 
-        // $days = new Achievement();
-        // $days = $days->One_Month($request);
-
         //当月の日数を取得
         $days = new Master();
         $days = $days->Days($request);
@@ -82,6 +79,13 @@ class MasterController extends Controller
         $weeks = new Master();
         $weeks = $weeks->Weeks($request);
 
+        //利用者の月の実績データの取得
+        // $records = new Master();
+        // $records = $records->Month_Records($request);
+        
+        $records = new Master();
+        $records = $records->Month_Records($request);
+        // dd($records);   
 
         //テンプレートファイル取得
         $spreadsheet = \PhpOffice\PhpSpreadsheet\IOFactory::load('./excel/sample.xlsx');
@@ -98,25 +102,18 @@ class MasterController extends Controller
         }
         $sheet->fromArray($days, null, 'A9');
         $sheet->fromArray($weeks, null, 'B9');
-        // $offset = 9;
-        // foreach ($arrY as $i => $arr) {
-        //     $rowNum = $i + $offset;
-        //     $sheet->setCellValueByColumnAndRow(2, $rowNum, $arr[0]);
-        // }
+
+        // $sheet->fromArray($records, null, 'C9');
+
+        $offset = 9;
+        foreach ($records as $i => $record) {
+            $rowNum = $i + $offset;
+            $sheet->setCellValueByColumnAndRow(3, $rowNum,$record);
+        }
 
         $writer = new Xlsx($spreadsheet);
 
         $writer->save('write.xlsx');
         return response()->download('write.xlsx');
-
-        // //利用者の月の実績データの取得
-        // $records = new Achievement();
-        // $records = $records->Month_Records($request);
-
-        // $data = [
-        //     'user' => $user,
-        //     'days' => $days,
-        //     'records' => $records,
-        // ];
     }
 }

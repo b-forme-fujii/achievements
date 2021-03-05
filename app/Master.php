@@ -134,18 +134,21 @@ class Master extends Authenticatable
         $year = new Achievement();
         $year = $year->Beginning($request);
 
-        //一ヶ月の日数を取得
-        $records = new Achievement();
-        $records = $records->One_Month($request);
+        //月初から月末までを取得
+        $days = new Achievement();
+        $days = $days->One_Month($request);
 
-        //月の日数を作成
+        //月の日数を取得
         $addMonth = new Achievement();
         $addMonth = $addMonth->Beginning($request);
         $addMonth = $addMonth->daysInMonth;
 
-        $dm = [];
+        //中身がnullの配列を作成
+        $records = null;
+
+        //配列を日数分作成
         for ($n = 0; $n < $addMonth; $n++) {
-            $dm[] = [];
+            $records[$n] = null;
         }
 
         //利用者の一ヶ月間のレコードを取得
@@ -153,16 +156,27 @@ class Master extends Authenticatable
             ->whereYear('insert_date', $year)
             ->whereMonth('insert_date', $year)
             ->orderBy('insert_date', 'asc')
+            ->select(
+                'insert_date',
+                'start_time',
+                'end_time',
+                'visit_support',
+                'food',
+                'outside_support',
+                'medical_support',
+                'note',
+                'stamp',
+            )
             ->get();
 
-        //実績データの登録日と一ヶ月の日数を比較して一致した日数にレコードを代入
+        //実績データの登録日と一ヶ月の日数を比較して一致した場合nullの配列にレコードを代入
         foreach ($achievements as $achievement) {
             for ($n = 0; $n < $addMonth; $n++) {
-                if ($records[$n] == $achievement->insert_date) {
-                    $dm[$n] = $achievement;
+                if ($days[$n] == $achievement->insert_date) {
+                    $records[$n] = $achievement;
                 }
             }
         }
-        return $dm;
+        return $records;
     }
 }
