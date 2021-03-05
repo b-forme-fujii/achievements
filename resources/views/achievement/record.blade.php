@@ -108,12 +108,12 @@
                                         <div class="food_check mt-2">
                                             <label class="mr-3">
                                                 <input class="" type="radio" name="medical" value=0
-                                                    @if($one_record->medical__support
+                                                    @if($one_record->medical_support
                                                 == 0) checked @endif>無
                                             </label>
                                             <label>
                                                 <input class="" type="radio" name="medical" value=2
-                                                    @if($one_record->medical__support
+                                                    @if($one_record->medical_support
                                                 == 2) checked @endif>有
                                             </label>
                                         </div>
@@ -306,9 +306,9 @@
                                 </td>
                                 @endif
 
-                                @if ($record->medical__support == 0)
+                                @if ($record->medical_support == 0)
                                 <td>無</td>
-                                @elseif ($record->medical__support == 2)
+                                @elseif ($record->medical_support == 2)
                                 <td>
                                     <font color="red">有</font>
                                 </td>

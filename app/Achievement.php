@@ -12,7 +12,7 @@ class Achievement extends Model
     protected $guarded = array('id');
 
     /** 変更を許可するフィールド */
-    protected $fillable = array('user_id', 'insert_date', 'start_time', 'end_time', 'food', 'outside_support', 'medical__support', 'note');
+    protected $fillable = array('user_id', 'insert_date', 'start_time', 'end_time', 'food', 'outside_support', 'medical_support', 'note');
 
     /** date型にキャストするフィールド */
     protected $dates = array('insert_date');
@@ -298,7 +298,7 @@ class Achievement extends Model
         Achievement::where('user_id', $request->user_id)
             ->where('insert_date', $insert_date)
             ->update(
-                ['medical__support' => $request->medical,]
+                ['medical_support' => $request->medical,]
             );
     }
 

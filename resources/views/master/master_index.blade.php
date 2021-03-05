@@ -67,7 +67,7 @@
                         <label for="school-1" class="col-md-4 col-form-label text-md-center">
                             <font class="school_1">本校の利用者</font>
                             <br>
-                            <a class="d_excel " href="#">全員分をダウンロード</a>
+                            <a class="dl_excel" href="/dl_school1">全員分をダウンロード</a>
                         </label>
                         <div class="col-md-4">
                             <select class="form-control" name="user_id">
@@ -87,7 +87,7 @@
                         <label for="school-2" class="col-md-4 col-form-label text-md-center">
                             <font class="school_2">２校の利用者</font>
                             <br>
-                            <a class="d_excel " href="#">全員分をダウンロード</a>
+                            <a class="dl_excel" href="/dl_school1">全員分をダウンロード</a>
                         </label>
                         <div class="col-md-4">
                             <select class="form-control" name="user_id">
@@ -139,7 +139,8 @@
                         </li>
                         <li class="add_achievement mr-5">
                             <button type="button" class="btn btn-outline-primary btn-sm mx-1 mt-2"
-                                onclick="location.href='#'">ダウンロード</button>
+                                onclick="location.href='one_data?user_id={{$user->id}}&month=-1';">ダウンロード</button>
+                                
                         </li>
                     </ul>
                 </div>
@@ -187,7 +188,7 @@
                             <td>無</td>
                             @elseif ($record->food == 1)
                             <td>
-                                <font color=>有</font>
+                                <font color="red">有</font>
                             </td>
                             @endif
 
@@ -199,9 +200,9 @@
                             </td>
                             @endif
 
-                            @if ($record->medical__support == 0)
+                            @if ($record->medical_support == 0)
                             <td>無</td>
-                            @elseif ($record->medical__support == 2)
+                            @elseif ($record->medical_support == 2)
                             <td>
                                 <font color="red">有</font>
                             </td>

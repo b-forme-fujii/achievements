@@ -158,20 +158,20 @@
                         </div>
 
                         <div class="form-group row">
-                            <label for="medical__support" class="col-md-5 col-form-label text-md-right">医療連携体制加算</label>
+                            <label for="medical_support" class="col-md-5 col-form-label text-md-right">医療連携体制加算</label>
 
                             <div class="col-md-6 mt-1">
                                 <label class="mr-3">
-                                    <input class="@error('medical__support') is-invalid @enderror" type="radio"
-                                        name="medical__support" value=0 @if(old('medical__support')==0) checked @endif
-                                        required autocomplete="medical__support" autofocus>無
+                                    <input class="@error('medical_support') is-invalid @enderror" type="radio"
+                                        name="medical_support" value=0 @if(old('medical_support')==0) checked @endif
+                                        required autocomplete="medical_support" autofocus>無
                                 </label>
                                 <label>
-                                    <input class="@error('medical__support') is-invalid @enderror" type="radio"
-                                        name="medical__support" value=2 @if(old('medical__support')==2) checked @endif
-                                        required autocomplete="medical__support" autofocus>有
+                                    <input class="@error('medical_support') is-invalid @enderror" type="radio"
+                                        name="medical_support" value=2 @if(old('medical_support')==2) checked @endif
+                                        required autocomplete="medical_support" autofocus>有
                                 </label>
-                                @error('medical__support')
+                                @error('medical_support')
                                 <span class="invalid-feedback" role="alert">
                                     <strong>{{ $message }}</strong>
                                 </span>

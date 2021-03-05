@@ -23,7 +23,7 @@ class CreateAchievementsTable extends Migration
                 $table->string('visit_support')->nullable();
                 $table->tinyInteger('food')->default(0);
                 $table->tinyInteger('outside_support')->default(0);
-                $table->tinyInteger('medical__support')->default(0);
+                $table->tinyInteger('medical_support')->default(0);
                 $table->string('note')->nullable();
                 $table->string('stamp')->nullable();
                 $table->timestamps();
