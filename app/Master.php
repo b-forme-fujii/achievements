@@ -108,14 +108,11 @@ class Master extends Authenticatable
         $Month = new Achievement();
         $Month = $Month->One_Month($request);
 
-        foreach ($Month as $add) {
-            for ($i = 0; $i < $addMonth; $i++) {
-                $days[] = array(
-                    $add->isoFormat('D日'),
-                    $add->isoFormat('ddd'),
-                );
-            }
+        foreach($Month as $add){   
+            $days[] = array($add->isoFormat('D日'),
+            $add->isoFormat('ddd'));     
         }
+        dd($days);
         return $days;
     }
 
@@ -126,7 +123,7 @@ class Master extends Authenticatable
         $addMonth = $addMonth->Beginning($request);
         $addMonth = $addMonth->daysInMonth;
         for ($i = 0; $i < $addMonth; $i++) {
-            $attendances[] = "欠";
+            
         }
         dd($attendances);
         return $attendances;
