@@ -94,23 +94,6 @@ class Master extends Authenticatable
         return ($data);
     }
 
-    public function Weeks(Request $request)
-    {
-        //月初を取得
-        $month = new Achievement();
-        $month = $month->Beginning($request);
-
-        //月の日数が何日かを取得
-        $addMonth = new Achievement();
-        $addMonth = $addMonth->Beginning($request);
-        $addMonth = $addMonth->daysInMonth;
-
-        for ($i = 0; $i < $addMonth; $i++) {
-            $weeks[][$i] = $month->copy()->addDay($i)->isoFormat('ddd');
-        }
-        return $weeks;
-    }
-
     public function Days(Request $request)
     {
         //月初を取得
@@ -122,12 +105,32 @@ class Master extends Authenticatable
         $addMonth = $addMonth->Beginning($request);
         $addMonth = $addMonth->daysInMonth;
 
-        for ($i = 0; $i < $addMonth; $i++) {
-            $days[][$i] = $month->copy()->addDay($i)->isoFormat('D日');
+        $Month = new Achievement();
+        $Month = $Month->One_Month($request);
+
+        foreach ($Month as $add) {
+            for ($i = 0; $i < $addMonth; $i++) {
+                $days[] = array(
+                    $add->isoFormat('D日'),
+                    $add->isoFormat('ddd'),
+                );
+            }
         }
         return $days;
     }
 
+    public function Attendance(Request $request)
+    {
+        //月の日数が何日かを取得
+        $addMonth = new Achievement();
+        $addMonth = $addMonth->Beginning($request);
+        $addMonth = $addMonth->daysInMonth;
+        for ($i = 0; $i < $addMonth; $i++) {
+            $attendances[] = "欠";
+        }
+        dd($attendances);
+        return $attendances;
+    }
     public function Month_Records(Request $request)
     {
         //月初を取得
@@ -148,8 +151,9 @@ class Master extends Authenticatable
 
         //配列を日数分作成
         for ($n = 0; $n < $addMonth; $n++) {
-            $records[$n] = null;
+            $records[][$n] = null;
         }
+        // dd($records);
 
         //利用者の一ヶ月間のレコードを取得
         $achievements = Achievement::where('achievements.user_id', $request->user_id)
@@ -167,12 +171,15 @@ class Master extends Authenticatable
                 'note',
                 'stamp',
             )
-            ->get();
+            ->get()
+            ->toarray();
 
         //実績データの登録日と一ヶ月の日数を比較して一致した場合nullの配列にレコードを代入
         foreach ($achievements as $achievement) {
+            $achievement['start_time'] = substr($achievement['start_time'], 0, 5);
+            $achievement['end_time'] = substr($achievement['end_time'], 0, 5);
             for ($n = 0; $n < $addMonth; $n++) {
-                if ($days[$n] == $achievement->insert_date) {
+                if ($days[$n] == $achievement['insert_date']) {
                     $records[$n] = $achievement;
                 }
             }

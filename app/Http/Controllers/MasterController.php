@@ -75,17 +75,14 @@ class MasterController extends Controller
         $days = new Master();
         $days = $days->Days($request);
 
-        //当月の曜日を取得
-        $weeks = new Master();
-        $weeks = $weeks->Weeks($request);
-
-        //利用者の月の実績データの取得
-        // $records = new Master();
-        // $records = $records->Month_Records($request);
-        
+        $attendances = new Master();
+        $attendances = $attendances->Attendance($request);
+        // dd($attendances);
         $records = new Master();
         $records = $records->Month_Records($request);
-        // dd($records);   
+        // dd($records);
+        // $arrY = array_chunk($records, 1);
+        // dd($arrY);
 
         //テンプレートファイル取得
         $spreadsheet = \PhpOffice\PhpSpreadsheet\IOFactory::load('./excel/sample.xlsx');
@@ -101,14 +98,31 @@ class MasterController extends Controller
             $sheet->setCellValue('j4', "未来のかたち 本町第２校");
         }
         $sheet->fromArray($days, null, 'A9');
-        $sheet->fromArray($weeks, null, 'B9');
+        // $sheet->fromArray($weeks, null, 'B9');
+        $sheet->fromArray($attendances, null, 'C9');
 
         // $sheet->fromArray($records, null, 'C9');
 
         $offset = 9;
         foreach ($records as $i => $record) {
             $rowNum = $i + $offset;
-            $sheet->setCellValueByColumnAndRow(3, $rowNum,$record);
+            if (
+                array_key_exists('insert_date', $record) and
+                array_key_exists('start_time', $record) and
+                array_key_exists('end_time', $record) and
+                array_key_exists('food', $record) and
+                array_key_exists('outside_support', $record) and
+                array_key_exists('medical_support', $record) and
+                array_key_exists('note', $record)
+            ) {
+                $sheet->setCellValueByColumnAndRow(3, $rowNum, "");
+                $sheet->setCellValueByColumnAndRow(4, $rowNum, $record['start_time']);
+                $sheet->setCellValueByColumnAndRow(5, $rowNum, $record['end_time']);
+                $sheet->setCellValueByColumnAndRow(7, $rowNum, $record['food']);
+                $sheet->setCellValueByColumnAndRow(8, $rowNum, $record['outside_support']);
+                $sheet->setCellValueByColumnAndRow(9, $rowNum, $record['medical_support']);
+                $sheet->setCellValueByColumnAndRow(10, $rowNum, $record['note']);
+            }
         }
 
         $writer = new Xlsx($spreadsheet);
