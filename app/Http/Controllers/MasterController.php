@@ -75,8 +75,8 @@ class MasterController extends Controller
         $days = new Master();
         $days = $days->Days($request);
 
-        $attendances = new Master();
-        $attendances = $attendances->Attendance($request);
+        // $attendances = new Master();
+        // $attendances = $attendances->Attendance($request);
         // dd($attendances);
         $records = new Master();
         $records = $records->Month_Records($request);
@@ -99,7 +99,7 @@ class MasterController extends Controller
         }
         $sheet->fromArray($days, null, 'A9');
         // $sheet->fromArray($weeks, null, 'B9');
-        $sheet->fromArray($attendances, null, 'C9');
+        // $sheet->fromArray($attendances, null, 'C9');
 
         // $sheet->fromArray($records, null, 'C9');
 
