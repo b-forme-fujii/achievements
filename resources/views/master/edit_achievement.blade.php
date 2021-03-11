@@ -78,7 +78,7 @@
                                 開始時間
                             </label>
 
-                            <div class="col-md-3 mt-1">
+                            <div class="col-md-4 mt-1">
                                 <input id="start_time" type="time"
                                     class="form-control @error('start_time') is-invalid @enderror" name="start_time" step="900" 
                                     value="{{ empty(old('start_time')) ? ("$achievement->start_time") : old('start_time')}}" min="09:30"
@@ -96,7 +96,7 @@
                                 終了時間
                             </label>
 
-                            <div class="col-md-3 mt-1">
+                            <div class="col-md-4 mt-1">
                                 <input id="end_time" type="time"
                                     class="form-control @error('end_time') is-invalid @enderror" name="end_time" step="900"
                                     value="{{ empty(old('end_time')) ? ("$achievement->end_time") : old('end_time')}}" min="10:15"
@@ -194,7 +194,7 @@
                         </div>
                         <input type="hidden" name="id" value={{$achievement->id}}>
                         <input type="hidden" name="user_id" value={{$achievement->user_id}}>
-                        <input type="hidden" name="month" value=0>
+                        <input type="hidden" name="month" value={{$achievement->insert_date}}>
 
                         <div class="form-group row mb-0">
                             <div class="col-md-6 offset-md-4">

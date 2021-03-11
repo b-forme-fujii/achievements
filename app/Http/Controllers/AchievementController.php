@@ -227,6 +227,9 @@ class AchievementController extends Controller
             //内容を更新して保存
             $achievement->fill($form)->save();
 
+            $request->insert_date = new Carbon($request->insert_date);
+            dd($request->insert_date);
+
             //実績閲覧ページにリダイレクト   
             return redirect('/master');
         }
@@ -261,6 +264,8 @@ class AchievementController extends Controller
      */
     public function update_achievement(Request $request)
     {
+        $request->month = new Carbon($request->month);
+
         //Achievementモデルのオブジェクト作成
         $achievement = Achievement::where('id', $request->id)
             ->first();
