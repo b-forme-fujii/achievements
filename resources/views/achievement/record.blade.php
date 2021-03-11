@@ -229,9 +229,8 @@
                                 <form action="/achievement" method="get">
                                     @csrf
                                     <select class="past my-1" name="month">
-                                        <option>{{$month->isoformat('Y年M月')}}</option>
-                                        @foreach (array_map(null, $years, $nums) as [$year, $num])
-                                        <option value={{(int)$num}}>{{$year->isoformat('Y年M月')}}</option>
+                                        @foreach ($months as $month)
+                                        <option value={{$month}}>{{$month->isoformat('Y年M月')}}</option>
                                         @endforeach
                                     </select>
                                     <input type="hidden" name="user_id" value={{$user->id}}>
@@ -256,7 +255,7 @@
                     </div>
                 </div>
                 <div class="card-body">
-                    <h1>{{$month->isoformat('Y年M月')}}分</h1>
+                    <h1>{{$bmonth->isoformat('Y年M月')}}分</h1>
                     <table class="table table-bordered">
                         <thead>
                             <tr class="text-center">
