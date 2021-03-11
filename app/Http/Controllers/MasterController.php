@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\User;
 use App\Achievement;
 use App\Master;
+use Carbon\Carbon;
 use Illuminate\Support\Facades\DB;
 use App\Exports\Export;
 use App\Http\Requests\AchievementFormRequest;
@@ -68,21 +69,15 @@ class MasterController extends Controller
         $user = $user->getUser($request);
 
         //月初を取得
-        $month = new Achievement();
-        $month = $month->Beginning($request);
+        $month = new Carbon($request->month);
 
         //当月の日数を取得
         $days = new Master();
-        $days = $days->Days($request);
+        $days = $days->Excel_Days($request);
 
-        // $attendances = new Master();
-        // $attendances = $attendances->Attendance($request);
-        // dd($attendances);
+        //一ヶ月分の実績データを取得
         $records = new Master();
         $records = $records->Month_Records($request);
-        // dd($records);
-        // $arrY = array_chunk($records, 1);
-        // dd($arrY);
 
         //テンプレートファイル取得
         $spreadsheet = \PhpOffice\PhpSpreadsheet\IOFactory::load('./excel/sample.xlsx');
@@ -98,11 +93,7 @@ class MasterController extends Controller
             $sheet->setCellValue('j4', "未来のかたち 本町第２校");
         }
         $sheet->fromArray($days, null, 'A9');
-        // $sheet->fromArray($weeks, null, 'B9');
-        // $sheet->fromArray($attendances, null, 'C9');
-
-        // $sheet->fromArray($records, null, 'C9');
-
+       
         $offset = 9;
         foreach ($records as $i => $record) {
             $rowNum = $i + $offset;
