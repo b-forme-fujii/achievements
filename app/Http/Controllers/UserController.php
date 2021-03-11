@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\User;
 use Illuminate\Http\Request;
+use Carbon\Carbon;
 
 use Illuminate\Support\Facades\DB;
 
@@ -26,10 +27,14 @@ class UserController extends Controller
         $school_2 = new User();
         $school_2 = $school_2->School_2();
 
+        //今日の日付から月初を取得
+        $bmonth = Carbon::now()->firstOfMonth();
+
         $data = [
             'school_1' => $school_1,
             'school_2' => $school_2,
-        ];
+            'bmonth' => $bmonth,       
+         ];
         return view('achievement.index', $data);
     }
 
