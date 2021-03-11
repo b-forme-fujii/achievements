@@ -33,9 +33,12 @@ class MasterController extends Controller
         $school_2 = new User();
         $school_2 = $school_2->School_2();
 
+        $bmonth = Carbon::now()->firstOfMonth();
+
         $data = [
             'school_1' => $school_1,
             'school_2' => $school_2,
+            'bmonth' => $bmonth,
         ];
         return view('master.master_index', $data);
     }

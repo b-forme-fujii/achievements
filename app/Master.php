@@ -57,25 +57,20 @@ class Master extends Authenticatable
         $school_2 = new User();
         $school_2 = $school_2->School_2();
 
-        //月初を取得
-        $month = new Achievement();
-        $month = $month->Beginning($request);
-
-        //当月の日数を取得
-        $days = new Achievement();
-        $days = $days->One_Month($request);
-
-        //今月から過去1年間の月を取得
-        $years = new Achievement();
-        $years = $years->One_Year();
-
-        //過去の月の実績表を取得するための引数を取得
-        $nums = new Achievement();
-        $nums = $nums->Manth_Nums();
-
         //利用者の情報をを取得
         $user = new User();
         $user = $user->getUser($request);
+
+        //月初を取得
+        $bmonth =  new Carbon($request->month);
+
+        //当月の日数を取得
+        $days = new Achievement();
+        $days = $days->M_Days($request);
+
+        //今月から過去1年間の月を取得
+        $months = new Achievement();
+        $months = $months->Months($request);
 
         //利用者の月の実績データの取得
         $records = new Achievement();
@@ -84,17 +79,18 @@ class Master extends Authenticatable
         $data = [
             'school_1' => $school_1,
             'school_2' => $school_2,
-            'month' => $month,
-            'days' => $days,
-            'years' => $years,
-            'nums' => $nums,
             'user' => $user,
+            'bmonth' => $bmonth,
+            'days' => $days,
+            'months' => $months,
             'records' => $records,
         ];
         return ($data);
     }
 
-    //月の日数が何日かを取得
+    /**
+     * 月の日数が何日かを取得
+     */
     public function D_Month(Request $request)
     {
         $dmonth = new Carbon($request->month);
