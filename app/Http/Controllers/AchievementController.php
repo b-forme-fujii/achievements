@@ -24,7 +24,6 @@ class AchievementController extends Controller
 
         //月初を取得
         $bmonth = new Carbon($request->month);
-        // dd($bmonth);
 
         $days = new Achievement();
         $days = $days->M_Days($request);
