@@ -216,7 +216,7 @@
             </div>
             @endif
 
-            <div class="card  mt-4 mx-3">
+            <div class="card  my-4 mx-3">
                 <div class="card-header mb-2">
                     <div class="row">
                         <ul class="nav card-header-tabs mr-auto">
