@@ -66,7 +66,7 @@
                         <div class="form-group row">
                             <label for="insert_date" class="col-md-5 col-form-label text-md-right">登録日</label>
 
-                            <div class="col-md-3">
+                            <div class="col-md-4">
                                 <input id="insert_date" type="date"
                                     class="form-control @if(session('error')) is-invalid @endif" name="insert_date"
                                     value="{{ old('insert_date', date('Y-m-d')) }}" required autocomplete="insert_date"
@@ -84,7 +84,7 @@
                                 開始時間
                             </label>
 
-                            <div class="col-md-3 mt-1">
+                            <div class="col-md-4 mt-1">
                                 <input id="start_time" type="time"
                                     class="form-control @error('start_time') is-invalid @enderror" name="start_time"
                                     step="900" value="{{ empty(old('start_time')) ? ("09:30") : old('start_time')}}"
@@ -102,7 +102,7 @@
                                 終了時間
                             </label>
 
-                            <div class="col-md-3 mt-1">
+                            <div class="col-md-4 mt-1">
                                 <input id="end_time" type="time"
                                     class="form-control @error('end_time') is-invalid @enderror" name="end_time"
                                     step="900" value="{{ empty(old('end_time')) ? ("16:00") : old('end_time')}}"
