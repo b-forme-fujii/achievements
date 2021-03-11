@@ -9,6 +9,7 @@
         color: white;
         background: red;
     }
+
 </style>
 @section('title', '管理者実績閲覧')
 @section('content')
@@ -75,7 +76,7 @@
                                 <option value={{$sch1->id}}>{{$sch1->first_name}}　{{$sch1->last_name}}</option>
                                 @endforeach
                             </select>
-                            <input type="hidden" name="month" value=0>
+                            <input type="hidden" name="month" value={{$bmonth}}>
                             <input type="submit" value="実績表示" class="button">
                         </div>
                     </div>
@@ -95,7 +96,7 @@
                                 <option value={{$sch2->id}}>{{$sch2->first_name}}　{{$sch2->last_name}}</option>
                                 @endforeach
                             </select>
-                            <input type="hidden" name="month" value=0>
+                            <input type="hidden" name="month" value={{$bmonth}}>
                             <input type="submit" value="実績表示" class="button">
                         </div>
                     </div>
@@ -119,9 +120,8 @@
                             <form action="/check_records" method="get">
                                 @csrf
                                 <select class="past my-1" name="month">
-                                    <option>{{$month->isoformat('Y年M月')}}</option>
-                                    @foreach (array_map(null, $years, $nums) as [$year, $num])
-                                    <option value={{(int)$num}}>{{$year->isoformat('Y年M月')}}</option>
+                                    @foreach ($months as $month)
+                                    <option value={{$month}}>{{$month->isoformat('Y年M月')}}</option>
                                     @endforeach
                                 </select>
                                 <input type="hidden" name="user_id" value={{$user->id}}>
@@ -139,14 +139,14 @@
                         </li>
                         <li class="add_achievement mr-5">
                             <button type="button" class="btn btn-outline-primary btn-sm mx-1 mt-2"
-                                onclick="location.href='one_data?user_id={{$user->id}}&month=-1';">ダウンロード</button>
-                                
+                                onclick="location.href='one_data?user_id={{$user->id}}&month={{$bmonth}}';">ダウンロード</button>
+
                         </li>
                     </ul>
                 </div>
             </div>
             <div class="card-body">
-                <h1>{{$month->isoformat('Y年M月')}}分</h1>
+                <h1>{{$bmonth->isoformat('Y年M月')}}分</h1>
                 <table class="table table-bordered">
                     <thead>
                         <tr class="text-center">
