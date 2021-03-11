@@ -23,7 +23,7 @@ class Achievement extends Model
         'end_time' => ['required', 'date_format:H:i', 'after:start_time'],
     ];
 
-     /** バリデーションのエラーメッセージ */
+    /** バリデーションのエラーメッセージ */
     public static $messages = [
         'start_time.required' => '必須項目です',
         'start_time.date_format' => 'H:i形式で入力して下さい。',
@@ -40,16 +40,16 @@ class Achievement extends Model
     }
 
     /**
-     * リクエストで送られてきた値から何月かを取得
+     * 月の日数が何日かを取得
      * 
      * @param Request $request
      * @return void
      */
-    public function Beginning(Request $request)
+    public function D_Month(Request $request)
     {
-        //  $date = Carbon::now()->firstOfMonth()->addMonth($request->month);
-        $date = Carbon::now()->firstOfMonth()->addMonth($request->month);
-        return ($date);
+        $dmonth = new Carbon($request->month);
+        $dmonth = $dmonth->daysInMonth;
+        return $dmonth;
     }
 
     /**
@@ -58,56 +58,58 @@ class Achievement extends Model
      * @param Request $request
      * @return void
      */
-    public function One_Month(Request $request)
+    /**
+     * 一ヶ月分の日数を取得
+     */
+    public function M_Days(Request $request)
     {
-        $firstOfMonth = new Achievement();
-        $firstOfMonth = $firstOfMonth->Beginning($request);
+        //月初を取得
+        $bmonth = new Carbon($request->month);
 
         //月の日数が何日かを取得
-        $addMonth = new Achievement();
-        $addMonth = $addMonth->Beginning($request);
-        $addMonth = $addMonth->daysInMonth;
+        $dmonth = new Master();
+        $dmonth = $dmonth->D_Month($request);
 
         //日付を連想配列に格納
-        for ($i = 0; $i < $addMonth; $i++) {
-            $days[$i] = $firstOfMonth->copy()->addDay($i);
+        for ($i = 0; $i < $dmonth; $i++) {
+            $days[$i] = $bmonth->copy()->addDay($i);
         }
-        return $days;
+        return ($days);
     }
 
     /**
-     * 今月から過去1年間の月を取得 
+     * 今月から過去1年間の月を取得
+     * 
      * 
      * @return void
      */
-    public function One_Year()
+    public function Months(Request $request)
     {
         //今月の月初を取得
-        $firstOfMonth = Carbon::now()->firstOfMonth();
+        $bmonth = Carbon::now()->firstOfMonth();
 
-        //一年分の月初を連想配列に格納
+        //requestで送信された日付をカーボンにフォーマット
+        $submonth = new Carbon($request->month);
+
+        //配列に格納する
+        $month = array($submonth);
+
+        //一年分の月初を配列に格納
         for ($i = 0; $i < 12; $i++) {
-            $years[$i] = $firstOfMonth->copy()->subMonth($i);
+            $months[$i] = $bmonth->copy()->subMonth($i);
         }
-        return $years;
-    }
 
-    /**
-     * 過去の実績を取得する為の引数を作成
-     *  
-     * @return void
-     */
-    public function Manth_Nums()
-    {
-        for ($i = 0; $i > -12; $i--) {
-            $Mnum[$i] = ($i);
-        }
-        return $Mnum;
+        //配列を結合する
+        $months = array_merge($month, $months);
+        
+        //重複する配列を削除
+        $months = array_unique($months);
+        
+        return $months;
     }
 
     /**
      * 利用者の当日の実績データを取得
-
      * @param Request $request
      * @return void
      */
@@ -132,28 +134,28 @@ class Achievement extends Model
     public function Month_Records(Request $request)
     {
         //月初を取得
-        $year = new Achievement();
-        $year = $year->Beginning($request);
-
-        //一ヶ月の日数を取得
-        $records = new Achievement();
-        $records = $records->One_Month($request);
+        $bmonth = new Carbon($request->month);
 
         //月の日数を作成
-        $addMonth = new Achievement();
-        $addMonth = $addMonth->Beginning($request);
-        $addMonth = $addMonth->daysInMonth;
+        $dmonth = new Achievement();
+        $dmonth = $dmonth->D_Month($request);
+
+        //一ヶ月の日数の配列を取得
+        $records = new Achievement();
+        $records = $records->M_Days($request);
+        // dd($records);
+
 
         //利用者の一ヶ月間のレコードを取得
         $achievements = Achievement::where('achievements.user_id', $request->user_id)
-            ->whereYear('insert_date', $year)
-            ->whereMonth('insert_date', $year)
+            ->whereYear('insert_date', $bmonth)
+            ->whereMonth('insert_date', $bmonth)
             ->orderBy('insert_date', 'asc')
             ->get();
 
         //実績データの登録日と一ヶ月の日数を比較して一致した日数にレコードを代入
         foreach ($achievements as $achievement) {
-            for ($n = 0; $n < $addMonth; $n++) {
+            for ($n = 0; $n < $dmonth; $n++) {
                 if ($records[$n] == $achievement->insert_date) {
                     $records[$n] = $achievement;
                 }

@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\User;
 use App\Master;
 use App\Achievement;
+use Carbon\Carbon;
 use Illuminate\Http\Request;
 
 class AchievementController extends Controller
@@ -17,25 +18,20 @@ class AchievementController extends Controller
      */
     public function selection(Request $request)
     {
-        //月初を取得
-        $month = new Achievement();
-        $month = $month->Beginning($request);
-
-        //当月の日数を取得
-        $days = new Achievement();
-        $days = $days->One_Month($request);
-
-        //今月から過去1年間の月を取得
-        $years = new Achievement();
-        $years = $years->One_Year();
-
-        //過去のデータを取得する為の引数を取得
-        $nums = new Achievement();
-        $nums = $nums->Manth_Nums();
-
         //利用者の情報を取得
         $user = new User();
         $user = $user->getUser($request);
+
+        //月初を取得
+        $bmonth = new Carbon($request->month);
+        // dd($bmonth);
+
+        $days = new Achievement();
+        $days = $days->M_Days($request);
+
+        //今月から過去1年間の月を取得
+        $months = new Achievement();
+        $months = $months->Months($request);
 
         //利用者の当日の実績データを取得 
         $one_record = new Achievement();
@@ -46,11 +42,10 @@ class AchievementController extends Controller
         $records = $records->Month_Records($request);
 
         $data = [
-            'month' => $month,
-            'days' => $days,
-            'years' => $years,
-            'nums' => $nums,
             'user' => $user,
+            'bmonth' => $bmonth,
+            'days' => $days,
+            'months' => $months,
             'one_record' => $one_record,
             'records' => $records,
         ];
@@ -232,7 +227,7 @@ class AchievementController extends Controller
             $form = $request->all();
             //内容を更新して保存
             $achievement->fill($form)->save();
-            
+
             //実績閲覧ページにリダイレクト   
             return redirect('/master');
         }
@@ -247,15 +242,15 @@ class AchievementController extends Controller
     public function edit_achievement(Request $request)
     {
         $user = new User();
-        $user = $user->getUser($request); 
+        $user = $user->getUser($request);
 
         $achievement = Achievement::where('achievements.id', $request->id)
             ->first();
 
-            $data = [
-                'user' => $user,
-                'achievement' => $achievement,
-            ];
+        $data = [
+            'user' => $user,
+            'achievement' => $achievement,
+        ];
         return view('master.edit_achievement', $data);
     }
 
@@ -269,7 +264,7 @@ class AchievementController extends Controller
     {
         //Achievementモデルのオブジェクト作成
         $achievement = Achievement::where('id', $request->id)
-        ->first();
+            ->first();
         //formの内容を全て取得
         $form = $request->all();
         //内容を更新して保存
@@ -323,8 +318,8 @@ class AchievementController extends Controller
         } else {
             //存在していた場合削除処理を実行
             $achievement->delete();
-           //実績閲覧ページにリダイレクト   
-           return redirect('/master');
+            //実績閲覧ページにリダイレクト   
+            return redirect('/master');
         }
     }
 }
