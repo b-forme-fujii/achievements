@@ -94,31 +94,60 @@ class Master extends Authenticatable
         return ($data);
     }
 
-    public function Days(Request $request)
+    //月の日数が何日かを取得
+    public function D_Month(Request $request)
+    {
+        $dmonth = new Carbon($request->month);
+        $dmonth = $dmonth->daysInMonth;
+        return $dmonth;
+    }
+
+    /**
+     * 一ヶ月分の日数を取得
+     */
+    public function M_Days(Request $request)
     {
         //月初を取得
-        $month = new Achievement();
-        $month = $month->Beginning($request);
+        $bmonth = new Carbon($request->month);
 
         //月の日数が何日かを取得
-        $addMonth = new Achievement();
-        $addMonth = $addMonth->Beginning($request);
-        $addMonth = $addMonth->daysInMonth;
+        $dmonth = new Master();
+        $dmonth = $dmonth->D_Month($request);
 
-        $Month = new Achievement();
-        $Month = $Month->One_Month($request);
+        //日付を連想配列に格納
+        for ($i = 0; $i < $dmonth; $i++) {
+            $days[$i] = $bmonth->copy()->addDay($i);
+        }
+        return ($days);
+    }
 
-        foreach ($Month as $add) {
-            if ($add->isSaturday() || $add->isSunday()) {
+    /**
+     * Excelの日付、曜日、サービス提供欄出力用の連想配列を作成
+     * 
+     */
+    public function Excel_Days(Request $request)
+    {
+        // 一ヶ月分の日数を取得
+        $mdays = new Master();
+        $mdays = $mdays->M_Days($request);
+
+        //mdaysをネストして新たな配列に
+        //0 => array:3 [▼
+        //  0 => "日付、"
+        //  1 => "曜日"
+        //  2 => "欠or空文字
+        //を格納
+        foreach ($mdays as $day) {
+            if ($day->isSaturday() || $day->isSunday()) {
                 $days[] = array(
-                    $add->isoFormat('D日'),
-                    $add->isoFormat('ddd'),
+                    $day->isoFormat('D日'),
+                    $day->isoFormat('ddd'),
                     ""
                 );
             } else {
                 $days[] = array(
-                    $add->isoFormat('D日'),
-                    $add->isoFormat('ddd'),
+                    $day->isoFormat('D日'),
+                    $day->isoFormat('ddd'),
                     "欠"
                 );
             }
@@ -126,45 +155,32 @@ class Master extends Authenticatable
         return $days;
     }
 
-    public function Attendance(Request $request)
-    {
-        //月の日数が何日かを取得
-        $addMonth = new Achievement();
-        $addMonth = $addMonth->Beginning($request);
-        $addMonth = $addMonth->daysInMonth;
-        for ($i = 0; $i < $addMonth; $i++) {
-        }
-        dd($attendances);
-        return $attendances;
-    }
+    //一ヶ月分の実績データの配列を作成
     public function Month_Records(Request $request)
     {
         //月初を取得
-        $year = new Achievement();
-        $year = $year->Beginning($request);
+        $bmonth = new Carbon($request->month);
 
-        //月初から月末までを取得
-        $days = new Achievement();
-        $days = $days->One_Month($request);
+        //月の日数が何日かを取得
+        $dmonth = new Master();
+        $dmonth = $dmonth->D_Month($request);
 
-        //月の日数を取得
-        $addMonth = new Achievement();
-        $addMonth = $addMonth->Beginning($request);
-        $addMonth = $addMonth->daysInMonth;
+        //一ヶ月分の日数を取得
+        $mdays = new Master();
+        $mdays = $mdays->M_Days($request);
 
         //中身がnullの配列を作成
         $records = null;
 
         //配列を日数分作成
-        for ($n = 0; $n < $addMonth; $n++) {
+        for ($n = 0; $n < $dmonth; $n++) {
             $records[][$n] = null;
         }
-        // dd($records);
 
         //利用者の一ヶ月間のレコードを取得
         $achievements = Achievement::where('achievements.user_id', $request->user_id)
-            ->whereYear('insert_date', $year)
-            ->whereMonth('insert_date', $year)
+            ->whereYear('insert_date', $bmonth)
+            ->whereMonth('insert_date', $bmonth)
             ->orderBy('insert_date', 'asc')
             ->select(
                 'insert_date',
@@ -180,12 +196,13 @@ class Master extends Authenticatable
             ->get()
             ->toarray();
 
-        //実績データの登録日と一ヶ月の日数を比較して一致した場合nullの配列にレコードを代入
+        //実績データの登録日と一ヶ月の日数を比較して一致した場合$recordsの配列にレコードを上書きする
         foreach ($achievements as $achievement) {
+            //開始時間と終了時間を切り取って変換
             $achievement['start_time'] = substr($achievement['start_time'], 0, 5);
             $achievement['end_time'] = substr($achievement['end_time'], 0, 5);
-            for ($n = 0; $n < $addMonth; $n++) {
-                if ($days[$n] == $achievement['insert_date']) {
+            for ($n = 0; $n < $dmonth; $n++) {
+                if ($mdays[$n] == $achievement['insert_date']) {
                     $records[$n] = $achievement;
                 }
             }
