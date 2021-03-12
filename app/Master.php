@@ -206,6 +206,24 @@ class Master extends Authenticatable
         return $months;
     }
 
+        /**
+     * 今月から過去1年間の月を取得
+     *
+     * @return void
+     */
+    public function Exele_Months()
+    {
+        //今月の月初を取得
+        $bmonth = Carbon::now()->firstOfMonth();
+
+        //一年分の月初を配列に格納
+        for ($i = 0; $i < 12; $i++) {
+            $months[$i] = $bmonth->copy()->subMonth($i);
+        }
+        
+        return $months;
+    }
+
     /**
      * Excelの日付、曜日、サービス提供欄出力用の連想配列を作成
      * 
