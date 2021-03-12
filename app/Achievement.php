@@ -79,8 +79,7 @@ class Achievement extends Model
 
     /**
      * 今月から過去1年間の月を取得
-     * 
-     * 
+     *
      * @return void
      */
     public function Months(Request $request)
@@ -143,8 +142,6 @@ class Achievement extends Model
         //一ヶ月の日数の配列を取得
         $records = new Achievement();
         $records = $records->M_Days($request);
-        // dd($records);
-
 
         //利用者の一ヶ月間のレコードを取得
         $achievements = Achievement::where('achievements.user_id', $request->user_id)
