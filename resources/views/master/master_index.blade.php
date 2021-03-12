@@ -95,7 +95,7 @@
                         <label for="school-2" class="col-md-4 col-form-label text-md-center">
                             <font class="school_2">２校の利用者</font>
                             <br>
-                            <a class="dl_excel" href="/dl_school1">全員分をダウンロード</a>
+                            <a class="dl_excel" href="/dl_school2">全員分をダウンロード</a>
                         </label>
                         <div class="col-md-4">
                             <select class="form-control" name="user_id">
