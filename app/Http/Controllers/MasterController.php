@@ -100,7 +100,7 @@ class MasterController extends Controller
             $sheet->setCellValue('j4', "未来のかたち 本町第２校");
         }
         $sheet->fromArray($days, null, 'A9');
-       
+
         $offset = 9;
         foreach ($records as $i => $record) {
             $rowNum = $i + $offset;
@@ -129,7 +129,8 @@ class MasterController extends Controller
         return response()->download($name);
     }
 
-    public function dl_school1(Request $request){
+    public function dl_school1(Request $request)
+    {
 
         //本校の利用者情報の取得
         $user = new User();
@@ -137,28 +138,53 @@ class MasterController extends Controller
 
         $months = new Master();
         $months = $months->Exele_Months();
-        
+
         $data = [
             'user' => $user,
             'months' => $months,
         ];
 
-        return view('master.dl_excel',$data);
+        return view('master.dl_excel', $data);
     }
 
-    public function dl_school2(Request $request){
+    public function dl_school2(Request $request)
+    {
 
         //本校の利用者情報の取得
         $user = new User();
         $user = $user->ExcleSchool_2();
-       
+
         $months = new Master();
         $months = $months->Exele_Months();
-        
+
         $data = [
             'user' => $user,
             'months' => $months,
         ];
-        return view('master.dl_excel',$data);
+        return view('master.dl_excel', $data);
+    }
+
+    public function bulk_creation(Request $request)
+    {
+        $bmonth = new Carbon($request->month);
+
+        //当月の日数を取得
+        $days = new Master();
+        $days = $days->Excel_Days($request);
+ 
+        $school_id = $request->school_id;
+        $users = User::where('school_id',$school_id)
+        ->get();
+
+        //利用者の一ヶ月間のレコードを取得
+        foreach ($users as $user) {
+            $achievements = Achievement::where('user_id',$user->id)
+            ->whereYear('insert_date', $bmonth)
+            ->whereMonth('insert_date', $bmonth)
+            ->orderBy('insert_date', 'asc')
+            ->get();
+            dd($achievements);
+        }
+        
     }
 }

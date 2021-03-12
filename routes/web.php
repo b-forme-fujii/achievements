@@ -77,6 +77,7 @@ Route::get('/del_achievement', 'AchievementController@delete_achievement')->midd
 Route::get('/one_data', 'MasterController@one_data')->middleware('auth');
 //本校の利用者一覧の実績のダウンロードページ
 Route::get('/dl_school1', 'MasterController@dl_school1')->middleware('auth');
-
 //2校の利用者一覧の実績のダウンロードページ
 Route::get('/dl_school2', 'MasterController@dl_school2')->middleware('auth');
+
+Route::post('/bulk_creation', 'MasterController@bulk_creation')->middleware('auth');

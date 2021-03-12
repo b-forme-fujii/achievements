@@ -54,7 +54,7 @@
             </div>
             <div class="row justify-content-center">
                 <div class="card-body">
-                    <form method="POST" action="/edit_achievement">
+                    <form method="POST" action="/bulk_creation">
                         @csrf
 
                         <div class="form-group row">
@@ -76,13 +76,13 @@
 
                             <div class="col-md-4 mt-1">
                                 <select class="past my-1" name="month">
-                                @foreach ($months as $month)
-                                <option value={{$month}}>{{$month->isoformat('Y年M月')}}</option>
-                                @endforeach
+                                    @foreach ($months as $month)
+                                    <option value={{$month}}>{{$month->isoformat('Y年M月')}}</option>
+                                    @endforeach
                                 </select>
                             </div>
                         </div>
-
+                        <input type="hidden" name="school_id" value={{$user->school_id}}>
                         <div class="form-group row mb-0">
                             <div class="col-md-6 offset-md-4">
                                 <button type="submit" class="btn btn-primary">ダウンロード</button>
