@@ -128,4 +128,37 @@ class MasterController extends Controller
         $writer->save($name);
         return response()->download($name);
     }
+
+    public function dl_school1(Request $request){
+
+        //本校の利用者情報の取得
+        $user = new User();
+        $user = $user->ExcleSchool_1();
+
+        $months = new Master();
+        $months = $months->Exele_Months();
+        
+        $data = [
+            'user' => $user,
+            'months' => $months,
+        ];
+
+        return view('master.dl_excel',$data);
+    }
+
+    public function dl_school2(Request $request){
+
+        //本校の利用者情報の取得
+        $user = new User();
+        $user = $user->ExcleSchool_2();
+       
+        $months = new Master();
+        $months = $months->Exele_Months();
+        
+        $data = [
+            'user' => $user,
+            'months' => $months,
+        ];
+        return view('master.dl_excel',$data);
+    }
 }
