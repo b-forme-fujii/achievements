@@ -75,6 +75,22 @@ class User extends Model
         return $school_2;
     }
 
+    public function ExcleSchool_1()
+    {
+        $school_1 = User::where('school_id', 1)
+        ->orderBy('full_name','asc')
+        ->first();
+        return $school_1;
+    }
+
+    public function ExcleSchool_2()
+    {
+        $school_2 = User::where('school_id', 2)
+        ->orderBy('full_name','asc')
+        ->first();
+        return $school_2;
+    }
+
 
     /**
      * 利用者の情報を取得
