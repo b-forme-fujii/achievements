@@ -199,7 +199,7 @@ class AchievementController extends Controller
         return view('master.add_achievement', $user);
     }
 
-    /**
+     /**
      * 利用者実績の作成を実行
      * @param Request $request
      * @return void
@@ -264,8 +264,6 @@ class AchievementController extends Controller
      */
     public function update_achievement(Request $request)
     {
-        $request->month = new Carbon($request->month);
-
         //Achievementモデルのオブジェクト作成
         $achievement = Achievement::where('id', $request->id)
             ->first();
@@ -274,33 +272,13 @@ class AchievementController extends Controller
         //内容を更新して保存
         $achievement->fill($form)->save();
 
+        $month = new Carbon($request->insert_date);
+        $month = $month->firstOfMonth();
+        $request->merge(['insert_date' => $month]);
+        
         //利用者の当月の実績データを取得
         $data = new Master();
-        $data = $data->Records($request);
-
-        //実績閲覧ページにリダイレクト   
-        return view('master.master_index', $data);
-    }
-
-    /**
-     * 実績編集を実行
-     * @pahram Request $request
-     * @return void
-     * idからレコードを抽出して各項目を編集
-     */
-    public function del_conf(Request $request)
-    {
-        //Achievementモデルのオブジェクト作成
-        $achievement = Achievement::where('id', $request->id)
-            ->first();
-        //formの内容を全て取得
-        $form = $request->all();
-        //内容を更新して保存
-        $achievement->fill($form)->save();
-
-        //利用者の当月の実績データを取得
-        $data = new Master();
-        $data = $data->Records($request);
+        $data = $data->DRecords($request);
 
         //実績閲覧ページにリダイレクト   
         return view('master.master_index', $data);
@@ -323,7 +301,7 @@ class AchievementController extends Controller
             //存在していた場合削除処理を実行
             $achievement->delete();
             //実績閲覧ページにリダイレクト   
-            return redirect('/master');
+            return back();
         }
     }
 }

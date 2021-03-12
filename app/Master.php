@@ -48,7 +48,6 @@ class Master extends Authenticatable
      */
     public function Records(Request $request)
     {
-
         //本校の利用者情報の取得
         $school_1 = new User();
         $school_1 = $school_1->School_1();
@@ -88,12 +87,71 @@ class Master extends Authenticatable
         return ($data);
     }
 
+    public function DRecords(Request $request)
+    {
+        //本校の利用者情報の取得
+        $school_1 = new User();
+        $school_1 = $school_1->School_1();
+
+        //2校の利用者情報の取得
+        $school_2 = new User();
+        $school_2 = $school_2->School_2();
+
+        //利用者の情報をを取得
+        $user = new User();
+        $user = $user->getUser($request);
+
+        //月初を取得
+        $bmonth =  new Carbon($request->insert_date);
+
+        $dmonth = new Master();
+        $dmonth = $dmonth->D_Month($request);
+
+        //当月の日数を取得
+        $days = new Master();
+        $days = $days->M_Days($request);
+
+        $records = new Master();
+        $records = $records->M_Days($request);
+
+        //今月から過去1年間の月を取得
+        $months = new Master();
+        $months = $months->Months($request);
+
+        //利用者の月の実績データの取得
+        $achievements = Achievement::where('achievements.user_id', $request->user_id)
+            ->whereYear('insert_date', $bmonth)
+            ->whereMonth('insert_date', $bmonth)
+            ->orderBy('insert_date', 'asc')
+            ->get();
+
+        //実績データの登録日と一ヶ月の日数を比較して一致した日数にレコードを代入
+        foreach ($achievements as $achievement) {
+            for ($n = 0; $n < $dmonth; $n++) {
+                if ($records[$n] == $achievement->insert_date) {
+                    $records[$n] = $achievement;
+                }
+            }
+        }
+
+        $data = [
+            'school_1' => $school_1,
+            'school_2' => $school_2,
+            'user' => $user,
+            'bmonth' => $bmonth,
+            'days' => $days,
+            'months' => $months,
+            'records' => $records,
+        ];
+        return ($data);
+    }
+
     /**
      * 月の日数が何日かを取得
      */
     public function D_Month(Request $request)
     {
-        $dmonth = new Carbon($request->month);
+        $dmonth = new Carbon($request->insert_date);
         $dmonth = $dmonth->daysInMonth;
         return $dmonth;
     }
@@ -104,7 +162,8 @@ class Master extends Authenticatable
     public function M_Days(Request $request)
     {
         //月初を取得
-        $bmonth = new Carbon($request->month);
+        $bmonth = new Carbon($request->insert_date);
+        $bmonth = $bmonth->firstOfMonth();
 
         //月の日数が何日かを取得
         $dmonth = new Master();
@@ -118,13 +177,43 @@ class Master extends Authenticatable
     }
 
     /**
+     * 今月から過去1年間の月を取得
+     * 
+     * @return void
+     */
+    public function Months(Request $request)
+    {
+        //今月の月初を取得
+        $bmonth = Carbon::now()->firstOfMonth();
+
+        //requestで送信された日付をカーボンにフォーマット
+        $submonth = new Carbon($request->insert_date);
+
+        //配列に格納する
+        $month = array($submonth);
+
+        //一年分の月初を配列に格納
+        for ($i = 0; $i < 12; $i++) {
+            $months[$i] = $bmonth->copy()->subMonth($i);
+        }
+
+        //配列を結合する
+        $months = array_merge($month, $months);
+
+        //重複する配列を削除
+        $months = array_unique($months);
+
+        return $months;
+    }
+
+    /**
      * Excelの日付、曜日、サービス提供欄出力用の連想配列を作成
      * 
      */
     public function Excel_Days(Request $request)
     {
         // 一ヶ月分の日数を取得
-        $mdays = new Master();
+        $mdays = new Achievement();
         $mdays = $mdays->M_Days($request);
 
         //mdaysをネストして新たな配列に
@@ -158,11 +247,11 @@ class Master extends Authenticatable
         $bmonth = new Carbon($request->month);
 
         //月の日数が何日かを取得
-        $dmonth = new Master();
+        $dmonth = new Achievement();
         $dmonth = $dmonth->D_Month($request);
 
         //一ヶ月分の日数を取得
-        $mdays = new Master();
+        $mdays = new Achievement();
         $mdays = $mdays->M_Days($request);
 
         //中身がnullの配列を作成
