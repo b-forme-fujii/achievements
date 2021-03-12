@@ -194,7 +194,7 @@
                         </div>
                         <input type="hidden" name="id" value={{$achievement->id}}>
                         <input type="hidden" name="user_id" value={{$achievement->user_id}}>
-                        <input type="hidden" name="month" value={{$achievement->insert_date}}>
+                        <input type="hidden" name="insert_date" value={{$achievement->insert_date}}>
 
                         <div class="form-group row mb-0">
                             <div class="col-md-6 offset-md-4">

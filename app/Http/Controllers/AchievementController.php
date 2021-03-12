@@ -199,7 +199,7 @@ class AchievementController extends Controller
         return view('master.add_achievement', $user);
     }
 
-     /**
+    /**
      * 利用者実績の作成を実行
      * @param Request $request
      * @return void
@@ -227,11 +227,16 @@ class AchievementController extends Controller
             //内容を更新して保存
             $achievement->fill($form)->save();
 
-            $request->insert_date = new Carbon($request->insert_date);
-            dd($request->insert_date);
-
+            $month = new Carbon($request->insert_date);
+            $month = $month->firstOfMonth();
+            $request->merge(['insert_date' => $month]);
+    
+            //利用者の当月の実績データを取得
+            $data = new Master();
+            $data = $data->DRecords($request);
+    
             //実績閲覧ページにリダイレクト   
-            return redirect('/master');
+            return view('master.master_index', $data);
         }
     }
 
@@ -243,9 +248,11 @@ class AchievementController extends Controller
      */
     public function edit_achievement(Request $request)
     {
+        //利用者情報の取得
         $user = new User();
         $user = $user->getUser($request);
 
+        //実績データがの取得
         $achievement = Achievement::where('achievements.id', $request->id)
             ->first();
 
@@ -275,7 +282,7 @@ class AchievementController extends Controller
         $month = new Carbon($request->insert_date);
         $month = $month->firstOfMonth();
         $request->merge(['insert_date' => $month]);
-        
+
         //利用者の当月の実績データを取得
         $data = new Master();
         $data = $data->DRecords($request);
