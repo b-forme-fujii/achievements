@@ -72,9 +72,16 @@
                         </label>
                         <div class="col-md-4">
                             <select class="form-control" name="user_id">
+                                @if (isset($user) && $user->school_id == 1)
+                                <option value={{$user->id}}>{{$user->first_name}}　{{$user->last_name}}</option>
                                 @foreach ($school_1 as $sch1)
                                 <option value={{$sch1->id}}>{{$sch1->first_name}}　{{$sch1->last_name}}</option>
                                 @endforeach
+                                @else
+                                @foreach ($school_1 as $sch1)
+                                <option value={{$sch1->id}}>{{$sch1->first_name}}　{{$sch1->last_name}}</option>
+                                @endforeach
+                                @endif
                             </select>
                             <input type="hidden" name="month" value={{$bmonth}}>
                             <input type="submit" value="実績表示" class="button">
@@ -92,9 +99,16 @@
                         </label>
                         <div class="col-md-4">
                             <select class="form-control" name="user_id">
+                                @if (isset($user) && $user->school_id == 2)
+                                <option value={{$user->id}}>{{$user->first_name}}　{{$user->last_name}}</option>
                                 @foreach ($school_2 as $sch2)
                                 <option value={{$sch2->id}}>{{$sch2->first_name}}　{{$sch2->last_name}}</option>
                                 @endforeach
+                                @else
+                                @foreach ($school_2 as $sch2)
+                                <option value={{$sch2->id}}>{{$sch2->first_name}}　{{$sch2->last_name}}</option>
+                                @endforeach
+                                @endif
                             </select>
                             <input type="hidden" name="month" value={{$bmonth}}>
                             <input type="submit" value="実績表示" class="button">
