@@ -67,9 +67,13 @@ class MasterController extends Controller
      */
     public function one_data(Request $request)
     {
+        $date = new Carbon($request->month);
+        $date = $date->isoFormat('Y-M.');
         //利用者の情報を取得
         $user = new User();
         $user = $user->getUser($request);
+
+        $name = $date . $user->first_name . $user->last_name . '.xlsx';
 
         //月初を取得
         $month = new Carbon($request->month);
@@ -121,7 +125,7 @@ class MasterController extends Controller
 
         $writer = new Xlsx($spreadsheet);
 
-        $writer->save('write.xlsx');
-        return response()->download('write.xlsx');
+        $writer->save($name);
+        return response()->download($name);
     }
 }
